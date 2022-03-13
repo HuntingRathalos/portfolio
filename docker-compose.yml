@@ -1,0 +1,59 @@
+version: '3.8'
+
+volumes:
+  mysql-volume:
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+    volumes:
+      - ./api/:/var/www/html
+    tty: true
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=${DB_NAME}
+      - DB_USERNAME=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+
+  nginx:
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+    ports:
+      - ${WEB_PORT}:80
+    tty: true
+    depends_on:
+      - api
+    volumes:
+      - ./api/:/var/www/html
+
+  db:
+    build:
+      context: .
+      dockerfile: ./docker/mysql/Dockerfile
+    ports:
+      - ${DB_PORT}:3306
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      TZ: 'Asia/Tokyo'
+    volumes:
+      - mysql-volume:/var/lib/mysql
+  front:
+    build:
+      context: .
+      dockerfile: ./docker/front/Dockerfile
+    ports:
+      - ${FRONT_PORT}:3000
+    stdin_open: true
+    tty: true
+    depends_on:
+      - nginx
+    volumes:
+      - ./front:/var/www/html
