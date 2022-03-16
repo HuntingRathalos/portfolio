@@ -7,7 +7,7 @@
       </v-card>
       <v-card>
         <v-card-title class="headline">
-          Welcome to the Vuetify + Nuxt.js template
+          <!-- {{ post }} -->
         </v-card-title>
         <v-card-text>
           <p>
@@ -82,6 +82,12 @@
 
 <script>
 export default {
-  name: 'IndexPage'
+  name: 'IndexPage',
+  // async asyncData ({ $axios }) {
+  //   const post = await $axios.$get('/api/store/s')
+  //   return {
+  //     post,
+  //   }
+  // },
 }
 </script>
