@@ -49,7 +49,14 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios'
   ],
-
+  auth: {
+    strategies: {
+      laravelSanctum: {
+        provider: 'laravel/sanctum',
+        url: 'http://localhost:80',
+      },
+    },
+  },
   proxy: {
     '/api': {
       target: 'http://localhost:80',
