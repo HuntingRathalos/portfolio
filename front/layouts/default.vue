@@ -35,6 +35,7 @@
       <v-btn icon @click.stop="fixed = !fixed">
         <v-icon>mdi-minus</v-icon>
       </v-btn>
+      <v-btn @click = "doLogout">ログアウト</v-btn>
       <v-toolbar-title v-text="title" />
       <v-spacer />
       <v-btn icon @click.stop="rightDrawer = !rightDrawer">
@@ -87,6 +88,13 @@ export default {
       rightDrawer: false,
       title: 'Vuetify.js'
     }
-  }
+  },
+  methods: {
+    async doLogout() {
+      try {
+        await this.$auth.logout();
+      } catch (e) {}
+    },
+  },
 }
 </script>
