@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Auth\Notifications\ResetPassword;
+
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,6 +27,9 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        // password.resetのルートが定義されていないので対応
+        ResetPassword::createUrlUsing(function ($user, string $token) {
+            return 'http://localhost:3000' . '/reset-password?email=' . $user->email . '&token=' . $token;
+        });
     }
 }
