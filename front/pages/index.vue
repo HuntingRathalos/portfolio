@@ -82,7 +82,7 @@
 
 <script>
 export default {
-  name: 'IndexPage',
+  name: 'IndexPage'
   // async asyncData ({ $axios }) {
   //   const post = await $axios.$get('/api/store/s')
   //   return {
