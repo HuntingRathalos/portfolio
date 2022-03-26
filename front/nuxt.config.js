@@ -47,9 +47,23 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/auth-next',
   ],
-
+  auth: {
+    redirect: {
+      login: '/login',
+      logout: '/',
+      // callback: '/login',
+      home: '/'
+    },
+    strategies: {
+      laravelSanctum: {
+        provider: 'laravel/sanctum',
+        url: 'http://localhost:80',
+      },
+    },
+  },
   proxy: {
     '/api': {
       target: 'http://localhost:80',
