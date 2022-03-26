@@ -26,7 +26,7 @@ class PasswordResetRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email',
+            'email' => 'required|email|max:255',
         ];
     }
 
@@ -42,6 +42,7 @@ class PasswordResetRequest extends FormRequest
         return [
             'email.required' => 'メールアドレスは必須です。',
             'email.email' => '正しい形式で入力してください。',
+            'email.max' => '文字数をオーバーしています。',
         ];
     }
 
