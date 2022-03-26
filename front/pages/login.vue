@@ -4,17 +4,17 @@
       <h1 class="display-1">ログイン</h1>
     </v-card-title>
     <v-card-text>
-      <v-form @submit.prevent="doLogin">
+      <v-form ref="login_form" @submit.prevent="doLogin">
         <v-text-field
           v-model="form.email"
-          :rules="[rules.required, rules.email]"
+          :rules="[rules.required, rules.email, rules.maxCount255]"
           prepend-icon="mdi-email-outline"
           label="メールアドレス"
           type="email"
         />
         <v-text-field
           v-model="form.password"
-          :rules="[rules.required]"
+          :rules="[rules.required, rules.minCount8]"
           prepend-icon="mdi-lock"
           label="パスワード"
           type="password"
@@ -40,26 +40,29 @@ export default {
       },
       rules: {
         required: (value) => !!value || '必須項目なので値を入力してください。',
+        minCount8: (value) =>
+          value.length >= 8 || 'パスワードは8文字以上で入力してください。',
+        maxCount255: (value) =>
+          value.length <= 255 || '文字数をオーバーしています。',
         email: (value) => {
           const pattern =
             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-          return (
-            pattern.test(value) ||
-            '正しい形式のメールアドレスを入力してください。'
-          )
+          return pattern.test(value) || '正しい形式で入力してください。'
         }
       }
     }
   },
   methods: {
     async doLogin() {
-      const response = await this.$auth
-        .loginWith('laravelSanctum', {
-          data: this.form
-        })
-        .catch((err) => err.response || err)
-      if (response.status === 400) {
-        console.log(response)
+      if (this.$refs.login_form.validate()) {
+        const response = await this.$auth
+          .loginWith('laravelSanctum', {
+            data: this.form
+          })
+          .catch((err) => err.response || err)
+        if (response.status === 400) {
+          console.log(response)
+        }
       }
     }
   }
