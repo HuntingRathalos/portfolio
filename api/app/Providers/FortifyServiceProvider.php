@@ -15,6 +15,10 @@ use App\Http\Controllers\LoginController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use App\Http\Controllers\RegisterController;
 use Laravel\Fortify\Http\Controllers\RegisteredUserController;
+use App\Http\Controllers\PasswordResetController;
+use Laravel\Fortify\Http\Controllers\PasswordResetLinkController;
+
+
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -28,6 +32,11 @@ class FortifyServiceProvider extends ServiceProvider
         $this->app->singleton(
             AuthenticatedSessionController::class,
             LoginController::class
+        );
+
+        $this->app->singleton(
+            PasswordResetLinkController::class,
+            PasswordResetController::class
         );
 
         $this->app->singleton(
