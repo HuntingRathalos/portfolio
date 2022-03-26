@@ -11,11 +11,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Fortify;
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\Auth\LoginController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
-use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\Auth\RegisterController;
 use Laravel\Fortify\Http\Controllers\RegisteredUserController;
-use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\Auth\PasswordResetController;
 use Laravel\Fortify\Http\Controllers\PasswordResetLinkController;
 
 
