@@ -24,8 +24,8 @@ class RegisterApiTest extends TestCase
         ];
 
         // 会員登録処理
-        $response = $this->json('POST', '/register', $data);
-        
+        $response = $this->json('POST', '/api/register', $data);
+
         // DBに保存されていることを確認
         $this->assertDatabaseHas('users', [
             'name' => $data['name'],

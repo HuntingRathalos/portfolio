@@ -24,7 +24,7 @@ class LoginApiTest extends TestCase
     public function 登録済みのユーザー情報でログインできる()
     {
         // ログイン処理
-        $response = $this->json('POST', '/login', [
+        $response = $this->json('POST', '/api/login', [
             'email' => $this->user->email,
             'password' => 'password',
         ]);

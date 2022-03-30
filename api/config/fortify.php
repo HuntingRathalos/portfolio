@@ -74,8 +74,9 @@ return [
     | subdomain under which all of the Fortify routes will be available.
     |
     */
-
-    'prefix' => '',
+    
+    // fortifyのルーティングにprefixを付与
+    'prefix' => 'api',
 
     'domain' => null,
 
