@@ -73,7 +73,7 @@ export default {
       if (this.$refs.register_form.validate()) {
         await this.$axios.get('/sanctum/csrf-cookie')
         const response = await this.$axios
-          .post('/register', this.form)
+          .post('/api/register', this.form)
           .catch((err) => err.response || err)
         if (response.status === 400) {
           console.log(response)

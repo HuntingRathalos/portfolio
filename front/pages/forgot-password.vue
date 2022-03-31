@@ -52,7 +52,7 @@ export default {
       if (this.$refs.forgot_password_form.validate()) {
         await this.$axios.get('sanctum/csrf-cookie')
         const response = await this.$axios
-          .post('forgot-password', this.form)
+          .post('/api/forgot-password', this.form)
           .then(console.log())
           .catch((err) => err.response || err)
 

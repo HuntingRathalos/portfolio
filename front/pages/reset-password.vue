@@ -69,7 +69,7 @@ export default {
       if (this.$refs.reset_password_form.validate()) {
         try {
           await this.$axios.get('sanctum/csrf-cookie')
-          await this.$axios.post('reset-password', this.form)
+          await this.$axios.post('/api/reset-password', this.form)
         } catch (e) {}
       }
     }
