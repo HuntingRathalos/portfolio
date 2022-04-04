@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use \Symfony\Component\HttpFoundation\Response;
 
 class Handler extends ExceptionHandler
 {
@@ -38,4 +39,45 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    /**
+     * エラーハンドリングを拡張する
+     *
+     * @param $request
+     * @param Throwable $exception
+     * @return void
+     */
+    public function render($request, Throwable $exception)
+    {
+        if($request->is('api/*')) {
+            return $this->apiErrorResponse($request, $exception);
+        }
+        // apiエラー以外はここでエラーハンドリング
+        return parent::render($request, $exception);
+    }
+    /**
+     * Httpエラーの場合、レスポンスマクロを呼んでjsonレスポンスのフォーマット作成
+     *
+     * @param $request
+     * @param Throwable $exception
+     * @return void
+     */
+    private function apiErrorResponse($request, Throwable $exception)
+    {
+        if($this->isHttpException($exception)) {
+            $statusCode = $exception->getStatusCode();
+
+            switch($statusCode) {
+                case 401:
+                    return response()->error(Response::HTTP_UNAUTHORIZED, '認証エラーが発生しました。再度ログインし直してください。');
+                case 403:
+                    return response()->error(Response::HTTP_FORBIDDEN, '許可されていません。');
+                case 404:
+                    return response()->error(Response::HTTP_NOT_FOUND, 'ページが見つかりません。');
+                case 500:
+                    return response()->error(Response::HTTP_INTERNAL_SERVER_ERROR, 'システムエラーが発生しました。');
+            }
+        }
+    }
+
 }

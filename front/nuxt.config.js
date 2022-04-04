@@ -27,7 +27,7 @@ export default {
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: ['~/plugins/axios'],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -48,8 +48,13 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    '@nuxtjs/auth-next'
+    '@nuxtjs/auth-next',
+    '@nuxtjs/toast'
   ],
+  toast: {
+    position: 'top-center',
+    duration: 4000
+  },
   auth: {
     redirect: {
       login: '/login',
@@ -59,6 +64,11 @@ export default {
     },
     strategies: {
       laravelSanctum: {
+        endpoints: {
+          login: { url: '/api/login', method: 'post', propertyName: false },
+          logout: { url: '/api/logout', method: 'post' },
+          user: { url: '/api/user', method: 'get', propertyName: false }
+        },
         provider: 'laravel/sanctum',
         url: 'http://localhost:80'
       }

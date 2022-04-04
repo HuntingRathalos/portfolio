@@ -14,6 +14,11 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {
+        // 認証されていないときに403エラーを起こす
+        if($request->is('api/*')) {
+            abort(403);
+        }
+
         if (! $request->expectsJson()) {
             return route('login');
         }
