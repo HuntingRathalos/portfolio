@@ -6,18 +6,15 @@
           <v-card-title class="justify-center">
             {{ status }}
           </v-card-title>
-          <v-card-text class="text-center">
+          <v-card-text v-if="error.statusCode === 404" class="text-center">
+            ページが見つかりません。
+          </v-card-text>
+          <v-card-text v-else class="text-center">
             {{ message }}
           </v-card-text>
           <v-card-actions class="justify-center">
-            <v-btn
-              icon
-              x-large
-              @click="redirect"
-            >
-              <v-icon>
-                mdi-home
-              </v-icon>
+            <v-btn icon x-large @click="redirect">
+              <v-icon> mdi-home </v-icon>
             </v-btn>
           </v-card-actions>
         </v-col>
@@ -35,17 +32,18 @@ export default {
     }
   },
   computed: {
-    status () {
+    status() {
       return this.error.statusCode
     },
-    message () {
+    message() {
       return this.error.message
     }
   },
   methods: {
-    redirect () {
+    redirect() {
       return this.$route.name === 'index'
-        ? this.$router.go() : this.$router.push('/')
+        ? this.$router.go()
+        : this.$router.push('/')
     }
   }
 }
