@@ -21,11 +21,11 @@
   </v-card>
 </template>
 <script>
-import BaseButton from '../atoms/buttons/BaseButton.vue'
-import EmailInput from '../atoms/inputs/EmailInput.vue'
-import NameInput from '../atoms/inputs/NameInput.vue'
-import PasswordConfirmationInput from '../atoms/inputs/PasswordConfirmationInput.vue'
-import PasswordInput from '../atoms/inputs/PasswordInput.vue'
+import BaseButton from '../../atoms/buttons/BaseButton.vue'
+import EmailInput from '../../atoms/inputs/EmailInput.vue'
+import NameInput from '../../atoms/inputs/NameInput.vue'
+import PasswordConfirmationInput from '../../atoms/inputs/PasswordConfirmationInput.vue'
+import PasswordInput from '../../atoms/inputs/PasswordInput.vue'
 export default {
   components: {
     EmailInput,
