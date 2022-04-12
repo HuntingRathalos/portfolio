@@ -37,7 +37,8 @@ export default {
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/vuetify
-    '@nuxtjs/vuetify'
+    '@nuxtjs/vuetify',
+    '@nuxtjs/moment'
   ],
   watchers: {
     webpack: {
@@ -51,6 +52,9 @@ export default {
     '@nuxtjs/auth-next',
     '@nuxtjs/toast'
   ],
+  moment: {
+    locales: ['ja']
+  },
   toast: {
     position: 'top-center',
     duration: 4000

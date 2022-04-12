@@ -8,14 +8,15 @@
         <v-btn icon @click="$refs.calendar.next()">
           <v-icon>mdi-chevron-right</v-icon>
         </v-btn>
-        <v-toolbar-title v-if="$refs.calendar">
-          {{ $refs.calendar.title }}
+        <v-toolbar-title>
+          {{ calendarTitle }}
         </v-toolbar-title>
       </v-toolbar>
     </v-sheet>
     <v-sheet height="600" >
       <v-calendar
         ref="calendar"
+        v-model="value"
         class="red--text"
         color="primary"
         locale="ja-jp"
@@ -35,11 +36,18 @@
   </div>
 </template>
 <script>
+import moment from 'moment'
 export default {
   data: () => ({
     events: [],
-    dayOfWeek: ['日曜日','月曜日','火曜日','水曜日','木曜日','金曜日','土曜日']
+    dayOfWeek: ['日曜日','月曜日','火曜日','水曜日','木曜日','金曜日','土曜日'],
+    value: moment().format('YYYY-MM-DD')
   }),
+  computed: {
+    calendarTitle() {
+      return moment(this.value).format('YYYY年 M月')
+    }
+  },
   methods: {
     getEvents() {
       const events = [
