@@ -19,10 +19,18 @@
                   readonly
                 ></v-text-field>
               </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="1">
+                <v-icon>mdi-tag</v-icon>
+              </v-col>
+              <v-col cols="11">
+                <TagInput />
+              </v-col>
+            </v-row>
+            <v-row>
               <v-col cols="12">
                 <MemoInput />
-              </v-col>
-              <v-col cols="12">
               </v-col>
               <v-col cols = "12" class = "text-right">
                 <span
@@ -61,9 +69,10 @@
 </template>
 <script>
 import MemoInput from '../../atoms/inputs/MemoInput.vue'
+import TagInput from '../../atoms/inputs/TagInput.vue'
 import SaveModalSlider from '../../molecules/sliders/SaveModalSlider.vue'
 export default{
-  components: { MemoInput, SaveModalSlider },
+  components: { MemoInput, SaveModalSlider, TagInput },
   computed: {
       animationDuration () {
         return `${60 / this.$store.getters['save/multipleCoin']}s`
