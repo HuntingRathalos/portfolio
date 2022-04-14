@@ -1,5 +1,5 @@
 <template>
-   <div>
+  <div>
     <v-sheet height="64">
       <v-toolbar flat>
         <v-btn icon @click="$refs.calendar.prev()">
@@ -13,7 +13,7 @@
         </v-toolbar-title>
       </v-toolbar>
     </v-sheet>
-    <v-sheet height="600" >
+    <v-sheet height="600">
       <v-calendar
         ref="calendar"
         v-model="value"
@@ -29,7 +29,7 @@
         @click:event="showEvent"
       >
         <template #event="{ event }">
-          <div class="event-name text-subtitle-2">{{event.name}}</div>
+          <div class="event-name text-subtitle-2">{{ event.name }}</div>
         </template>
       </v-calendar>
     </v-sheet>
@@ -40,7 +40,15 @@ import moment from 'moment'
 export default {
   data: () => ({
     events: [],
-    dayOfWeek: ['日曜日','月曜日','火曜日','水曜日','木曜日','金曜日','土曜日'],
+    dayOfWeek: [
+      '日曜日',
+      '月曜日',
+      '火曜日',
+      '水曜日',
+      '木曜日',
+      '金曜日',
+      '土曜日'
+    ],
     value: moment().format('YYYY-MM-DD')
   }),
   computed: {
@@ -57,33 +65,33 @@ export default {
           end: new Date('2022-04-03T02:00:00'), // 終了時刻
           // color: 'blue',
           timed: false, // 終日ならfalse
-          outside: false,
-        },
-      ];
-      this.events = events;
+          outside: false
+        }
+      ]
+      this.events = events
     },
     getEventColor(event) {
-      return event.color;
+      return event.color
     },
     showEvent(event) {
       this.$store.dispatch('save/setOpenSaveModal', true)
       this.$store.dispatch('save/setClickDate', event.day.date)
     },
-    dayFormat(date){
-        return new Date(date.date).getDate()
+    dayFormat(date) {
+      return new Date(date.date).getDate()
     },
-    weekdayFormat(date){
-        return this.dayOfWeek[date.weekday]
+    weekdayFormat(date) {
+      return this.dayOfWeek[date.weekday]
     },
-    monthFormat(date){
-        return new Date(date.date).getMonth()+1+' /'
+    monthFormat(date) {
+      return new Date(date.date).getMonth() + 1 + ' /'
     }
-  },
-};
+  }
+}
 </script>
 <style scoped>
- .event-name {
-   text-align: center;
-   color: black;
- }
+.event-name {
+  text-align: center;
+  color: black;
+}
 </style>

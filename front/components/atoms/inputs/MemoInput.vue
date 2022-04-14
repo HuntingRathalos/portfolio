@@ -12,19 +12,19 @@ export default {
     return {
       rules: {
         maxCount30: (value) =>
-        value.length <= 30 || '文字数をオーバーしています。',
+          value.length <= 30 || '文字数をオーバーしています。'
       }
     }
   },
   computed: {
     setMemo: {
-        get() {
-          return this.$store.getters['save/memo']
-        },
-        set(newVal) {
-          this.$store.dispatch('save/setMemo', newVal)
-        }
+      get() {
+        return this.$store.getters['save/memo']
       },
+      set(newVal) {
+        this.$store.dispatch('save/setMemo', newVal)
+      }
+    }
   }
 }
 </script>

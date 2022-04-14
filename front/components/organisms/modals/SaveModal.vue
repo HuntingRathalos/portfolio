@@ -1,10 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-dialog
-      v-model="isOpenSaveModal"
-      persistent
-      max-width="600px"
-    >
+    <v-dialog v-model="isOpenSaveModal" persistent max-width="600px">
       <v-card>
         <v-card-title>
           <span class="text-h5">貯金記録作成</span>
@@ -29,14 +25,21 @@
               </v-col>
             </v-row>
             <v-row>
+              <v-col cols="1">
+                <v-icon>mdi-cat</v-icon>
+              </v-col>
+              <v-col cols="4">
+                <IconModal />
+              </v-col>
+            </v-row>
+            <v-row>
               <v-col cols="12">
                 <MemoInput />
               </v-col>
-              <v-col cols = "12" class = "text-right">
-                <span
-                  class="text-h2 font-weight-light"
-
-                >{{ $store.getters['save/multipleCoin'] }}</span>
+              <v-col cols="12" class="text-right">
+                <span class="text-h2 font-weight-light">{{
+                  $store.getters['save/multipleCoin']
+                }}</span>
                 <span class="subheading font-weight-light mr-1">円</span>
               </v-col>
 
@@ -71,20 +74,21 @@
 import MemoInput from '../../atoms/inputs/MemoInput.vue'
 import TagInput from '../../atoms/inputs/TagInput.vue'
 import SaveModalSlider from '../../molecules/sliders/SaveModalSlider.vue'
-export default{
-  components: { MemoInput, SaveModalSlider, TagInput },
+import IconModal from './IconModal.vue'
+export default {
+  components: { MemoInput, SaveModalSlider, TagInput, IconModal },
   computed: {
-      animationDuration () {
-        return `${60 / this.$store.getters['save/multipleCoin']}s`
-      },
-      isOpenSaveModal: {
-        get() {
-          return this.$store.getters['save/openSaveModal']
-        },
-        set(newVal) {
-          this.$store.dispatch('save/setOpenSaveModal', newVal)
-        }
-      },
+    animationDuration() {
+      return `${60 / this.$store.getters['save/multipleCoin']}s`
     },
+    isOpenSaveModal: {
+      get() {
+        return this.$store.getters['save/openSaveModal']
+      },
+      set(newVal) {
+        this.$store.dispatch('save/setOpenSaveModal', newVal)
+      }
+    }
+  }
 }
 </script>

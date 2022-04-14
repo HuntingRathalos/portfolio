@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SaveCalendar/>
+    <SaveCalendar />
     <SaveList />
     <SaveModal />
   </div>
@@ -12,8 +12,6 @@ import SaveCalendar from '../components/organisms/SaveCalendar.vue'
 export default {
   name: 'SavePage',
   components: { SaveModal, SaveCalendar, SaveList },
-  methods: {
-
-  }
+  methods: {}
 }
 </script>

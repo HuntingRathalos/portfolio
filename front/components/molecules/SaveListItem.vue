@@ -1,24 +1,16 @@
 <template>
-  <v-card
-    max-width="600"
-    class="mx-auto"
-    :class="marginClass"
-  >
-    <v-list-item
-    >
+  <v-card max-width="600" class="mx-auto" :class="marginClass">
+    <v-list-item>
       <v-list-item-avatar>
-        <v-icon
-          class="grey lighten-1"
-          dark
-        >
+        <v-icon class="grey lighten-1" dark>
           {{ saving.icon }}
         </v-icon>
       </v-list-item-avatar>
 
       <v-list-item-content>
-        <v-list-item-title >{{ saving.item }}</v-list-item-title>
+        <v-list-item-title>{{ saving.item }}</v-list-item-title>
 
-        <v-list-item-subtitle >{{ saving.date }}</v-list-item-subtitle>
+        <v-list-item-subtitle>{{ saving.date }}</v-list-item-subtitle>
       </v-list-item-content>
 
       <v-list-item-action>

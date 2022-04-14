@@ -1,26 +1,26 @@
-
 export const state = () => ({
   openSaveModal: false,
   savings: [],
   saving: {
     clickDate: '',
     coins: 0,
-    memo: ''
-  },
+    memo: '',
+    iconCode: ''
+  }
 })
 
 export const getters = {
   // 特定イベントを抜き出すもの,
-  openSaveModal: state => state.openSaveModal,
-  clickDate: state => state.saving.clickDate,
-  coins: state => state.saving.coins,
+  openSaveModal: (state) => state.openSaveModal,
+  clickDate: (state) => state.saving.clickDate,
+  coins: (state) => state.saving.coins,
   multipleCoin(state) {
-    if(state.saving.coins > 0) {
+    if (state.saving.coins > 0) {
       return `+${state.saving.coins * 500}`
     }
-      return state.saving.coins * 500
+    return state.saving.coins * 500
   },
-  memo: state => state.saving.memo
+  memo: (state) => state.saving.memo
 }
 
 export const mutations = {
@@ -35,6 +35,9 @@ export const mutations = {
   },
   setMemo(state, memo) {
     state.saving.memo = memo
+  },
+  setIconCode(state, iconCode) {
+    state.saving.iconCode = iconCode
   },
   incrementCoin(state) {
     state.saving.coins++
@@ -57,10 +60,13 @@ export const actions = {
   setMemo({ commit }, memo) {
     commit('setMemo', memo)
   },
+  setIconCode({ commit }, iconCode) {
+    commit('setMemo', iconCode)
+  },
   incrementCoin({ commit }) {
     commit('incrementCoin')
   },
   decrementCoin({ commit }) {
     commit('decrementCoin')
-  },
+  }
 }
