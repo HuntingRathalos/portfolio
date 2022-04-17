@@ -3,9 +3,11 @@
     <VueTagsInput
       v-model="inputTag"
       :tags="tags"
+      :add-only-from-autocomplete="true"
+      :autocomplete-always-open="openAuto"
       :max-tags="1"
       :autocomplete-items="filteredItems"
-      placeholder="タグを1つ追加できます。例) マンガ、コンビニ"
+      placeholder="タグを1つ選択できます。"
       @before-adding-tag="validTag"
       @tags-changed="(newTags) => (tags = newTags)"
     />
@@ -42,6 +44,12 @@ export default {
     }
   },
   computed: {
+    openAuto() {
+      if(this.tags.length !== 0) {
+        return false
+      }
+      return true
+    },
     filteredItems() {
       return this.autocompleteItems.filter((i) => {
         return (
@@ -67,3 +75,10 @@ export default {
   }
 }
 </script>
+
+<style >
+.ti-autocomplete ul {
+    overflow-y: scroll;
+    max-height: 112px;
+  }
+</style>
