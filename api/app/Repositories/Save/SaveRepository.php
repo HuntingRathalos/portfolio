@@ -45,9 +45,9 @@ class SaveRepository implements SaveRepositoryInterface
    *
    * @param int $saveId
    * @param array $saveDetails
-   * @return Save
+   * @return  bool
    */
-  public function updateSave(int $saveId, array $saveDetails): Save
+  public function updateSave(int $saveId, array $saveDetails): bool
   {
       return $this->model->find($saveId)->fill($saveDetails)->save();
   }

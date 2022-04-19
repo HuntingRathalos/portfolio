@@ -18,6 +18,7 @@ class Save extends Model
      */
     protected $fillable = [
         'user_id',
+        'tag_id',
         'icon_id',
         'coin',
         'memo',

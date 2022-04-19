@@ -19,7 +19,9 @@ class RegisterRequestTest extends TestCase
         parent::setUp();
 
         // テストユーザー作成
-        $this->user = User::factory()->create();
+        $this->user = User::factory()->create([
+            'email' => 'aaa@example.com'
+        ]);
     }
     /**
      * @test
@@ -130,7 +132,7 @@ class RegisterRequestTest extends TestCase
                 'expected' => false,
                 'data' => [
                     'name' => 'testUser',
-                    'email' => $this->user->email,
+                    'email' => 'aaa@example.com',
                     'password' => 'password',
                     'password_confirmation' => 'password'
                 ]

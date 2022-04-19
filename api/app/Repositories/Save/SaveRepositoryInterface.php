@@ -9,6 +9,6 @@ interface SaveRepositoryInterface
 {
     public function getSavesOneMonth(string $dateFrom, string $dateTo): Collection;
     public function createSave(array $saveDetails): Save;
-    public function updateSave(int $saveId, array $saveDetails): Save;
+    public function updateSave(int $saveId, array $saveDetails): bool;
     public function deleteSave(int $saveId): void;
 }
