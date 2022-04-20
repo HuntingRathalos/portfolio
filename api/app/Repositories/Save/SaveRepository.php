@@ -17,6 +17,11 @@ class SaveRepository implements SaveRepositoryInterface
       $this->model = $save;
   }
 
+  public function getSaveById($saveId): Save
+  {
+      return $this->model->findOrFail($saveId);
+  }
+
   /**
    * カレンダーを表示している1ヶ月分の貯金記録を取得
    *

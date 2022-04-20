@@ -24,8 +24,8 @@ class SaveFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'icon_id' => $this->faker->numberBetween(1, 25),
             'tag_id' => $this->faker->numberBetween(1, 20),
+            'icon_id' => $this->faker->numberBetween(1, 25),
             'coin' => $this->faker->numberBetween(0, 50),
             'memo' => $this->faker->text(30),
             'click_date' => $this->faker->dateTimeBetween($startDate = 'now', $endDate = '+8 week'),
