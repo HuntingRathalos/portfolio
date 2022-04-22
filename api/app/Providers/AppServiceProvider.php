@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Services\Save\SaveServiceInterface;
 use App\Services\Save\SaveService;
+use App\Repositories\Save\SaveRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,7 +21,13 @@ class AppServiceProvider extends ServiceProvider
             $this->app->register(TelescopeServiceProvider::class);
         }
 
-        $this->app->bind(SaveServiceInterface::class, SaveService::class);
+        $this->app->bind(
+            SaveServiceInterface::class,
+            function ($app) {
+                return new SaveService(
+                    $app->make(SaveRepositoryInterface::class)
+                );
+            });
     }
 
     /**
