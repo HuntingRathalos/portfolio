@@ -27,7 +27,10 @@ export default {
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ['~/plugins/axios', { src: '~/plugins/vue-tags-input', ssr: false }],
+  plugins: [
+    '~/plugins/axios/index',
+    { src: '~/plugins/vue-tags-input', ssr: false }
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,

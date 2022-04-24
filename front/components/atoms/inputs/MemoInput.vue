@@ -8,6 +8,12 @@
 </template>
 <script>
 export default {
+  props: {
+    memo: {
+      type: String,
+      default: ''
+    }
+  },
   data() {
     return {
       rules: {
@@ -19,10 +25,10 @@ export default {
   computed: {
     setMemo: {
       get() {
-        return this.$store.getters['save/memo']
+        return this.memo
       },
       set(newVal) {
-        this.$store.dispatch('save/setMemo', newVal)
+        return this.$emit('update:memo', newVal)
       }
     }
   }

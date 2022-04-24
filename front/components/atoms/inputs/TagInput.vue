@@ -1,84 +1,55 @@
 <template>
-  <div class="">
-    <VueTagsInput
-      v-model="inputTag"
-      :tags="tags"
-      :add-only-from-autocomplete="true"
-      :autocomplete-always-open="openAuto"
-      :max-tags="1"
-      :autocomplete-items="filteredItems"
-      placeholder="タグを1つ選択できます。"
-      @before-adding-tag="validTag"
-      @tags-changed="(newTags) => (tags = newTags)"
-    />
-    <input type="hidden" name="tags" :value="tagsValue" />
-    <div v-if="errorText">{{ errorText }}</div>
-  </div>
+  <v-select
+    v-model="setTagId"
+    :items="items"
+    item-text="tagName"
+    item-value="id"
+    label="タグ"
+    prepend-icon="mdi-tag"
+  ></v-select>
 </template>
 <script>
-import VueTagsInput from '@johmun/vue-tags-input'
 export default {
-  components: { VueTagsInput },
-  data() {
-    return {
-      inputTag: '',
-      tags: [],
-      errorText: '',
-      autocompleteItems: [
-        {
-          text: 'Spain'
-        },
-        {
-          text: 'France'
-        },
-        {
-          text: 'USA'
-        },
-        {
-          text: 'Germany'
-        },
-        {
-          text: 'China'
-        }
-      ]
+  props: {
+    tagId: {
+      type: Number,
+      default: 20
     }
   },
+  data: () => ({
+    // items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
+    items: [
+      { tagName: '外食', id: 1 },
+      { tagName: '飲み会', id: 2 },
+      { tagName: '食品', id: 3 },
+      { tagName: 'お酒', id: 4 },
+      { tagName: 'タバコ', id: 5 },
+      { tagName: '日用品', id: 6 },
+      { tagName: '趣味', id: 7 },
+      { tagName: '家族', id: 8 },
+      { tagName: '旅行', id: 9 },
+      { tagName: '携帯', id: 10 },
+      { tagName: '交通', id: 11 },
+      { tagName: '交際', id: 12 },
+      { tagName: 'スポーツ', id: 13 },
+      { tagName: '本', id: 14 },
+      { tagName: '音楽', id: 15 },
+      { tagName: '水道光熱', id: 16 },
+      { tagName: 'ネットショッピング', id: 17 },
+      { tagName: '美容', id: 18 },
+      { tagName: '洋服', id: 19 },
+      { tagName: 'その他', id: 20 }
+    ]
+  }),
   computed: {
-    openAuto() {
-      if(this.tags.length !== 0) {
-        return false
-      }
-      return true
-    },
-    filteredItems() {
-      return this.autocompleteItems.filter((i) => {
-        return (
-          i.text.toLowerCase().includes(this.inputTag.toLowerCase()) !== false
-        )
-      })
-    },
-    tagsValue() {
-      return this.tags.map(function (tag) {
-        return tag.text
-      })
-    }
-  },
-  methods: {
-    validTag(obj) {
-      if (obj.tag.text.length > 30) {
-        this.errorText = 'タグは30文字以内で入力してください'
-      } else {
-        this.errorText = ''
-        obj.addTag()
+    setTagId: {
+      get() {
+        return this.tagId
+      },
+      set(newVal) {
+        return this.$emit('update:tagId', newVal)
       }
     }
   }
 }
 </script>
-
-<style >
-.ti-autocomplete ul {
-    overflow-y: scroll;
-    max-height: 112px;
-  }
-</style>

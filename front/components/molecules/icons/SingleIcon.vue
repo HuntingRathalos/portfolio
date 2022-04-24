@@ -1,7 +1,7 @@
 <template>
   <v-card :class="marginClass">
-    <v-icon @click="$emit('closeIconModal', false)">
-      {{ iconCode }}
+    <v-icon @click="$emit('closeIconModal', false, iconCode.id)">
+      {{ iconCode.code }}
     </v-icon>
   </v-card>
 </template>
@@ -9,8 +9,8 @@
 export default {
   props: {
     iconCode: {
-      type: String,
-      required: true
+      type: Object,
+      default: () => ({})
     },
     marginClass: {
       type: String,
