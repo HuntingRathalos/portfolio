@@ -6,9 +6,7 @@
         <VuetifyLogo />
       </v-card>
       <v-card>
-        <v-card-title class="headline">
-          <!-- {{ post }} -->
-        </v-card-title>
+        <v-card-title class="headline"> </v-card-title>
         <v-card-text>
           <p>
             Vuetify is a progressive Material Design component framework for

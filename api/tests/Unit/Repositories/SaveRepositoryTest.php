@@ -4,6 +4,7 @@ namespace Tests\Unit\Repositories;
 
 use Tests\TestCase;
 use App\Models\Save;
+use App\Models\User;
 use App\Repositories\Save\SaveRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Carbon\Carbon;
@@ -48,9 +49,12 @@ class SaveRepositoryTest extends TestCase
 
   public function testCreateSave()
   {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
     // 新しい貯金記録作成用データ作成
     $saveDetails = [
-      'user_id' => 1,
+      'user_id' => $user->id,
       'tag_id' => 2,
       'icon_id' => 3,
       'coin' => 1,

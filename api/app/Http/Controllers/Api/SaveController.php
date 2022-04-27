@@ -22,12 +22,11 @@ class SaveController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param string $clickdDate
      * @return \Illuminate\Http\Response
      */
-    public function getSavesOneMonth(string $clickedDate)
+    public function index()
     {
-        return $this->saveService->getSavesOneMonth($clickedDate);
+        return $this->saveService->getAllSaves();
     }
 
     /**
@@ -39,17 +38,6 @@ class SaveController extends Controller
     public function store(Request $request)
     {
         return $this->saveService->createSave($request->all());
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $saveId
-     * @return \Illuminate\Http\Response
-     */
-    public function show(int $saveIid)
-    {
-
     }
 
     /**

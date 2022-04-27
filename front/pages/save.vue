@@ -6,6 +6,7 @@
           <v-card>
             <v-card-title>
               <span class="text-h5">貯金記録作成</span>
+              <v-icon @click="deleteSave">mdi-delete</v-icon>
             </v-card-title>
             <v-card-text>
               <v-container>
@@ -56,11 +57,7 @@
               <v-btn color="blue darken-1" text @click="closeModal">
                 Close
               </v-btn>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="$store.dispatch('save/setOpenSaveModal', false)"
-              >
+              <v-btn color="blue darken-1" text @click="createOrUpdateSave">
                 Save
               </v-btn>
             </v-card-actions>
@@ -69,10 +66,10 @@
       </v-row>
       <v-sheet height="64">
         <v-toolbar flat>
-          <v-btn icon @click="$refs.calendar.prev()">
+          <v-btn icon @click="prevCalender">
             <v-icon>mdi-chevron-left</v-icon>
           </v-btn>
-          <v-btn icon @click="$refs.calendar.next()">
+          <v-btn icon @click="nextCalender">
             <v-icon>mdi-chevron-right</v-icon>
           </v-btn>
           <v-toolbar-title>
@@ -87,13 +84,14 @@
           class="red--text"
           color="primary"
           locale="ja-jp"
+          event-more-text="その他{0}件"
           :day-format="dayFormat"
           :weekday-format="weekdayFormat"
           :month-format="monthFormat"
           :events="events"
           :event-color="getEventColor"
           @change="getEvents"
-          @click:event="showEvent"
+          @click:date="showEvent"
         >
           <template #event="{ event }">
             <div class="event-name text-subtitle-2">{{ event.name }}</div>
@@ -101,7 +99,7 @@
         </v-calendar>
       </v-sheet>
     </div>
-    <SaveList :saves="saves" @save-id-send="setSave" />
+    <SaveList :saves="savesOneMonth" @save-id-send="setSave" />
   </div>
 </template>
 <script>
@@ -116,7 +114,6 @@ export default {
   components: { SaveList, IconModal, MemoInput, SaveModalSlider, TagInput },
   data: () => ({
     save: {
-      user_id: '',
       tag_id: 1,
       icon_id: 1,
       coin: 0,
@@ -126,35 +123,8 @@ export default {
     updateFlag: false,
     saveId: null,
     events: [],
-    saves: [
-      {
-        id: 1,
-        user_id: 1,
-        tag_id: 2,
-        icon_id: 1,
-        coin: 3,
-        memo: 'aaa',
-        click_date: '2022-4-24'
-      },
-      {
-        id: 2,
-        user_id: 2,
-        tag_id: 1,
-        icon_id: 2,
-        coin: -2,
-        memo: 'sss',
-        click_date: '2022-4-25'
-      },
-      {
-        id: 3,
-        user_id: 2,
-        tag_id: 4,
-        icon_id: 4,
-        coin: -5,
-        memo: 'fffff',
-        click_date: '2022-4-26'
-      }
-    ],
+    savesOneMonth: [],
+    saves: [],
     dayOfWeek: [
       '日曜日',
       '月曜日',
@@ -167,17 +137,8 @@ export default {
     value: moment().format('YYYY-MM-DD')
   }),
   computed: {
-    // setSaveId() {
-    //   if(this.saveId !== null) {
-    //     return true
-    //   }
-    //   return false
-    // },
     calendarTitle() {
       return moment(this.value).format('YYYY年 M月')
-    },
-    animationDuration() {
-      return `${60 / this.coin}s`
     },
     isOpenSaveModal: {
       get() {
@@ -194,10 +155,91 @@ export default {
       return this.save.coin * 500
     }
   },
+  created() {
+    this.$saveApi.get().then((res) => {
+      sessionStorage.setItem('saves', JSON.stringify(res.data))
+      this.saves = JSON.parse(sessionStorage.getItem('saves'))
+      this.getSavesOneMonth()
+      this.getEvents()
+    })
+  },
   methods: {
+    prevCalender() {
+      this.$refs.calendar.prev()
+      this.getSavesOneMonth()
+    },
+    nextCalender() {
+      this.$refs.calendar.next()
+      this.getSavesOneMonth()
+    },
+    createOrUpdateSave() {
+      if (this.updateFlag === true) {
+        this.$saveApi.update(this.saveId, this.save).then((res) => {
+          const beforeSave = this.saves.find((save) => save.id === res.data.id)
+          Object.assign(beforeSave, res.data)
+          sessionStorage.setItem('saves', JSON.stringify(this.saves))
+
+          const beforEvent = this.events.find(
+            (event) => event.id === res.data.id
+          )
+          const saveColor = res.data.coin > 0 ? 'blue' : 'red'
+          const event = this.returnEvent(
+            res.data.id,
+            res.data.coin,
+            saveColor,
+            res.data.click_date
+          )
+          Object.assign(beforEvent, event)
+
+          this.getSavesOneMonth()
+        })
+        this.$store.dispatch('save/setOpenSaveModal', false)
+        return
+      }
+      this.$saveApi.create(this.save).then((res) => {
+        this.saves.push(res.data)
+        sessionStorage.setItem('saves', JSON.stringify(this.saves))
+        this.savesOneMonth.push(res.data)
+        this.savesOneMonth.sort((a, b) =>
+          a.click_date < b.click_date ? -1 : 1
+        )
+
+        const saveColor = res.data.coin > 0 ? 'blue' : 'red'
+        const event = this.returnEvent(
+          res.data.id,
+          res.data.coin,
+          saveColor,
+          res.data.click_date
+        )
+        this.events.push(event)
+      })
+      this.$store.dispatch('save/setOpenSaveModal', false)
+    },
+    deleteSave() {
+      this.$saveApi.delete(this.saveId)
+      this.saves = this.saves.filter((save) => save.id !== this.saveId)
+      sessionStorage.setItem('saves', JSON.stringify(this.saves))
+
+      this.events = this.events.filter((event) => event.id !== this.saveId)
+
+      this.getSavesOneMonth()
+      this.$store.dispatch('save/setOpenSaveModal', false)
+    },
+    getSavesOneMonth() {
+      this.savesOneMonth = JSON.parse(sessionStorage.getItem('saves')).filter(
+        (save) => {
+          const clickDate = moment(save.click_date)
+          const startDate = moment(this.value)
+            .startOf('month')
+            .format('YYYY-MM-DD')
+          const endDate = moment(this.value).endOf('month').format('YYYY-MM-DD')
+          return clickDate.isBetween(startDate, endDate)
+        }
+      )
+      this.savesOneMonth.sort((a, b) => (a.click_date < b.click_date ? -1 : 1))
+    },
     closeModal() {
       this.$store.dispatch('save/setOpenSaveModal', false)
-      this.save.user_id = ''
       this.save.tag_id = 1
       this.save.icon_id = 1
       this.save.coin = 0
@@ -206,11 +248,11 @@ export default {
     },
     setSave(saveId) {
       this.saveId = saveId
+      this.updateFlag = true
       for (let i = 0; i < this.saves.length; i++) {
         if (this.saveId === this.saves[i].id) {
           this.save = Object.assign(this.save, this.saves[i])
-          this.updateFlag = true
-          // routeの出しわけ
+
           this.$store.dispatch('save/setOpenSaveModal', true)
           return
         }
@@ -219,32 +261,36 @@ export default {
     getEvents() {
       const events = []
       for (let i = 0; i < this.saves.length; i++) {
-        const startDate = this.saves[i].click_date
+        const save = this.saves[i]
+        const saveClickDate = save.click_date
+        const saveId = save.id
+        const saveColor = save.coin > 0 ? 'blue' : 'red'
         events.push({
-          name: `${this.saves[i].coin * 500}¥`,
-          // momentで時間もつけるかも
-          start: startDate
+          id: saveId,
+          name: `${save.coin * 500}¥`,
+          color: saveColor,
+          start: saveClickDate
         })
+        events.sort((a, b) => (a.click_date < b.click_date ? 1 : -1))
         this.events = events
       }
-      // const events = [
-      //   {
-      //     name: '+500¥',
-      //     start: new Date('2022-04-03T01:00:00'), // 開始時刻
-      //     end: new Date('2022-04-03T02:00:00'), // 終了時刻
-      //     // color: 'blue',
-      //     timed: false, // 終日ならfalse
-      //     outside: false
-      //   }
-      // ]
-      // this.events = events
+    },
+    returnEvent(saveId, saveCoin, saveColor, saveClickDate) {
+      const event = {
+        id: saveId,
+        name: `${saveCoin * 500}¥`,
+        color: saveColor,
+        start: saveClickDate
+      }
+      return event
     },
     getEventColor(event) {
       return event.color
     },
     showEvent(event) {
+      this.updateFlag = false
+      this.save.click_date = event.date
       this.$store.dispatch('save/setOpenSaveModal', true)
-      this.save.click_date = event.day.date
     },
     dayFormat(date) {
       return new Date(date.date).getDate()
@@ -261,6 +307,5 @@ export default {
 <style scoped>
 .event-name {
   text-align: center;
-  color: black;
 }
 </style>

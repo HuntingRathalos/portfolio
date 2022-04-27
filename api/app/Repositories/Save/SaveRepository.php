@@ -3,7 +3,9 @@
 namespace App\Repositories\Save;
 
 use App\Models\Save;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class SaveRepository implements SaveRepositoryInterface
 {
@@ -20,6 +22,11 @@ class SaveRepository implements SaveRepositoryInterface
   public function getSaveById($saveId): Save
   {
       return $this->model->findOrFail($saveId);
+  }
+
+  public function getAllSaves(): Collection
+  {
+       return User::find(Auth::id())->saves;
   }
 
   /**
@@ -42,7 +49,15 @@ class SaveRepository implements SaveRepositoryInterface
    */
   public function createSave(array $saveDetails): Save
   {
-      return $this->model->create($saveDetails);
+    //   return $this->model->create($saveDetails);
+    return $this->model->create([
+        'user_id' => Auth::id(),
+        'tag_id' => $saveDetails['tag_id'],
+        'icon_id' => $saveDetails['icon_id'],
+        'memo' => $saveDetails['memo'],
+        'coin' => $saveDetails['coin'],
+        'click_date' => $saveDetails['click_date'],
+        ]);
   }
 
   /**

@@ -9,7 +9,7 @@
         <EmailInput :email.sync="form.email" />
         <PasswordInput :password.sync="form.password" />
         <PasswordConfirmationInput
-          :password_confirmation="form.password_confirmation"
+          :password-confirmation.sync="form.password_confirmation"
         />
         <v-card-actions>
           <v-row justify="end">

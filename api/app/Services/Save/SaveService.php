@@ -20,6 +20,11 @@ class SaveService implements SaveServiceInterface
         $this->saveRepository = $saveRepository;
     }
 
+    public function getAllSaves(): JsonResponse
+    {
+        $allSaves = $this->saveRepository->getAllSaves();
+        return response()->json($allSaves, Response::HTTP_OK);
+    }
     /**
      * カレンダーを表示している1ヶ月分の貯金記録を取得し、responseをjsonに整形
      *
