@@ -1,3 +1,6 @@
+// eslint-disable-next-line import/no-mutable-exports
+// export let axios
+
 export default function ({ $axios, $toast, error: nuxtError }) {
   $axios.onError((error) => {
     if (error.response.status === 400) {
@@ -10,4 +13,6 @@ export default function ({ $axios, $toast, error: nuxtError }) {
       return Promise.resolve(false)
     }
   })
+
+  // axios = $axios
 }

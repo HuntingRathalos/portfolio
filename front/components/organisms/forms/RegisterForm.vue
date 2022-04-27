@@ -9,7 +9,7 @@
         <EmailInput :email.sync="form.email" />
         <PasswordInput :password.sync="form.password" />
         <PasswordConfirmationInput
-          :password_confirmation="form.password_confirmation"
+          :password-confirmation.sync="form.password_confirmation"
         />
         <v-card-actions>
           <v-row justify="end">
@@ -21,11 +21,11 @@
   </v-card>
 </template>
 <script>
-import BaseButton from '../atoms/buttons/BaseButton.vue'
-import EmailInput from '../atoms/inputs/EmailInput.vue'
-import NameInput from '../atoms/inputs/NameInput.vue'
-import PasswordConfirmationInput from '../atoms/inputs/PasswordConfirmationInput.vue'
-import PasswordInput from '../atoms/inputs/PasswordInput.vue'
+import BaseButton from '../../atoms/buttons/BaseButton.vue'
+import EmailInput from '../../atoms/inputs/EmailInput.vue'
+import NameInput from '../../atoms/inputs/NameInput.vue'
+import PasswordConfirmationInput from '../../atoms/inputs/PasswordConfirmationInput.vue'
+import PasswordInput from '../../atoms/inputs/PasswordInput.vue'
 export default {
   components: {
     EmailInput,

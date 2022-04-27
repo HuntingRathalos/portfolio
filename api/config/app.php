@@ -177,6 +177,7 @@ return [
         App\Providers\FortifyServiceProvider::class,
         // App\Providers\TelescopeServiceProvider::class,
         App\Providers\ApiResponseServiceProvider::class,
+        App\Providers\RepositoryServiceProvider::class,
     ],
 
     /*

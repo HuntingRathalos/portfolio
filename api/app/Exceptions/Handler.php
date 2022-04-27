@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
-use \Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\Response;
 
 class Handler extends ExceptionHandler
 {

@@ -27,7 +27,11 @@ export default {
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ['~/plugins/axios'],
+  plugins: [
+    '~/plugins/axios/index',
+    '~/plugins/axios/modules/save',
+    { src: '~/plugins/vue-tags-input', ssr: false }
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -37,7 +41,8 @@ export default {
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/vuetify
-    '@nuxtjs/vuetify'
+    '@nuxtjs/vuetify',
+    '@nuxtjs/moment'
   ],
   watchers: {
     webpack: {
@@ -51,6 +56,9 @@ export default {
     '@nuxtjs/auth-next',
     '@nuxtjs/toast'
   ],
+  moment: {
+    locales: ['ja']
+  },
   toast: {
     position: 'top-center',
     duration: 4000
@@ -89,7 +97,7 @@ export default {
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
-      dark: true,
+      dark: false,
       themes: {
         dark: {
           primary: colors.blue.darken2,
