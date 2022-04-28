@@ -15,12 +15,18 @@
         <SimpleCard>貯金額</SimpleCard>
       </v-col>
     </v-row>
+    <v-row>
+      <v-col cols="12">
+        <save-bar-chart />
+      </v-col>
+    </v-row>
   </div>
 </template>
 <script>
 import SimpleCard from '../components/molecules/cards/SimpleCard.vue'
+import SaveBarChart from '../components/organisms/charts/SaveBarChart.vue'
 export default {
   name: 'HomePage',
-  components: { SimpleCard }
+  components: { SimpleCard, SaveBarChart }
 }
 </script>

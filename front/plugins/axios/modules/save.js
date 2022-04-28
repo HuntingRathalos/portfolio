@@ -8,7 +8,11 @@ class SaveApi {
     this.axios = axios
   }
 
-  async getOneMonth(date) {
+  // async getOneMonth(date) {
+  //   return await this.axios.get(`api/saves/${date}`)
+  // }
+
+  async getOneWeek(date) {
     return await this.axios.get(`api/saves/${date}`)
   }
 
