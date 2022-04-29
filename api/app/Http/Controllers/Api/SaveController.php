@@ -29,6 +29,10 @@ class SaveController extends Controller
         return $this->saveService->getAllSaves();
     }
 
+    public function getSavesOneWeek()
+    {
+        return $this->saveService->getSavesSpecificPeriod();
+    }
     /**
      * Store a newly created resource in storage.
      *

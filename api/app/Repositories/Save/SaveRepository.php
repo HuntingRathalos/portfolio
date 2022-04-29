@@ -19,26 +19,38 @@ class SaveRepository implements SaveRepositoryInterface
       $this->model = $save;
   }
 
+  /**
+   * 貯金記録を1件取得
+   *
+   * @param int $saveId
+   * @return Save
+   */
   public function getSaveById($saveId): Save
   {
       return $this->model->findOrFail($saveId);
   }
 
+  /**
+   * 貯金記録を全件取得
+   *
+   * @return Collection
+   */
   public function getAllSaves(): Collection
   {
        return User::find(Auth::id())->saves;
   }
 
   /**
-   * カレンダーを表示している1ヶ月分の貯金記録を取得
+   * 1週間分の貯金記録を取得
    *
    * @param string $dateFrom
    * @param string $dateTo
    * @return Collection
    */
-  public function getSavesOneMonth(string $dateFrom, string $dateTo): Collection
+  public function getSavesSpecificPeriod(string $dateFrom, string $dateTo): Collection
   {
-      return $this->model->whereBetween('click_date', [$dateFrom, $dateTo])->get();
+      return $this->model->where('user_id', Auth::id())
+        ->whereBetween('click_date', [$dateFrom, $dateTo])->get();
   }
 
   /**
