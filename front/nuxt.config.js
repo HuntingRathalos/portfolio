@@ -67,7 +67,7 @@ export default {
     redirect: {
       login: '/login',
       logout: '/',
-      // callback: '/login',
+      callback: false,
       home: '/'
     },
     strategies: {

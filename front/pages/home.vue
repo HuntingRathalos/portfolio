@@ -20,13 +20,19 @@
         <save-bar-chart />
       </v-col>
     </v-row>
+    <v-row>
+      <v-col cols="10" class="mx-auto">
+        <save-ranking />
+      </v-col>
+    </v-row>
   </div>
 </template>
 <script>
 import SimpleCard from '../components/molecules/cards/SimpleCard.vue'
 import SaveBarChart from '../components/organisms/charts/SaveBarChart.vue'
+import SaveRanking from '../components/organisms/rankings/SaveRanking.vue'
 export default {
   name: 'HomePage',
-  components: { SimpleCard, SaveBarChart }
+  components: { SimpleCard, SaveBarChart, SaveRanking }
 }
 </script>
