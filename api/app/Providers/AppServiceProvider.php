@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use App\Services\Save\SaveServiceInterface;
 use App\Services\Save\SaveService;
 use App\Repositories\Save\SaveRepositoryInterface;
+use App\Repositories\Tag\TagRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,7 +26,8 @@ class AppServiceProvider extends ServiceProvider
             SaveServiceInterface::class,
             function ($app) {
                 return new SaveService(
-                    $app->make(SaveRepositoryInterface::class)
+                    $app->make(SaveRepositoryInterface::class),
+                    $app->make(TagRepositoryInterface::class)
                 );
             });
     }

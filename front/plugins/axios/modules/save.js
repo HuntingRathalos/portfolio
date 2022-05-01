@@ -20,6 +20,10 @@ class SaveApi {
     return await this.axios.get('api/saves')
   }
 
+  async getSaveRanking() {
+    return await this.axios.get('api/saves/ranking')
+  }
+
   async create(save) {
     return await this.axios.post('api/saves', save)
   }

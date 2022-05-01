@@ -3,7 +3,9 @@
 namespace App\Services\Save;
 
 use App\Models\Save;
+use App\Models\Tag;
 use App\Repositories\Save\SaveRepositoryInterface;
+use App\Repositories\Tag\TagRepositoryInterface;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\JsonResponse;
@@ -13,17 +15,20 @@ use Illuminate\Support\Facades\Log;
 class SaveService implements SaveServiceInterface
 {
     private $saveRepository;
+    private $tagRepository;
 
     /**
      * @param SaveRepositoryInterface $saveRepository
+     * @param TagRepositoryInterface $tagRepository
      */
-    public function __construct(SaveRepositoryInterface $saveRepository)
+    public function __construct(SaveRepositoryInterface $saveRepository, TagRepositoryInterface $tagRepository)
     {
         $this->saveRepository = $saveRepository;
+        $this->tagRepository = $tagRepository;
     }
 
     /**
-     * 貯金記録を全件取得
+     * 貯金記録を全件取得し、responseをjsonに整形
      *
      * @return JsonResponse
      */
@@ -86,6 +91,50 @@ class SaveService implements SaveServiceInterface
         }
 
         return response()->json($result, Response::HTTP_OK);
+    }
+
+    /**
+     * ランキング用のデータをtag_idでグループ化して取得し、responseをjsonに整形
+     *
+     * @return JsonResponse
+     */
+    public function getSaveRanking(): JsonResponse
+    {
+        $allSaves = $this->saveRepository->getAllSaves();
+        if(!$allSaves->isEmpty()) {
+            // 貯金した記録を取得するので、coin > 0になるように絞り込む
+            $filteredSaves = $allSaves->filter(function ($filteredSave) {
+                return $filteredSave->coin > 0;
+            });
+            $processedSaves = collect();
+            // 取得した記録をtag_idでグループ化
+            $savesGroupByTagId = $filteredSaves->groupBy('tag_id');
+            $savesGroupByTagId->each(function($saves, $key) use($processedSaves){
+                // tag_idでグループ化したコレクションにおける最初の要素のicon_code取得
+                $save = $saves->first();
+                $icon_code = $save->icon->code;
+                // タグの名前を取得
+                $tag = $this->tagRepository->getTagById($key);
+
+                $processedSaves->push([
+                    'tag_name' => $tag->name,
+                    'tag_count' => $saves->count(),
+                    'icon_code' => $icon_code
+                ]);
+            });
+            // tag_countが多い順に並び替える
+            $sortedSaves = $processedSaves->sortByDesc('tag_count');
+            $sorted = $sortedSaves->values()->all();
+
+            // 表示するランキングは3位までなのでそれ以上は切り捨て
+            if(count($sorted) >= 3) {
+                $sliced = $slicedSaves = array_slice($sorted, 0, 3);
+                return response()->json($sliced, Response::HTTP_OK);
+            }
+        }else {
+            return response()->json(null, Response::HTTP_OK);
+        }
+        return response()->json($sorted, Response::HTTP_OK);
     }
 
     /**

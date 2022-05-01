@@ -64,6 +64,10 @@ export default {
     duration: 4000
   },
   auth: {
+    localStorage: false,
+    cookie: {
+      maxAge: 1800
+    },
     redirect: {
       login: '/login',
       logout: '/',
