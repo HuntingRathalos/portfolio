@@ -21,7 +21,7 @@ class TagRepository implements TagRepositoryInterface
   /**
    * idからタグコードを1件取得
    *
-   * @param int $tageId
+   * @param int $tagId
    * @return Tag
    */
   public function getTagById(int $tagId): Tag

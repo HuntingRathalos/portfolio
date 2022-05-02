@@ -1,0 +1,13 @@
+<?php
+
+namespace App\Repositories\Target;
+
+use App\Models\Target;
+
+interface TargetRepositoryInterface
+{
+    public function getTargetById(int $targetId): Target;
+    public function createTarget(array $targetDetails): Target;
+    public function updateTarget(int $targetId, array $targetDetails): bool;
+    public function deleteTarget(int $targetId): void;
+}
