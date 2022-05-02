@@ -4,6 +4,7 @@ namespace App\Repositories\Target;
 
 use App\Models\Target;
 use App\Repositories\Target\TargetRepositoryInterface;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Auth;
 
 class TargetRepository implements TargetRepositoryInterface
@@ -28,6 +29,16 @@ class TargetRepository implements TargetRepositoryInterface
   public function getTargetById(int $targetId): Target
   {
     return $this->model->findOrFail($targetId);
+  }
+
+   /**
+   *ユーザーからのリレーションで目標を取得
+   *
+   * @return HasOne
+   */
+  public function getTarget(): HasOne
+  {
+       return User::find(Auth::id())->target;
   }
 
   /**

@@ -19,6 +19,17 @@ class TargetService implements TargetServiceInterface
   }
 
   /**
+   * 目標を取得し、responseをjsonに整形
+   *
+   * @return JsonResponse
+   */
+  public function getTarget(): JsonResponse
+  {
+    $target = $this->targetRepository->getTarget();
+    return response()->json($target, Response::HTTP_OK);
+  }
+
+  /**
    * 新たな目標を作成し、responseをjsonに整形
    *
    * @param array $targetDetails

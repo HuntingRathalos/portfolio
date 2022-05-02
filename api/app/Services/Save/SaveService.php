@@ -37,6 +37,24 @@ class SaveService implements SaveServiceInterface
         $allSaves = $this->saveRepository->getAllSaves();
         return response()->json($allSaves, Response::HTTP_OK);
     }
+
+    /**
+     * 貯金記録から合計額を算出し、responseをjsonに整形
+     *
+     * @return JsonResponse
+     */
+    public function getAllSavesAmount(): JsonResponse
+    {
+
+        $allSaves = $this->saveRepository->getAllSaves();
+        if(!$allSaves->isEmpty()) {
+            $coins = $allSaves->avg('coin');
+            $amount = $coins * 500;
+        } else {
+            return response()->json(null, Response::HTTP_OK);
+        }
+        return response()->json($amount, Response::HTTP_OK);
+    }
     /**
      * 今週分の貯金記録を取得し、responseをjsonに整形
      *
@@ -171,6 +189,24 @@ class SaveService implements SaveServiceInterface
     public function deleteSave(int $saveId): JsonResponse
     {
         $this->saveRepository->deleteSave($saveId);
+        return response()->json(null, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * ユーザーに紐づく貯金記録を全件削除
+     *
+     * @return JsonResponse
+     */
+    public function deleteAllSaves(): JsonResponse
+    {
+        $allSaves = $this->saveRepository->getAllSaves();
+        if(!$allSaves->isEmpty()) {
+            $allSaves->each(function ($save) use($saveRepository) {
+                $this->saveRepository->deleteSave($save->id);
+            });
+        } else {
+            return response()->json(null, Response::HTTP_NO_CONTENT);
+        }
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 }

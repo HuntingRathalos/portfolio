@@ -6,9 +6,11 @@ use Illuminate\Support\ServiceProvider;
 use App\Repositories\Save\SaveRepositoryInterface;
 use App\Repositories\Tag\TagRepositoryInterface;
 use App\Repositories\Target\TargetRepositoryInterface;
+use App\Repositories\User\UserRepositoryInterface;
 use App\Repositories\Save\SaveRepository;
 use App\Repositories\Tag\TagRepository;
 use App\Repositories\Target\TargetRepository;
+use App\Repositories\User\UserRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -24,6 +26,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(TagRepositoryInterface::class, TagRepository::class);
 
         $this->app->bind(TargetRepositoryInterface::class, TargetRepository::class);
+
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
     }
 
     /**
