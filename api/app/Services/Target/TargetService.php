@@ -5,6 +5,7 @@ namespace App\Services\Target;
 use App\Repositories\Target\TargetRepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 class TargetService implements TargetServiceInterface
 {
@@ -26,6 +27,9 @@ class TargetService implements TargetServiceInterface
   public function getTarget(): JsonResponse
   {
     $target = $this->targetRepository->getTarget();
+    if($target === null) {
+      return response()->json('', Response::HTTP_OK);
+    }
     return response()->json($target, Response::HTTP_OK);
   }
 

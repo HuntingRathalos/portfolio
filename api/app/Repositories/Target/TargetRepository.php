@@ -3,9 +3,10 @@
 namespace App\Repositories\Target;
 
 use App\Models\Target;
+use App\Models\User;
 use App\Repositories\Target\TargetRepositoryInterface;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class TargetRepository implements TargetRepositoryInterface
 {
@@ -34,11 +35,11 @@ class TargetRepository implements TargetRepositoryInterface
    /**
    *ユーザーからのリレーションで目標を取得
    *
-   * @return HasOne
+   * @return Target
    */
-  public function getTarget(): HasOne
+  public function getTarget(): ?Target
   {
-       return User::find(Auth::id())->target;
+    return User::find(Auth::id())->target;
   }
 
   /**

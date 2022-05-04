@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class SaveService implements SaveServiceInterface
@@ -48,10 +49,13 @@ class SaveService implements SaveServiceInterface
 
         $allSaves = $this->saveRepository->getAllSaves();
         if(!$allSaves->isEmpty()) {
-            $coins = $allSaves->avg('coin');
+            $filteredSaves = $allSaves->filter(function ($filteredSave) {
+                return $filteredSave->coin > 0;
+            });
+            $coins = $filteredSaves->sum('coin');
             $amount = $coins * 500;
         } else {
-            return response()->json(null, Response::HTTP_OK);
+            return response()->json('', Response::HTTP_OK);
         }
         return response()->json($amount, Response::HTTP_OK);
     }
@@ -107,7 +111,6 @@ class SaveService implements SaveServiceInterface
         }else {
             return response()->json($dates, Response::HTTP_OK);
         }
-
         return response()->json($result, Response::HTTP_OK);
     }
 
@@ -150,7 +153,7 @@ class SaveService implements SaveServiceInterface
                 return response()->json($sliced, Response::HTTP_OK);
             }
         }else {
-            return response()->json(null, Response::HTTP_OK);
+            return response()->json('', Response::HTTP_OK);
         }
         return response()->json($sorted, Response::HTTP_OK);
     }
@@ -199,14 +202,10 @@ class SaveService implements SaveServiceInterface
      */
     public function deleteAllSaves(): JsonResponse
     {
-        $allSaves = $this->saveRepository->getAllSaves();
-        if(!$allSaves->isEmpty()) {
-            $allSaves->each(function ($save) use($saveRepository) {
-                $this->saveRepository->deleteSave($save->id);
-            });
-        } else {
-            return response()->json(null, Response::HTTP_NO_CONTENT);
-        }
+        $user = Auth::user();
+        $user->saves()->each(function($save) {
+            $this->saveRepository->deleteSave($save->id);
+        });
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 }

@@ -36,8 +36,11 @@ export default {
   methods: {
     getSaveRanking() {
       this.$saveApi.getSaveRanking().then((res) => {
-        const tagName = res.data.map((data) => data.tag_name)
-        this.rankingArray = res.data
+        console.log(res.data)
+        if(res.data) {
+          const tagName = res.data.map((data) => data.tag_name)
+          this.rankingArray = res.data
+        }
       })
     }
   }

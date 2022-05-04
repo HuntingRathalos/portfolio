@@ -156,12 +156,9 @@ export default {
     }
   },
   created() {
-    this.$saveApi.get().then((res) => {
-      sessionStorage.setItem('saves', JSON.stringify(res.data))
       this.saves = JSON.parse(sessionStorage.getItem('saves'))
       this.getSavesOneMonth()
       this.getEvents()
-    })
   },
   methods: {
     prevCalender() {

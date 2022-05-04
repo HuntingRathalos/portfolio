@@ -30,6 +30,7 @@ export default {
   plugins: [
     '~/plugins/axios/index',
     '~/plugins/axios/modules/save',
+    '~/plugins/axios/modules/target',
     { src: '~/plugins/vue-tags-input', ssr: false }
   ],
 

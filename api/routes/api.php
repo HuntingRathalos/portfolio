@@ -25,6 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::apiResource('saves', SaveController::class)->except('show');
+    Route::get('/saves/amount', [SaveController::class, 'getAllSavesAmount']);
     Route::get('/saves/week', [SaveController::class, 'getSavesOneWeek']);
     Route::get('/saves/ranking', [SaveController::class, 'getSaveRanking']);
 

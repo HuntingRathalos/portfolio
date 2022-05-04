@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\Target\TargetServiceInterface;
 use App\Services\Save\SaveServiceInterface;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class TargetController extends Controller
 {
@@ -33,10 +34,7 @@ class TargetController extends Controller
      */
     public function index()
     {
-        $target = $this->targetService->getTarget();
-        $amount = $this->saveService->getAllSavesAmount();
-
-        return [$target, $amount];
+        return  $this->targetService->getTarget();
     }
 
     /**
