@@ -49,10 +49,7 @@ class SaveService implements SaveServiceInterface
 
         $allSaves = $this->saveRepository->getAllSaves();
         if(!$allSaves->isEmpty()) {
-            $filteredSaves = $allSaves->filter(function ($filteredSave) {
-                return $filteredSave->coin > 0;
-            });
-            $coins = $filteredSaves->sum('coin');
+            $coins = $allSaves->sum('coin');
             $amount = $coins * 500;
         } else {
             return response()->json('', Response::HTTP_OK);

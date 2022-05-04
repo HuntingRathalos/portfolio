@@ -5,6 +5,6 @@
 import TargetForm from '../components/organisms/forms/TargetForm.vue'
 export default {
   name: 'TargetPage',
-  components: { TargetForm },
+  components: { TargetForm }
 }
 </script>

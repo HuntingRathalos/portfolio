@@ -3,7 +3,7 @@ export default ({ $axios }, inject) => {
   inject('targetApi', targetApi)
 }
 
-class TargetApi{
+class TargetApi {
   constructor(axios) {
     this.axios = axios
   }

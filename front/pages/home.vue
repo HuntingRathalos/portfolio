@@ -9,7 +9,7 @@
     </v-row>
     <v-row>
       <v-col cols="6">
-        <simple-card >
+        <simple-card>
           <template #amountName>目標額</template>
           <template #amount>{{ target.amount }}円</template>
           <template #content>目標まで :{{ remainAmount }}円</template>
@@ -45,36 +45,53 @@ export default {
   data() {
     return {
       target: {
-        amount: 0,
+        amount: 0
       },
       saveAmount: 0,
       remainAmount: 0
     }
   },
-   created() {
-     this.$saveApi.get().then((res) => {
-      sessionStorage.setItem('saves', JSON.stringify(res.data))
-    })
-    this.$saveApi.getSavesAmount().then((res) => {
-      if(res.data !== '') {
-        sessionStorage.setItem('saveAmount', JSON.stringify(res.data))
-        this.saveAmount = res.data
-      }
-    })
-    this.$targetApi.get().then((res) => {
-      if(res.data !== '') {
-        Object.assign(this.target, res.data)
-        sessionStorage.setItem('target', JSON.stringify(res.data))
-        const target = JSON.parse(sessionStorage.getItem('target'))
-        const saveAmount = JSON.parse(sessionStorage.getItem('saveAmount'))
-        if(target.amount - saveAmount <= 0) {
-          this.remainAmount = 0
-        }else {
-          this.remainAmount = target.amount - saveAmount
+  created() {
+    const saveAmount = JSON.parse(sessionStorage.getItem('saveAmount'))
+    if (saveAmount) {
+      this.getTarget()
+      this.saveAmount = JSON.parse(sessionStorage.getItem('saveAmount'))
+    } else {
+      this.getSaves()
+      this.getSavesAmount()
+      this.getTarget()
+    }
+  },
+  methods: {
+    getSaves() {
+      this.$saveApi.get().then((res) => {
+        sessionStorage.setItem('saves', JSON.stringify(res.data))
+      })
+    },
+    getSavesAmount() {
+      this.$saveApi.getSavesAmount().then((res) => {
+        if (res.data !== '') {
+          sessionStorage.setItem('saveAmount', JSON.stringify(res.data))
+          this.saveAmount = res.data
         }
-        this.target = target
-      }
-    })
+      })
+    },
+    getTarget() {
+      this.$targetApi.get().then((res) => {
+        if (res.data !== '') {
+          Object.assign(this.target, res.data)
+          sessionStorage.setItem('target', JSON.stringify(res.data))
+          const target = JSON.parse(sessionStorage.getItem('target'))
+          const saveAmount = JSON.parse(sessionStorage.getItem('saveAmount'))
+          if (target.amount - saveAmount <= 0) {
+            this.remainAmount = 0
+          } else {
+            this.remainAmount = target.amount - saveAmount
+          }
+          this.target = target
+        }
+      })
+    }
   }
 }
 </script>

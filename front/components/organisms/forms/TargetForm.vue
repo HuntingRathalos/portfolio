@@ -3,18 +3,17 @@
     <v-card-title>
       <h1 class="display-1">{{ titleText }}</h1>
       <span v-if="updateFlag">
-       <v-icon @click.prevent="deleteTarget">mdi-delete</v-icon>
+        <v-icon @click.prevent="deleteTarget">mdi-delete</v-icon>
       </span>
     </v-card-title>
     <v-card-text>
       <v-form ref="target_form" @submit.prevent>
-        <target-name-input :target-name.sync="form.name"/>
-        <target-amount-input :target-amount.sync="form.amount"/>
+        <target-name-input :target-name.sync="form.name" />
+        <target-amount-input :target-amount.sync="form.amount" />
         <v-card-actions>
           <v-row justify="end">
-            <base-button
-              @click.native="createOrUpdateTarget"
-            >{{ buttonText }}
+            <base-button @click.native="createOrUpdateTarget"
+              >{{ buttonText }}
             </base-button>
           </v-row>
         </v-card-actions>
@@ -47,7 +46,7 @@ export default {
   },
   created() {
     const target = JSON.parse(sessionStorage.getItem('target'))
-    if(target) {
+    if (target) {
       this.form.name = target.name
       this.form.amount = target.amount
       this.updateFlag = true
@@ -57,9 +56,9 @@ export default {
     createOrUpdateTarget() {
       if (this.$refs.target_form.validate()) {
         const target = JSON.parse(sessionStorage.getItem('target'))
-        if(target) {
-            this.$targetApi.update(target.id, this.form).then((res) => {
-              console.log(res)
+        if (target) {
+          this.$targetApi.update(target.id, this.form).then((res) => {
+            console.log(res)
             sessionStorage.setItem('target', JSON.stringify(res.data))
             this.$router.push('/home')
           })
@@ -77,7 +76,6 @@ export default {
       if (this.$refs.target_form.validate()) {
         const target = JSON.parse(sessionStorage.getItem('target'))
         this.$targetApi.delete(target.id).then((res) => {
-          console.log(res)
           sessionStorage.removeItem('target')
           sessionStorage.removeItem('saves')
           sessionStorage.removeItem('saveAmount')

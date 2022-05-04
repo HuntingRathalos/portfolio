@@ -47,7 +47,6 @@ export default {
       await this.$axios
         .get('/api/saves/week')
         .then((res) => {
-          console.log(res.data)
           const plusCoin = res.data.map((data) => data.pluscoin * 500)
           const minusCoin = res.data.map((data) => data.minuscoin * 500)
           const clickDate = res.data.map((data) => data.click_date)

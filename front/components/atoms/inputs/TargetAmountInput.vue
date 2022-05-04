@@ -26,12 +26,10 @@ export default {
           return pattern.test(value) || '正しい形式で入力してください。'
         },
         isNum: (value) => {
-          const pattern =
-            /^([1-9]\d*|0)$/
-            return pattern.test(value) || '数値を入力してください。'
+          const pattern = /^([1-9]\d*|0)$/
+          return pattern.test(value) || '数値を入力してください。'
         },
-        notZero: (value) =>
-          value !== 0 || '0より大きい値を入力してください。'
+        notZero: (value) => value !== 0 || '0より大きい値を入力してください。'
       }
     }
   },

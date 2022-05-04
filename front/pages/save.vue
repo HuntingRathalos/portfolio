@@ -156,9 +156,9 @@ export default {
     }
   },
   created() {
-      this.saves = JSON.parse(sessionStorage.getItem('saves'))
-      this.getSavesOneMonth()
-      this.getEvents()
+    this.saves = JSON.parse(sessionStorage.getItem('saves'))
+    this.getSavesOneMonth()
+    this.getEvents()
   },
   methods: {
     prevCalender() {
@@ -169,8 +169,16 @@ export default {
       this.$refs.calendar.next()
       this.getSavesOneMonth()
     },
+    getSavesAmount() {
+      this.$saveApi.getSavesAmount().then((res) => {
+        if (res.data !== '') {
+          sessionStorage.setItem('saveAmount', JSON.stringify(res.data))
+        }
+      })
+    },
     createOrUpdateSave() {
       if (this.updateFlag === true) {
+        this.getSavesAmount()
         this.$saveApi.update(this.saveId, this.save).then((res) => {
           const beforeSave = this.saves.find((save) => save.id === res.data.id)
           Object.assign(beforeSave, res.data)
@@ -194,6 +202,7 @@ export default {
         return
       }
       this.$saveApi.create(this.save).then((res) => {
+        this.getSavesAmount()
         this.saves.push(res.data)
         sessionStorage.setItem('saves', JSON.stringify(this.saves))
         this.savesOneMonth.push(res.data)
@@ -213,6 +222,7 @@ export default {
       this.$store.dispatch('save/setOpenSaveModal', false)
     },
     deleteSave() {
+      this.getSavesAmount()
       this.$saveApi.delete(this.saveId)
       this.saves = this.saves.filter((save) => save.id !== this.saveId)
       sessionStorage.setItem('saves', JSON.stringify(this.saves))
