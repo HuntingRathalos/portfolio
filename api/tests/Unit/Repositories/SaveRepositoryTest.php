@@ -21,27 +21,32 @@ class SaveRepositoryTest extends TestCase
       $this->repo = $this->app->make(SaveRepository::class);
   }
 
-  public function testGetSavesOneMonth()
+  public function testGetSavesSpecificPeriod()
   {
-    // 今月の月初、月末、来月の月初の日付をdate型で取得
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+    // 週初、週末、来週初めの日付をdate型で取得
     $cb = new Carbon();
-    $dateFromThisMonth = $cb->startOfMonth()->toDateString();
+    $dateFromThisWeek = $cb->startOfWeek()->toDateString();
     $cb2 = new Carbon();
-    $dateFromNextMonth = $cb2->startOfMonth()->addMonth()->toDateString();
+    $dateFromNextWeek = $cb2->startOfWeek()->addWeek()->toDateString();
     $cb3 = new Carbon();
-    $dateToThisMonth = $cb3->endOfMonth()->toDateString();
+    $dateToThisWeek = $cb3->endOfWeek()->toDateString();
 
-    // 今月のレコードを２つ作成
+    // 週初めのレコードを２つ作成
     $save_ok = Save::factory()->count(2)->create([
-      'click_date' => $dateFromThisMonth,
+      'user_id' => $user->id,
+      'click_date' => $dateFromThisWeek,
     ]);
-    // 来月のレコードを１つ作成
+    // 週末のレコードを１つ作成
     $save_ng = Save::factory()->create([
-      'click_date' => $dateFromNextMonth,
+      'user_id' => $user->id,
+      'click_date' => $dateFromNextWeek,
     ]);
-    $saves = $this->repo->getSavesOneMonth($dateFromThisMonth, $dateToThisMonth);
+    $saves = $this->repo->getSavesSpecificPeriod($dateFromThisWeek, $dateToThisWeek);
 
-    // 1ヶ月間(今月分)のレコードを取得し、数が２つであることを確認する
+    // 1週間分のレコードを取得し、数が２つであることを確認する
     $recordNum = $saves->count();
     $this->assertSame(2, $recordNum);
   }

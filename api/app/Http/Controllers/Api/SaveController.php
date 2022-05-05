@@ -30,6 +30,36 @@ class SaveController extends Controller
     }
 
     /**
+     * 合計貯金額を返す
+     *
+     * @return void
+     */
+    public function getAllSavesAmount() {
+
+        return $this->saveService->getAllSavesAmount();
+    }
+
+    /**
+     * 1週間分の貯金記録取得し、グラフ用にデータを整形して返す
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getSavesOneWeek()
+    {
+        return $this->saveService->getSavesSpecificPeriod();
+    }
+
+    /**
+     * ランキング用のデータをtag_idでグループ化して取得
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getSaveRanking() {
+
+        return $this->saveService->getSaveRanking();
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

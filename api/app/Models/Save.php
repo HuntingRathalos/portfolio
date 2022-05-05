@@ -42,7 +42,7 @@ class Save extends Model
      */
     public function icon(): BelongsTo
     {
-        return $this->hasMany(Icon::class);
+        return $this->belongsTo(Icon::class);
     }
 
     /**

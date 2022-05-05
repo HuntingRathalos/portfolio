@@ -9,6 +9,7 @@ use App\Repositories\Save\SaveRepositoryInterface;
 use App\Repositories\Save\SaveRepository;
 use App\Services\Save\SaveService;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -38,38 +39,38 @@ class SaveServiceTest extends TestCase
         ];
     }
 
-    /**
-     * SaveServiceのgetSavesOneMonthメソッドの戻り値の型、構造が正しいかを確認する
-     *
-     * @return void
-     */
-    public function testGetSavesOneMonth()
-    {
-        // 今月の月初、月末、来月の月初の日付をdate型で取得
-        $clickedDate = new Carbon();
-        $cb1 = new Carbon();
-        $dateFromThisMonth = $cb1->startOfMonth()->toDateString();
-        $cb2 = new Carbon();
-        $dateToThisMonth = $cb2->endOfMonth()->toDateString();
+    // /**
+    //  * SaveServiceのgetSavesSpecificPeriodメソッドの戻り値の型、構造が正しいかを確認する
+    //  *
+    //  * @return void
+    //  */
+    // public function testgetSavesSpecificPeriod()
+    // {
+    //     // 週初、週末の日付をdate型で取得
+    //     // $clickedDate = new Carbon();
+    //     $cb1 = new Carbon();
+    //     $dateFromThisWeek = $cb1->startOfWeek()->toDateString();
+    //     $cb2 = new Carbon();
+    //     $dateToThisWeek = $cb2->endOfWeek()->toDateString();
 
-        // モックの戻り値作成
-        $data = new Collection(Save::factory()->make());
+    //     // モックの戻り値作成
+    //     $data = new Collection(Save::factory()->count(3)->make());
 
-        // SaveRepositoryのgetSavesOneMonthをモック
-        $this->saveRepositoryMock->shouldReceive('getSavesOneMonth')
-          ->once()
-          ->with($dateFromThisMonth, $dateToThisMonth)
-          ->andReturn($data);
+    //     // SaveRepositoryのgetSavesSpecificPeriodをモック
+    //     $this->saveRepositoryMock->shouldReceive('getSavesSpecificPeriod')
+    //       ->once()
+    //       ->with($dateFromThisWeek, $dateToThisWeek)
+    //       ->andReturn($data);
 
-        // テスト対象のメソッド呼び出し
-        $saveService = $this->app->make(SaveService::class);
-        $response = $saveService->getSavesOneMonth($clickedDate);
-        // レスポンスがJsonResponseであることを確認
-        $this->assertInstanceOf(JsonResponse::class, $response);
+    //     // テスト対象のメソッド呼び出し
+    //     $saveService = $this->app->make(SaveService::class);
+    //     $response = $saveService->getSavesSpecificPeriod();
+    //     // レスポンスがJsonResponseであることを確認
+    //     $this->assertInstanceOf(JsonResponse::class, $response);
 
-        // 正しい構造のレスポンスが返っていることを確認
-        $this->convertJsonResponseIntoArray($response);
-    }
+    //     // 正しい構造のレスポンスが返っていることを確認
+    //     $this->convertJsonResponseIntoArray($response);
+    // }
 
     /**
      * SaveServiceのcreateSaveメソッドの戻り値の型、構造が正しいかを確認する

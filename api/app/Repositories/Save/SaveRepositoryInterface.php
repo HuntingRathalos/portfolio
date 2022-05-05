@@ -9,7 +9,7 @@ interface SaveRepositoryInterface
 {
     public function getSaveById($saveId): Save;
     public function getAllSaves(): Collection;
-    public function getSavesOneMonth(string $dateFrom, string $dateTo): Collection;
+    public function getSavesSpecificPeriod(string $dateFrom, string $dateTo): Collection;
     public function createSave(array $saveDetails): Save;
     public function updateSave(int $saveId, array $saveDetails): bool;
     public function deleteSave(int $saveId): void;

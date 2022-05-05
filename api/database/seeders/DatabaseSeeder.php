@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             TagSeeder::class,
             IconSeeder::class,
             SaveSeeder::class,
+            TargetSeeder::class,
         ]);
     }
 }

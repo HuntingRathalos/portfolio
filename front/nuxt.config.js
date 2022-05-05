@@ -30,6 +30,7 @@ export default {
   plugins: [
     '~/plugins/axios/index',
     '~/plugins/axios/modules/save',
+    '~/plugins/axios/modules/target',
     { src: '~/plugins/vue-tags-input', ssr: false }
   ],
 
@@ -64,10 +65,14 @@ export default {
     duration: 4000
   },
   auth: {
+    localStorage: false,
+    cookie: {
+      maxAge: 1800
+    },
     redirect: {
       login: '/login',
       logout: '/',
-      // callback: '/login',
+      callback: false,
       home: '/'
     },
     strategies: {

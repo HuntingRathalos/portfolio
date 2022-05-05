@@ -8,12 +8,23 @@ class SaveApi {
     this.axios = axios
   }
 
-  async getOneMonth(date) {
+  // async getOneMonth(date) {
+  //   return await this.axios.get(`api/saves/${date}`)
+  // }
+  async getSavesAmount() {
+    return await this.axios.get('api/saves/amount')
+  }
+
+  async getOneWeek(date) {
     return await this.axios.get(`api/saves/${date}`)
   }
 
   async get() {
     return await this.axios.get('api/saves')
+  }
+
+  async getSaveRanking() {
+    return await this.axios.get('api/saves/ranking')
   }
 
   async create(save) {
