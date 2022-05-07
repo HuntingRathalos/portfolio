@@ -12,6 +12,7 @@ use App\Services\User\UserService;
 use App\Repositories\Save\SaveRepositoryInterface;
 use App\Repositories\Tag\TagRepositoryInterface;
 use App\Repositories\Target\TargetRepositoryInterface;
+use App\Repositories\User\UserRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {

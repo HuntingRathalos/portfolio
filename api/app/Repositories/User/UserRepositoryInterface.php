@@ -9,5 +9,5 @@ interface UserRepositoryInterface
 {
   public function getAllUsers() : Collection;
   public function getUsersExceptMyself(): Collection;
-  public function getUserById() : User;
+  public function getUserById(int $userId) : User;
 }

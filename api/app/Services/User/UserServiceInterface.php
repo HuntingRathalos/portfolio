@@ -7,7 +7,8 @@ use Illuminate\Http\JsonResponse;
 
 interface UserServiceInterface
 {
-  public function getAllUsers(): JsonResponse;
+  public function getUsersExceptMyself(): JsonResponse;
+  public function getFollowUsers(): JsonResponse;
   public function getFollowUsersId(): JsonResponse;
-  public function getUsersAmountRanking(): JsonResponse;
+  // public function getUsersAmountRanking(): JsonResponse;
 }

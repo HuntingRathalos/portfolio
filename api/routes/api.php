@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\SaveController;
 use App\Http\Controllers\Api\TargetController;
+use App\Http\Controllers\Api\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,4 +31,11 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::get('/saves/ranking', [SaveController::class, 'getSaveRanking']);
 
     Route::apiResource('targets', TargetController::class)->except('show');
+
+    Route::prefix('users')->group(function () {
+        Route::get('/', [UserController::class, 'getUsersExceptMyself']);
+        Route::get('/follow', [UserController::class, 'getFollowUsers']);
+        Route::patch('/follow/{userId}', [UserController::class, 'follow']);
+        Route::delete('/follow/{userId}', [UserController::class, 'unfollow']);
+    });
   });

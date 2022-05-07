@@ -3,6 +3,7 @@
 namespace App\Repositories\User;
 
 use App\Models\User;
+use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 
@@ -41,10 +42,11 @@ class UserRepository implements UserRepositoryInterface
   /**
    * ユーザー情報を取得
    *
+   * @param int $userId
    * @return User
    */
-  public function getUserById(): User
+  public function getUserById(int $userId): User
   {
-    return $this->model->findOrFail(Auth::id());
+    return $this->model->findOrFail($userId);
   }
  }
