@@ -47,6 +47,16 @@ class UserController extends Controller
         return $this->userService->getFollowUsers();
     }
 
+    // /**
+    //  * ログインユーザーがフォローしている人のidを取得
+    //  *
+    //  * @return void
+    //  */
+    // public function getFollowUsersId()
+    // {
+    //     return $this->userService->getFollowUsersId();
+    // }
+
     /**
      * ユーザーがフォローしたときに、中間テーブルにレコード作成
      *
@@ -55,12 +65,7 @@ class UserController extends Controller
      */
     public function follow(int $userId)
     {
-        $user = Auth::user();
-        $followUser = $this->userRepository->getUserById($userId);
-        $user->followings()->detach($followUser);
-        $user->followings()->attach($followUser);
-
-        return response()->json(null, Response::HTTP_CREATED);
+        return $this->userService->follow($userId);
     }
 
     /**
@@ -71,10 +76,6 @@ class UserController extends Controller
      */
     public function unfollow(int $userId)
     {
-        $user = Auth::user();
-        $followUser = $this->userRepository->getUserById($userId);
-        $user->followings()->detach($followUser);
-
-        return response()->json(null, Response::HTTP_CREATED);
+        return $this->userService->unfollow($userId);
     }
 }

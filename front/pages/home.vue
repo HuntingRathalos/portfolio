@@ -54,12 +54,19 @@ export default {
   created() {
     const saveAmount = JSON.parse(sessionStorage.getItem('saveAmount'))
     if (saveAmount) {
-      this.getTarget()
       this.saveAmount = JSON.parse(sessionStorage.getItem('saveAmount'))
+      this.getTarget()
     } else {
       this.getSaves()
       this.getSavesAmount()
       this.getTarget()
+    }
+  },
+  mounted() {
+    const users = JSON.parse(sessionStorage.getItem('users'))
+    if (!users || users === undefined) {
+      this.getUsers()
+      this.getFollowUsers()
     }
   },
   methods: {
@@ -90,6 +97,18 @@ export default {
           }
           this.target = target
         }
+      })
+    },
+    getUsers() {
+      this.$userApi.getUsersExceptMyself().then((res) => {
+        console.log(res.data)
+        sessionStorage.setItem('users', JSON.stringify(res.data))
+      })
+    },
+    getFollowUsers() {
+      this.$userApi.getFollowUsers().then((res) => {
+        console.log(res.data)
+        sessionStorage.setItem('followUsers', JSON.stringify(res.data))
       })
     }
   }

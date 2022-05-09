@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
 
@@ -30,29 +31,15 @@ class UserService implements UserServiceInterface
    */
   public function getUsersExceptMyself(): JsonResponse
   {
-    $users = $this->model->getUsersExceptMyself();
-    $users = $users->load(['saves', 'target', 'saves.tag']);
-    Log::debug($users);
+    $users = $this->userRepository->getUsersExceptMyself();
     $processedUsers = collect();
     $users->each(function ($user) use ($processedUsers) {
-      $target = $user->target;
-      // $save = $user::where('user_id', $user->id)->first();
-      $saves = $user->saves;
-      $tag = $firstSave->tag;
-      if(!$target || !$saves) {
-        return;
-      }
-      $firstSave = $saves->first();
-      Log::debug($firstSave);
-      $processedUsers->push([
-        'id' => $user->id,
-        'name' => $user->name,
-        'target' => $target->name,
-        'targetAmount' => $target->amount,
-        'tagName' => $tag->name,
-        'createdAt' => $user->created_at
-      ]);
-    });
+        $processedUsers->push([
+          'id' => $user->id,
+          'name' => $user->name,
+          'createdAt' => (new Carbon($user->created_at))->toDateString()
+        ]);
+      });
     return response()->json($processedUsers, Response::HTTP_OK);
   }
 
@@ -65,30 +52,42 @@ class UserService implements UserServiceInterface
   {
     $user = Auth::user();
     $followUsers = $user->followings;
-    if($followUsers) {
-      return response()->json(null, Response::HTTP_OK);
+    $processedUsers = collect();
+    if($followUsers->isEmpty()) {
+      $processedUsers->push([
+        'id' => 400,
+        'name' => 'plpl',
+        'target' => '設定されていません。',
+        'targetAmount' => '設定されていません。',
+        'tagName' => '設定されていません。'
+      ]);
+      return response()->json($processedUsers, Response::HTTP_OK);
     }
     $followUsers = $followUsers->load(['saves', 'target', 'saves.tag']);
     Log::debug($followUsers);
-    $processedUsers = collect();
-    $users->each(function ($user) use ($processedUsers) {
-      $target = $user->target;
-      // $save = $user::where('user_id', $user->id)->first();
-      $saves = $user->saves;
-      $tag = $firstSave->tag;
-      if(!$target || !$saves) {
-        return;
+    $followUsers->each(function ($followUser) use ($processedUsers) {
+      $target = $followUser->target;
+      $saves = $followUser->saves;
+      if(!$target || $saves->isEmpty()) {
+        $processedUsers->push([
+          'id' => $followUser->id,
+          'name' => $followUser->name,
+          'target' => '設定されていません。',
+          'targetAmount' => '設定されていません。',
+          'tagName' => '設定されていません。'
+        ]);
+      } else {
+        $firstSave = $saves->shift();
+        $tag = $firstSave->tag;
+        $processedUsers->push([
+          'id' => $followUser->id,
+          'name' => $followUser->name,
+          'target' => $target->name,
+          'targetAmount' => $target->amount,
+          'tagName' => $tag->name,
+        ]);
       }
-      $firstSave = $saves->first();
-      Log::debug($firstSave);
-      $processedUsers->push([
-        'id' => $user->id,
-        'name' => $user->name,
-        'target' => $target->name,
-        'targetAmount' => $target->amount,
-        'tagName' => $tag->name,
-        'createdAt' => $user->created_at
-      ]);
+      Log::debug($processedUsers);
     });
     return response()->json($processedUsers, Response::HTTP_OK);
   }
@@ -110,6 +109,62 @@ class UserService implements UserServiceInterface
     return response()->json(null, Response::HTTP_OK);
   }
 
+  /**
+   * ユーザーがフォローしたときに、中間テーブルにレコード作成
+   *
+   * @param integer $userId
+   * @return JsonResponse
+   */
+  public function follow(int $userId): JsonResponse
+  {
+    $user = Auth::user();
+    $followUser = $this->userRepository->getUserById($userId);
+    $user->followings()->detach($followUser);
+    $user->followings()->attach($followUser);
+
+    $target = $followUser->target;
+    $saves = $followUser->saves;
+
+    Log::debug($target);
+    Log::debug($saves);
+    $processedFollowUser = [];
+    if(!$target || $saves->isEmpty()) {
+      $processedFollowUser = (object)[
+        'id' => $followUser->id,
+        'name' => $followUser->name,
+        'target' => '設定されていません。',
+        'targetAmount' => '設定されていません。',
+        'tagName' => '設定されていません。'
+      ];
+    } else {
+      $firstSave = $saves->shift();
+      $tag = $firstSave->tag;
+      $processedFollowUser = (object)[
+        'id' => $followUser->id,
+        'name' => $followUser->name,
+        'target' => $target->name,
+        'targetAmount' => $target->amount,
+        'tagName' => $tag->name,
+      ];
+    }
+    Log::debug(print_r($processedFollowUser, true));
+    return response()->json($processedFollowUser, Response::HTTP_CREATED);
+  }
+
+  /**
+   * ユーザーがフォローを外したときに、中間テーブルのレコード削除
+   *
+   * @param integer $userId
+   * @return JsonResponse
+   */
+  public function unfollow(int $userId): JsonResponse
+  {
+    $user = Auth::user();
+    $followUser = $this->userRepository->getUserById($userId);
+    $user->followings()->detach($followUser);
+
+    return response()->json(null, Response::HTTP_NO_CONTENT);
+  }
   // /**
   //  * ユーザーの合計貯金額ランキングを表示
   //  *

@@ -35,6 +35,7 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::prefix('users')->group(function () {
         Route::get('/', [UserController::class, 'getUsersExceptMyself']);
         Route::get('/follow', [UserController::class, 'getFollowUsers']);
+        // Route::get('/follow_id', [UserController::class, 'getFollowUsersId']);
         Route::patch('/follow/{userId}', [UserController::class, 'follow']);
         Route::delete('/follow/{userId}', [UserController::class, 'unfollow']);
     });
