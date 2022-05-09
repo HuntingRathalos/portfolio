@@ -33,6 +33,7 @@ class UserService implements UserServiceInterface
   {
     $users = $this->userRepository->getUsersExceptMyself();
     $processedUsers = collect();
+    // ゲストユーザー作成するので、空判定せずに、ユーザーのid、名前、作成日に加工して返却する
     $users->each(function ($user) use ($processedUsers) {
         $processedUsers->push([
           'id' => $user->id,
@@ -53,6 +54,8 @@ class UserService implements UserServiceInterface
     $user = Auth::user();
     $followUsers = $user->followings;
     $processedUsers = collect();
+    // フォローしているユーザーがいない時は、ゲストユーザーを返す
+
     if($followUsers->isEmpty()) {
       $processedUsers->push([
         'id' => 400,
@@ -63,11 +66,14 @@ class UserService implements UserServiceInterface
       ]);
       return response()->json($processedUsers, Response::HTTP_OK);
     }
+
     $followUsers = $followUsers->load(['saves', 'target', 'saves.tag']);
-    Log::debug($followUsers);
+
     $followUsers->each(function ($followUser) use ($processedUsers) {
       $target = $followUser->target;
       $saves = $followUser->saves;
+
+      // フォローしたユーザーの貯金記録、または目標設定がない時は'設定されていません'を詰める
       if(!$target || $saves->isEmpty()) {
         $processedUsers->push([
           'id' => $followUser->id,
@@ -87,7 +93,6 @@ class UserService implements UserServiceInterface
           'tagName' => $tag->name,
         ]);
       }
-      Log::debug($processedUsers);
     });
     return response()->json($processedUsers, Response::HTTP_OK);
   }
@@ -103,7 +108,6 @@ class UserService implements UserServiceInterface
     $followUsers = $user->followings;
     if($followUsers) {
       $followUsersId = $followUsers->pluck('followee_id')->toArray();
-      Log::debug($followUsersIdArray);
       return response()->json($followUsersIdArray, Response::HTTP_OK);
     }
     return response()->json(null, Response::HTTP_OK);
@@ -117,17 +121,20 @@ class UserService implements UserServiceInterface
    */
   public function follow(int $userId): JsonResponse
   {
+    // ログインユーザー
     $user = Auth::user();
+    // ログインユーザーがフォローしたユーザー
     $followUser = $this->userRepository->getUserById($userId);
+
+    // ログインユーザーがあるユーザーを重ねてフォローできないようにするため削除後に登録
     $user->followings()->detach($followUser);
     $user->followings()->attach($followUser);
 
     $target = $followUser->target;
     $saves = $followUser->saves;
 
-    Log::debug($target);
-    Log::debug($saves);
     $processedFollowUser = [];
+    // フォローしたユーザーの貯金記録、または目標設定がない時は'設定されていません'を詰める
     if(!$target || $saves->isEmpty()) {
       $processedFollowUser = (object)[
         'id' => $followUser->id,
@@ -147,7 +154,6 @@ class UserService implements UserServiceInterface
         'tagName' => $tag->name,
       ];
     }
-    Log::debug(print_r($processedFollowUser, true));
     return response()->json($processedFollowUser, Response::HTTP_CREATED);
   }
 
@@ -159,8 +165,11 @@ class UserService implements UserServiceInterface
    */
   public function unfollow(int $userId): JsonResponse
   {
+    // ログインユーザー
     $user = Auth::user();
+    // ログインユーザーがフォローしたユーザー
     $followUser = $this->userRepository->getUserById($userId);
+    
     $user->followings()->detach($followUser);
 
     return response()->json(null, Response::HTTP_NO_CONTENT);
