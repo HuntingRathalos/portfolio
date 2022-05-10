@@ -5,11 +5,14 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Services\Save\SaveServiceInterface;
 use App\Services\Target\TargetServiceInterface;
+use App\Services\User\UserServiceInterface;
 use App\Services\Save\SaveService;
 use App\Services\Target\TargetService;
+use App\Services\User\UserService;
 use App\Repositories\Save\SaveRepositoryInterface;
 use App\Repositories\Tag\TagRepositoryInterface;
 use App\Repositories\Target\TargetRepositoryInterface;
+use App\Repositories\User\UserRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -39,6 +42,14 @@ class AppServiceProvider extends ServiceProvider
             function ($app) {
                 return new TargetService(
                     $app->make(TargetRepositoryInterface::class)
+                );
+            });
+
+        $this->app->bind(
+            UserServiceInterface::class,
+            function ($app) {
+                return new UserService(
+                    $app->make(UserRepositoryInterface::class)
                 );
             });
     }
