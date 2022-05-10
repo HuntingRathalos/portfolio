@@ -40,7 +40,7 @@ import SimpleCard from '../components/molecules/cards/SimpleCard.vue'
 import SaveBarChart from '../components/organisms/charts/SaveBarChart.vue'
 import SaveRanking from '../components/organisms/rankings/SaveRanking.vue'
 export default {
-  name: 'HomePage',
+  name: 'TopPage',
   components: { SimpleCard, SaveBarChart, SaveRanking },
   data() {
     return {

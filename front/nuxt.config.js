@@ -73,8 +73,8 @@ export default {
     redirect: {
       login: '/login',
       logout: '/',
-      callback: false,
-      home: '/'
+      // callback: false,
+      home: false
     },
     strategies: {
       laravelSanctum: {
