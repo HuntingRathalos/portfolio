@@ -88,6 +88,9 @@ export default {
       }
     }
   },
+  router: {
+    middleware: ['auth']
+  },
   proxy: {
     '/api': {
       target: 'http://localhost:80'
@@ -119,5 +122,5 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {}
+  build: {},
 }
