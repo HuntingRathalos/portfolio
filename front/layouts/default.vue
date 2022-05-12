@@ -16,17 +16,16 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-footer :absolute="!fixed" app>
-      <span>&copy; {{ new Date().getFullYear() }}</span>
-    </v-footer>
+    <the-footer />
   </v-app>
 </template>
 
 <script>
+import TheFooter from '../components/singleInstance/TheFooter.vue'
 import TheHeader from '../components/singleInstance/TheHeader.vue'
 export default {
-  components: { TheHeader },
   name: 'DefaultLayout',
+  components: { TheHeader, TheFooter },
   data() {
     return {
       clipped: false,
