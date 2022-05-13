@@ -1,13 +1,10 @@
 <template>
-  <v-app-bar
-    app
-    color="white"
-  >
-  <the-logo />
+  <v-app-bar app color="white">
+    <the-logo />
     <v-toolbar-title class="text-subtitle-2">
       {{ appName }}
     </v-toolbar-title>
-     <v-spacer />
+    <v-spacer />
 
     <v-toolbar-items class="ml-2">
       <v-btn
@@ -27,18 +24,15 @@
 import TheLogo from './TheLogo.vue'
 export default {
   components: { TheLogo },
-  data ({ $config: { appName } }) {
+  data({ $config: { appName } }) {
     return {
       appName,
-      headerTexts: [
-        'ログイン',
-        'ログアウト'
-      ]
+      headerTexts: ['ログイン', 'ログアウト']
     }
   },
   methods: {
     async doHeaderText(headerText) {
-      if(headerText === 'ログイン') {
+      if (headerText === 'ログイン') {
         this.$router.push('login')
       } else {
         sessionStorage.removeItem('target')

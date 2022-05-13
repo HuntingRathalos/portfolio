@@ -108,6 +108,9 @@ export default {
     theme: {
       dark: false,
       themes: {
+        light: {
+          background: colors.grey.lighten3
+        },
         dark: {
           primary: colors.blue.darken2,
           accent: colors.grey.darken3,
@@ -122,8 +125,8 @@ export default {
   },
 
   publicRuntimeConfig: {
-    appName: process.env.APP_NAME 
+    appName: process.env.APP_NAME
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {}
 }

@@ -2,9 +2,12 @@
   <v-text-field
     v-model="setName"
     :rules="[rules.required, rules.maxCount255]"
-    prepend-icon="mdi-account-outline"
     label="名前"
+    placeholder="山田太郎"
     type="text"
+    outlined
+    dense
+    rounded
   />
 </template>
 <script>
