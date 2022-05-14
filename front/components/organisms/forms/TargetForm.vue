@@ -1,24 +1,33 @@
 <template>
-  <v-card width="400px" class="mx-auto mt-5">
-    <v-card-title>
-      <h1 class="display-1">{{ titleText }}</h1>
-      <span v-if="updateFlag">
-        <v-icon @click.prevent="deleteTarget">mdi-delete</v-icon>
-      </span>
+  <v-card max-width="500" class="mx-auto mt-5 full-width" flat outlined>
+    <v-card-title class="text-center pa-8">
+      <h1 class="text-h5 font-weight-bold full-width">{{ titleText }}</h1>
+      <div v-if="updateFlag" class="ml-auto">
+        <v-icon class="ml-auto" @click.prevent="deleteTarget"
+          >mdi-delete</v-icon
+        >
+      </div>
     </v-card-title>
-    <v-card-text>
-      <v-form ref="target_form" @submit.prevent>
-        <target-name-input :target-name.sync="form.name" />
-        <target-amount-input :target-amount.sync="form.amount" />
-        <v-card-actions>
-          <v-row justify="end">
-            <base-button @click.native="createOrUpdateTarget"
-              >{{ buttonText }}
-            </base-button>
-          </v-row>
-        </v-card-actions>
-      </v-form>
-    </v-card-text>
+    <v-divider> </v-divider>
+    <div class="px-6 py-8">
+      <div style="max-width: 336px" class="mx-auto">
+        <v-card-text>
+          <v-form ref="target_form" @submit.prevent>
+            <target-name-input :target-name.sync="form.name" />
+            <target-amount-input :target-amount.sync="form.amount" />
+            <v-card-actions>
+              <v-row justify="end">
+                <base-button
+                  :color="btnColor"
+                  @click.native="createOrUpdateTarget"
+                  >{{ buttonText }}
+                </base-button>
+              </v-row>
+            </v-card-actions>
+          </v-form>
+        </v-card-text>
+      </div>
+    </div>
   </v-card>
 </template>
 <script>
@@ -29,6 +38,7 @@ export default {
   components: { TargetNameInput, TargetAmountInput, BaseButton },
   data() {
     return {
+      btnColor: 'indigo accent-2',
       form: {
         name: '',
         amount: ''
@@ -87,3 +97,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+.full-width {
+  width: 100%;
+}
+</style>

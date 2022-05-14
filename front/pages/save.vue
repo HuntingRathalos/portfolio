@@ -137,7 +137,6 @@ export default {
     TagInput,
     SubTitleCard
   },
-  auth: false,
   data: () => ({
     save: {
       tag_id: 1,
