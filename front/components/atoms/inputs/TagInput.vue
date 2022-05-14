@@ -2,6 +2,7 @@
   <v-select
     v-model="setTagId"
     :items="items"
+    color="indigo accent-2"
     item-text="tagName"
     item-value="id"
     label="タグ"

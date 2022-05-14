@@ -20,23 +20,8 @@ export default {
       default: () => []
     }
   },
-  data() {
-    return {
-      // flag: false,
-      // saves: [
-      //   {
-      //     id: 1,
-      //     icon: 'mdi-folder',
-      //     item: 'マンガ',
-      //     amount: '+1000¥',
-      //     date: '2022/1/1'
-      //   },
-      // ]
-    }
-  },
   methods: {
     sendSaveId(saveId) {
-      // console.log(saveId)
       this.$emit('save-id-send', saveId)
     }
   }

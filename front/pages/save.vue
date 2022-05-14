@@ -2,11 +2,22 @@
   <div>
     <div>
       <v-row justify="center">
-        <v-dialog v-model="isOpenSaveModal" persistent max-width="600px">
+        <v-dialog
+          v-model="isOpenSaveModal"
+          persistent
+          max-width="600px"
+          :fullscreen="isFullscreen"
+        >
           <v-card>
-            <v-card-title>
-              <span class="text-h5">貯金記録作成</span>
-              <v-icon @click="deleteSave">mdi-delete</v-icon>
+            <v-card-title class="text-center">
+              <div class="text-center full-width">
+                <h1 class="text-h5 font-weight-medium full-width">
+                  貯金記録作成
+                </h1>
+              </div>
+              <div v-if="updateFlag" class="ml-auto">
+                <v-icon class="ml-auto" @click="deleteSave">mdi-delete</v-icon>
+              </div>
             </v-card-title>
             <v-card-text>
               <v-container>
@@ -15,6 +26,7 @@
                     <v-text-field
                       :value="save.click_date"
                       prepend-icon="mdi-clock-time-eight-outline"
+                      color="indigo accent-2"
                       readonly
                     ></v-text-field>
                   </v-col>
@@ -55,34 +67,31 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="closeModal">
-                Close
+                閉じる
               </v-btn>
               <v-btn color="blue darken-1" text @click="createOrUpdateSave">
-                Save
+                保存
               </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
       </v-row>
-      <v-sheet height="64">
-        <v-toolbar flat>
-          <v-btn icon @click="prevCalender">
-            <v-icon>mdi-chevron-left</v-icon>
-          </v-btn>
-          <v-btn icon @click="nextCalender">
-            <v-icon>mdi-chevron-right</v-icon>
-          </v-btn>
-          <v-toolbar-title>
-            {{ calendarTitle }}
-          </v-toolbar-title>
-        </v-toolbar>
-      </v-sheet>
-      <v-sheet height="600">
+      <div class="d-flex justify-space-between pt-8">
+        <v-btn icon @click="prevCalender">
+          <v-icon>mdi-chevron-left</v-icon>
+        </v-btn>
+        <div :class="calendarTitleSize">
+          {{ calendarTitle }}
+        </div>
+        <v-btn icon @click="nextCalender">
+          <v-icon>mdi-chevron-right</v-icon>
+        </v-btn>
+      </div>
+      <v-card :height="cardHeight" outlined>
         <v-calendar
           ref="calendar"
           v-model="value"
           class="red--text"
-          color="primary"
           locale="ja-jp"
           event-more-text="その他{0}件"
           :day-format="dayFormat"
@@ -92,14 +101,22 @@
           :event-color="getEventColor"
           @change="getEvents"
           @click:date="showEvent"
+          @click:day="showEvent"
         >
           <template #event="{ event }">
             <div class="event-name text-subtitle-2">{{ event.name }}</div>
           </template>
         </v-calendar>
-      </v-sheet>
+      </v-card>
     </div>
-    <SaveList :saves="savesOneMonth" @save-id-send="setSave" />
+    <v-row>
+      <v-col cols="12">
+        <sub-title-card class="pb-1 pt-8">
+          <template #subTitle>今月の貯金記録</template>
+        </sub-title-card>
+        <SaveList :saves="savesOneMonth" @save-id-send="setSave" />
+      </v-col>
+    </v-row>
   </div>
 </template>
 <script>
@@ -109,9 +126,18 @@ import SaveModalSlider from '../components/molecules/sliders/SaveModalSlider.vue
 import SaveList from '../components/organisms/lists/SaveList.vue'
 import IconModal from '../components/organisms/modals/IconModal.vue'
 import TagInput from '../components/atoms/inputs/TagInput.vue'
+import SubTitleCard from '../components/molecules/cards/SubTitleCard.vue'
 export default {
   name: 'SavePage',
-  components: { SaveList, IconModal, MemoInput, SaveModalSlider, TagInput },
+  components: {
+    SaveList,
+    IconModal,
+    MemoInput,
+    SaveModalSlider,
+    TagInput,
+    SubTitleCard
+  },
+  auth: false,
   data: () => ({
     save: {
       tag_id: 1,
@@ -153,6 +179,30 @@ export default {
         return `+${this.save.coin * 500}`
       }
       return this.save.coin * 500
+    },
+    cardHeight() {
+      const brackPointName = this.$vuetify.breakpoint.name
+      if (brackPointName === 'xs') {
+        return 400
+      } else {
+        return 600
+      }
+    },
+    calendarTitleSize() {
+      const brackPointName = this.$vuetify.breakpoint.name
+      if (brackPointName === 'xs') {
+        return 'text-h6'
+      } else {
+        return 'text-h5'
+      }
+    },
+    isFullscreen() {
+      const brackPointName = this.$vuetify.breakpoint.name
+      if (brackPointName === 'xs') {
+        return true
+      } else {
+        return false
+      }
     }
   },
   created() {
@@ -187,7 +237,8 @@ export default {
           const beforEvent = this.events.find(
             (event) => event.id === res.data.id
           )
-          const saveColor = res.data.coin > 0 ? 'blue' : 'red'
+          const saveColor =
+            res.data.coin > 0 ? 'indigo accent-2' : 'red lighten-1'
           const event = this.returnEvent(
             res.data.id,
             res.data.coin,
@@ -211,7 +262,8 @@ export default {
           a.click_date < b.click_date ? -1 : 1
         )
 
-        const saveColor = res.data.coin > 0 ? 'blue' : 'red'
+        const saveColor =
+          res.data.coin > 0 ? 'indigo accent-2' : 'red lighten-1'
         const event = this.returnEvent(
           res.data.id,
           res.data.coin,
@@ -272,7 +324,7 @@ export default {
         const save = this.saves[i]
         const saveClickDate = save.click_date
         const saveId = save.id
-        const saveColor = save.coin > 0 ? 'blue' : 'red'
+        const saveColor = save.coin > 0 ? 'indigo accent-2' : 'red lighten-1'
         events.push({
           id: saveId,
           name: `${save.coin * 500}¥`,
@@ -315,5 +367,8 @@ export default {
 <style scoped>
 .event-name {
   text-align: center;
+}
+.full-width {
+  width: 100%;
 }
 </style>

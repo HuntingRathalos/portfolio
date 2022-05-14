@@ -1,5 +1,5 @@
 <template>
-  <v-card max-width="600" class="mx-auto" :class="marginClass">
+  <v-card max-width="1161" class="mx-auto" :class="marginClass">
     <v-list-item @click="sendSaveId">
       <v-list-item-avatar>
         <v-icon class="grey lighten-1" dark>
