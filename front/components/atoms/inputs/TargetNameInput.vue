@@ -2,9 +2,12 @@
   <v-text-field
     v-model="setTargetName"
     :rules="[rules.required, rules.maxCount50]"
-    prepend-icon="mdi-target"
     label="目標"
+    placeholder="旅行"
     type="text"
+    outlined
+    dense
+    rounded
   />
 </template>
 <script>

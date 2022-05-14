@@ -1,7 +1,13 @@
 <template>
-  <div class="">
-    <v-card outlined class="pt-8 mx-auto">
-      <v-row>
+  <div>
+    <v-card outlined class="py-8 mx-auto">
+      <div
+        v-if="rankingArray.length === 0"
+        class="text-subtitle-1 font-weight-medium text-center"
+      >
+        貯金記録がありません。
+      </div>
+      <v-row v-else>
         <v-col
           v-for="(ranking, index) in rankingArray"
           :key="ranking.tag_name"

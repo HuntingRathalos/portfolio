@@ -1,10 +1,15 @@
 <template>
   <v-text-field
     v-model="setPasswordConfirmation"
+    :append-icon="passwordShow ? 'mdi-eye' : 'mdi-eye-off'"
     :rules="[rules.required, rules.minCount8]"
-    prepend-icon="mdi-lock-check"
-    label="パスワード確認用"
-    type="password"
+    :type="passwordShow ? 'text' : 'password'"
+    label="確認用パスワードを入力"
+    placeholder="8文字以上"
+    outlined
+    rounded
+    dense
+    @click:append="passwordShow = !passwordShow"
   />
 </template>
 <script>
@@ -17,6 +22,7 @@ export default {
   },
   data() {
     return {
+      passwordShow: false,
       rules: {
         required: (value) => !!value || '必須項目なので値を入力してください。',
         minCount8: (value) =>

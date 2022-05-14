@@ -81,7 +81,7 @@
 <script>
 export default {
   name: 'IndexPage',
-  auth: false,
+  auth: false
   // async asyncData ({ $axios }) {
   //   const post = await $axios.$get('/api/store/s')
   //   return {

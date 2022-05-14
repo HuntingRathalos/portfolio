@@ -2,9 +2,12 @@
   <v-text-field
     v-model.number="setTargetAmount"
     :rules="[rules.required, rules.isNum, rules.notZero]"
-    prepend-icon="mdi-cash-multiple"
     label="目標額"
+    placeholder="30000"
     type="number"
+    outlined
+    dense
+    rounded
   />
 </template>
 <script>

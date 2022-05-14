@@ -1,21 +1,21 @@
 <template>
   <div class="">
     <v-row>
-      <v-col cols="12">
+      <v-col class="mx-auto" cols="12">
         <v-card outlined>
-          <v-card-title>目標 旅行</v-card-title>
+          <v-card-title>目標 {{ target.name }}</v-card-title>
         </v-card>
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="6">
+      <v-col class="mx-auto" cols="12" sm="6">
         <simple-card>
           <template #amountName>目標額</template>
           <template #amount>{{ target.amount }}円</template>
           <template #content>目標まで :{{ remainAmount }}円</template>
         </simple-card>
       </v-col>
-      <v-col cols="6">
+      <v-col class="mx-auto" cols="12" sm="6">
         <simple-card>
           <template #amountName>貯金額</template>
           <template #amount>{{ saveAmount }}円</template>
@@ -24,12 +24,18 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12">
+      <v-col class="mx-auto" cols="12">
+        <sub-title-card class="pb-1">
+          <template #subTitle>今週の貯金記録</template>
+        </sub-title-card>
         <save-bar-chart />
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="10" class="mx-auto">
+      <v-col cols="12" class="mx-auto">
+        <sub-title-card class="pb-1">
+          <template #subTitle>我慢した回数ランキング</template>
+        </sub-title-card>
         <save-ranking />
       </v-col>
     </v-row>
@@ -37,11 +43,12 @@
 </template>
 <script>
 import SimpleCard from '../components/molecules/cards/SimpleCard.vue'
+import SubTitleCard from '../components/molecules/cards/SubTitleCard.vue'
 import SaveBarChart from '../components/organisms/charts/SaveBarChart.vue'
 import SaveRanking from '../components/organisms/rankings/SaveRanking.vue'
 export default {
   name: 'TopPage',
-  components: { SimpleCard, SaveBarChart, SaveRanking },
+  components: { SimpleCard, SaveBarChart, SaveRanking, SubTitleCard },
   data() {
     return {
       target: {

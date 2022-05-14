@@ -1,14 +1,14 @@
 <template>
   <v-list-item @click="followOrUnfollow">
     <v-list-item-avatar>
-      <v-icon class="grey lighten-1" dark> mdi-account </v-icon>
+      <v-icon class="amber lighten-3">mdi-account</v-icon>
     </v-list-item-avatar>
 
     <v-list-item-content>
       <v-list-item-title v-text="user.name"></v-list-item-title>
 
       <v-list-item-subtitle
-        >{{ user.createdAt }}から利用しています。</v-list-item-subtitle
+        >{{ user.createdAt }}から利用開始</v-list-item-subtitle
       >
     </v-list-item-content>
 
@@ -37,13 +37,13 @@ export default {
       followUsers: []
     }
   },
-  created() {
-    const judge = this.followUsersId.indexOf(this.user.id)
-    if (judge !== -1) {
-      this.active = true
-    }
-    this.followUsers = JSON.parse(sessionStorage.getItem('followUsers'))
-  },
+  // created() {
+  //   const judge = this.followUsersId.indexOf(this.user.id)
+  //   if (judge !== -1) {
+  //     this.active = true
+  //   }
+  //   this.followUsers = JSON.parse(sessionStorage.getItem('followUsers'))
+  // },
   methods: {
     followOrUnfollow() {
       if (this.active === false) {

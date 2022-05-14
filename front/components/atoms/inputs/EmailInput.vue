@@ -2,9 +2,12 @@
   <v-text-field
     v-model="setEmail"
     :rules="[rules.required, rules.email, rules.maxCount255]"
-    prepend-icon="mdi-email-outline"
-    label="メールアドレス"
+    label="メールアドレスを入力"
+    placeholder="your@email.com"
     type="email"
+    outlined
+    dense
+    rounded
   />
 </template>
 <script>
