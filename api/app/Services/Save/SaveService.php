@@ -138,14 +138,15 @@ class SaveService implements SaveServiceInterface
             $savesGroupByTagId->each(function($saves, $key) use($processedSaves){
                 // tag_idでグループ化したコレクションにおける最初の要素のicon_code取得
                 $save = $saves->first();
-                $icon_code = $this->iconRepository->getIconById($save->icon_id);
+                $icon = $this->iconRepository->getIconById($save->icon_id);
+
                 // タグの名前を取得
                 $tag = $this->tagRepository->getTagById($key);
 
                 $processedSaves->push([
                     'tag_name' => $tag->name,
                     'tag_count' => $saves->count(),
-                    'icon_code' => $icon_code
+                    'icon_code' => $icon->code
                 ]);
             });
             // tag_countが多い順に並び替える
