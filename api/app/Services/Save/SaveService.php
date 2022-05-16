@@ -4,6 +4,7 @@ namespace App\Services\Save;
 
 use App\Models\Save;
 use App\Models\Tag;
+use App\Repositories\Icon\IconRepositoryInterface;
 use App\Repositories\Save\SaveRepositoryInterface;
 use App\Repositories\Tag\TagRepositoryInterface;
 use Carbon\Carbon;
@@ -17,15 +18,22 @@ class SaveService implements SaveServiceInterface
 {
     private $saveRepository;
     private $tagRepository;
+    private $iconRepository;
 
     /**
      * @param SaveRepositoryInterface $saveRepository
      * @param TagRepositoryInterface $tagRepository
+     * @param IconRepositoryInterface $iconRepository
      */
-    public function __construct(SaveRepositoryInterface $saveRepository, TagRepositoryInterface $tagRepository)
+    public function __construct(
+        SaveRepositoryInterface $saveRepository,
+        TagRepositoryInterface $tagRepository,
+        IconRepositoryInterface $iconRepository
+     )
     {
         $this->saveRepository = $saveRepository;
         $this->tagRepository = $tagRepository;
+        $this->iconRepository = $iconRepository;
     }
 
     /**
@@ -130,7 +138,7 @@ class SaveService implements SaveServiceInterface
             $savesGroupByTagId->each(function($saves, $key) use($processedSaves){
                 // tag_idでグループ化したコレクションにおける最初の要素のicon_code取得
                 $save = $saves->first();
-                $icon_code = $save->icon->code;
+                $icon_code = $this->iconRepository->getIconById($save->icon_id);
                 // タグの名前を取得
                 $tag = $this->tagRepository->getTagById($key);
 
