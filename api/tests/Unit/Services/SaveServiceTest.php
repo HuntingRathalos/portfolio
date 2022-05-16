@@ -3,10 +3,13 @@
 namespace Tests\Unit\Services;
 
 use App\Models\Save;
+use App\Models\Tag;
 use Tests\TestCase;
 use Mockery;
 use App\Repositories\Save\SaveRepositoryInterface;
+use App\Repositories\Tag\TagRepositoryInterface;
 use App\Repositories\Save\SaveRepository;
+use App\Repositories\Tag\TagRepository;
 use App\Services\Save\SaveService;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
@@ -19,6 +22,7 @@ class SaveServiceTest extends TestCase
     use RefreshDatabase;
 
     private $saveRepositoryMock;
+    private $tagRepositoryMock;
 
     public function setUp(): void
     {
@@ -27,6 +31,9 @@ class SaveServiceTest extends TestCase
         // 依存しているリポジトリのモック作成
         $this->saveRepositoryMock = Mockery::mock(SaveRepository::class);
         $this->app->instance(SaveRepositoryInterface::class, $this->saveRepositoryMock);
+
+        // $this->tagRepositoryMock = Mockery::mock(TagRepository::class);
+        // $this->app->instance(TagRepositoryInterface::class, $this->tagRepositoryMock);
 
         // レスポンスの構造を確認するための配列
         $this->saveModelKeys = [
@@ -39,37 +46,144 @@ class SaveServiceTest extends TestCase
         ];
     }
 
+    /**
+     * SaveServiceのgetAllSavesメソッドの戻り値の型、構造が正しいかを確認する
+     *
+     * @return void
+     */
+    public function testGetAllSaves()
+    {
+      // モックの戻り値作成
+      $data = new Collection(Save::factory()->count(5)->make());
+
+      // SaveRepositoryのgetAllSavesをモック
+      $this->saveRepositoryMock->shouldReceive('getAllSaves')
+      ->once()
+      ->andReturn($data);
+
+      // テスト対象のメソッド呼び出し
+      $saveService = $this->app->make(SaveService::class);
+      $response = $saveService->getAllSaves();
+
+      // JsonResponseインスタンスからjsonデータのみを抽出
+      $json = $response->content();
+      // jsonから配列に変換
+      $arrayResponse = json_decode($json, true);
+      // レスポンスに含まれる配列の数が7個であることを確認
+      $this->assertCount(5, $arrayResponse);
+       // レスポンスがJsonResponseであることを確認
+      $this->assertInstanceOf(JsonResponse::class, $response);
+    }
+
+    /**
+     * SaveServiceのgetAllSavesAmountメソッドの戻り値の型、構造が正しいかを確認する
+     *
+     * @return void
+     */
+    public function testGetAllSavesAmount()
+    {
+      // モックの戻り値作成
+      $data = new Collection(
+        Save::factory()->count(3)->make([
+        'coin' => 3
+      ]));
+
+      // SaveRepositoryのgetAllSavesをモック
+      $this->saveRepositoryMock->shouldReceive('getAllSaves')
+      ->once()
+      ->andReturn($data);
+
+      // テスト対象のメソッド呼び出し
+      $saveService = $this->app->make(SaveService::class);
+      $response = $saveService->getAllSavesAmount();
+
+      // レスポンスがJsonResponseであることを確認
+      $this->assertInstanceOf(JsonResponse::class, $response);
+      // JsonResponseインスタンスからjsonデータのみを抽出
+      $json = $response->content();
+      // 返り値が合計貯金額になることを確認
+      $this->assertSame($json, '4500');
+    }
+
+    /**
+     * SaveServiceのgetSavesSpecificPeriodメソッドの戻り値の型、構造が正しいかを確認する
+     *
+     * @return void
+     */
+    public function testgetSavesSpecificPeriod()
+    {
+        // 週初、週末の日付をdate型で取得
+        // $clickedDate = new Carbon();
+        $cb1 = new Carbon();
+        $dateFromThisWeek = $cb1->startOfWeek()->toDateString();
+        $cb2 = new Carbon();
+        $dateToThisWeek = $cb2->endOfWeek()->toDateString();
+
+        // モックの戻り値作成
+        $data = new Collection(
+          Save::factory()->count(2)->make([
+          'click_date' => '2022-05-16'
+        ]));
+
+        // SaveRepositoryのgetSavesSpecificPeriodをモック
+        $this->saveRepositoryMock->shouldReceive('getSavesSpecificPeriod')
+          ->once()
+          ->with($dateFromThisWeek, $dateToThisWeek)
+          ->andReturn($data);
+
+        // テスト対象のメソッド呼び出し
+        $saveService = $this->app->make(SaveService::class);
+        $response = $saveService->getSavesSpecificPeriod();
+
+        // レスポンスがJsonResponseであることを確認
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        // JsonResponseインスタンスからjsonデータのみを抽出
+        $json = $response->content();
+        // jsonから配列に変換
+        $arrayResponse = json_decode($json, true);
+        // レスポンスに含まれる配列の数が7個であることを確認
+        $this->assertCount(7, $arrayResponse);
+    }
+
     // /**
-    //  * SaveServiceのgetSavesSpecificPeriodメソッドの戻り値の型、構造が正しいかを確認する
+    //  * SaveServiceのgetSaveRankingメソッドの戻り値の型、構造が正しいかを確認する
     //  *
     //  * @return void
     //  */
-    // public function testgetSavesSpecificPeriod()
+    // public function testGetSaveRanking()
     // {
-    //     // 週初、週末の日付をdate型で取得
-    //     // $clickedDate = new Carbon();
-    //     $cb1 = new Carbon();
-    //     $dateFromThisWeek = $cb1->startOfWeek()->toDateString();
-    //     $cb2 = new Carbon();
-    //     $dateToThisWeek = $cb2->endOfWeek()->toDateString();
+    //   // getAllSavesメソッドのモック用戻り値作成
+    //   $data = new Collection(Save::factory()->count(5)->make([
+    //     'tag_id' => 3
+    //   ]));
 
-    //     // モックの戻り値作成
-    //     $data = new Collection(Save::factory()->count(3)->make());
+    //   // SaveRepositoryのgetAllSavesをモック
+    //   $this->saveRepositoryMock->shouldReceive('getAllSaves')
+    //   ->once()
+    //   ->andReturn($data);
 
-    //     // SaveRepositoryのgetSavesSpecificPeriodをモック
-    //     $this->saveRepositoryMock->shouldReceive('getSavesSpecificPeriod')
-    //       ->once()
-    //       ->with($dateFromThisWeek, $dateToThisWeek)
-    //       ->andReturn($data);
+    //   // TagRepositoryのgetTagByIdをモック
+    //   $this->saveRepositoryMock->shouldReceive('getTagById')
+    //   ->once()
+    //   ->with(3)
+    //   ->andReturn([
+    //     'id' => 3,
+    //     'name' => '食品'
+    //   ]);
 
-    //     // テスト対象のメソッド呼び出し
-    //     $saveService = $this->app->make(SaveService::class);
-    //     $response = $saveService->getSavesSpecificPeriod();
-    //     // レスポンスがJsonResponseであることを確認
-    //     $this->assertInstanceOf(JsonResponse::class, $response);
+    //   // テスト対象のメソッド呼び出し
+    //   $saveService = $this->app->make(SaveService::class);
+    //   $response = $saveService->getSaveRanking();
 
-    //     // 正しい構造のレスポンスが返っていることを確認
-    //     $this->convertJsonResponseIntoArray($response);
+    //   // レスポンスがJsonResponseであることを確認
+    //   $this->assertInstanceOf(JsonResponse::class, $response);
+    //   // JsonResponseインスタンスからjsonデータのみを抽出
+    //   $json = $response->content();
+    //   // jsonから配列に変換
+    //   $arrayResponse = json_decode($json, true);
+    //   // レスポンスに含まれる配列の数が7個であることを確認
+    //   \Log::debug($arrayResponse);
+    //   $this->assertCount(1, $arrayResponse);
     // }
 
     /**

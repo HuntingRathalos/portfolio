@@ -7,6 +7,7 @@ use App\Models\Save;
 use App\Models\User;
 use App\Repositories\Save\SaveRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Database\Eloquent\Collection;
 use Carbon\Carbon;
 
 class SaveRepositoryTest extends TestCase
@@ -19,6 +20,36 @@ class SaveRepositoryTest extends TestCase
 
       //  依存解決しながらリポジトリ取得
       $this->repo = $this->app->make(SaveRepository::class);
+  }
+
+  public function testGetSaveById()
+  {
+    // あらかじめレコードを作成
+    $save = Save::factory()->create();
+
+    $gotSave = $this->repo->getSaveById($save->id);
+
+    // 返り値がSaveインスタンスであることを確認
+    $this->assertInstanceOf(Save::class, $gotSave);
+  }
+
+  public function testGetAllSaves()
+  {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+    // あらかじめレコードを作成
+    $save = Save::factory()->count(5)->create([
+      'user_id' => $user->id
+    ]);
+
+    $saves = $this->repo->getAllSaves();
+
+    // 取得したレコードの数が正しいことを確認
+    $recordNum = $saves->count();
+    $this->assertSame(5, $recordNum);
+    // 返り値がcollectionであることを確認
+    $this->assertInstanceOf(Collection::class, $saves);
   }
 
   public function testGetSavesSpecificPeriod()
