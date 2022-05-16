@@ -52,7 +52,7 @@ class UserService implements UserServiceInterface
   public function getFollowUsers(): JsonResponse
   {
     $user = Auth::user();
-    $followUsers = $user->followings;
+    $followUsers = $this->userRepository->getFollowUsers();
     $processedUsers = collect();
     // フォローしているユーザーがいない時は、ゲストユーザーを返す
 
@@ -105,7 +105,7 @@ class UserService implements UserServiceInterface
   public function getFollowUsersId(): JsonResponse
   {
     $user = Auth::user();
-    $followUsers = $user->followings;
+    $followUsers = $this->userRepository->getFollowUsers();
     if($followUsers) {
       $followUsersId = $followUsers->pluck('followee_id')->toArray();
       return response()->json($followUsersIdArray, Response::HTTP_OK);
@@ -127,8 +127,7 @@ class UserService implements UserServiceInterface
     $followUser = $this->userRepository->getUserById($userId);
 
     // ログインユーザーがあるユーザーを重ねてフォローできないようにするため削除後に登録
-    $user->followings()->detach($followUser);
-    $user->followings()->attach($followUser);
+    $this->userRepository->follow($followUser);
 
     $target = $followUser->target;
     $saves = $followUser->saves;
@@ -169,8 +168,7 @@ class UserService implements UserServiceInterface
     $user = Auth::user();
     // ログインユーザーがフォローしたユーザー
     $followUser = $this->userRepository->getUserById($userId);
-    
-    $user->followings()->detach($followUser);
+    $this->userRepository->unfollow($followUser);
 
     return response()->json(null, Response::HTTP_NO_CONTENT);
   }
