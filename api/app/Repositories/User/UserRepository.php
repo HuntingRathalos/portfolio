@@ -31,6 +31,16 @@ class UserRepository implements UserRepositoryInterface
   }
 
   /**
+   * ログインユーザーがフォローしているユーザーを取得
+   *
+   * @return Collection
+   */
+  public function getFollowUsers(): Collection
+  {
+    return Auth::user()->followings;
+  }
+
+  /**
    * 自分以外のユーザー情報取得
    *
    * @return Collection
@@ -48,5 +58,28 @@ class UserRepository implements UserRepositoryInterface
   public function getUserById(int $userId): User
   {
     return $this->model->findOrFail($userId);
+  }
+
+  /**
+   * ユーザーがフォローしたときに、中間テーブルにレコード作成
+   *
+   * @param User $followUser
+   * @return void
+   */
+  public function follow(User $followUser): void
+  {
+    Auth::user()->followings()->detach($followUser);
+    Auth::user()->followings()->attach($followUser);
+  }
+
+  /**
+   * ユーザーがフォローを外したときに、中間テーブルのレコード削除
+   *
+   * @param User $followUser
+   * @return void
+   */
+  public function unfollow(User $followUser): void
+  {
+    Auth::user()->followings()->detach($followUser);
   }
  }

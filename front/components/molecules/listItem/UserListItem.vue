@@ -37,13 +37,13 @@ export default {
       followUsers: []
     }
   },
-  // created() {
-  //   const judge = this.followUsersId.indexOf(this.user.id)
-  //   if (judge !== -1) {
-  //     this.active = true
-  //   }
-  //   this.followUsers = JSON.parse(sessionStorage.getItem('followUsers'))
-  // },
+  created() {
+    const judge = this.followUsersId.indexOf(this.user.id)
+    if (judge !== -1) {
+      this.active = true
+    }
+    this.followUsers = JSON.parse(sessionStorage.getItem('followUsers'))
+  },
   methods: {
     followOrUnfollow() {
       if (this.active === false) {

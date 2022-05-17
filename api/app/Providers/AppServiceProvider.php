@@ -13,6 +13,7 @@ use App\Repositories\Save\SaveRepositoryInterface;
 use App\Repositories\Tag\TagRepositoryInterface;
 use App\Repositories\Target\TargetRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
+use App\Repositories\Icon\IconRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,7 +34,8 @@ class AppServiceProvider extends ServiceProvider
             function ($app) {
                 return new SaveService(
                     $app->make(SaveRepositoryInterface::class),
-                    $app->make(TagRepositoryInterface::class)
+                    $app->make(TagRepositoryInterface::class),
+                    $app->make(IconRepositoryInterface::class)
                 );
             });
 
@@ -49,7 +51,10 @@ class AppServiceProvider extends ServiceProvider
             UserServiceInterface::class,
             function ($app) {
                 return new UserService(
-                    $app->make(UserRepositoryInterface::class)
+                    $app->make(UserRepositoryInterface::class),
+                    $app->make(SaveRepositoryInterface::class),
+                    $app->make(TargetRepositoryInterface::class),
+                    $app->make(TagRepositoryInterface::class),
                 );
             });
     }
