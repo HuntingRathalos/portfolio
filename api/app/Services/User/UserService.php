@@ -4,6 +4,9 @@ namespace App\Services\User;
 
 use App\Models\User;
 use App\Repositories\User\UserRepositoryInterface;
+use App\Repositories\Save\SaveRepositoryInterface;
+use App\Repositories\Target\TargetRepositoryInterface;
+use App\Repositories\Tag\TagRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -15,13 +18,27 @@ use Illuminate\Support\Facades\Log;
 class UserService implements UserServiceInterface
 {
   private $userRepository;
+  private $saveRepository;
+  private $targetRepository;
+  private $tagRepository;
 
   /**
    * @param UserRepositoryInterface $userRepository
+   * @param SaveRepositoryInterface $saveRepository
+   * @param TargetRepositoryInterface $targetRepository
+   * @param TagRepositoryInterface $tagRepository
    */
-  public function __construct(UserRepositoryInterface $userRepository)
+  public function __construct(
+    UserRepositoryInterface $userRepository,
+    SaveRepositoryInterface $saveRepository,
+    TargetRepositoryInterface $targetRepository,
+    TagRepositoryInterface $tagRepository,
+    )
   {
     $this->userRepository = $userRepository;
+    $this->saveRepository = $saveRepository;
+    $this->targetRepository = $targetRepository;
+    $this->tagRepository = $tagRepository;
   }
 
   /**
@@ -54,8 +71,8 @@ class UserService implements UserServiceInterface
     $user = Auth::user();
     $followUsers = $this->userRepository->getFollowUsers();
     $processedUsers = collect();
-    // フォローしているユーザーがいない時は、ゲストユーザーを返す
 
+    // フォローしているユーザーがいない時は、ゲストユーザーを返す
     if($followUsers->isEmpty()) {
       $processedUsers->push([
         'id' => 400,
@@ -70,8 +87,8 @@ class UserService implements UserServiceInterface
     $followUsers = $followUsers->load(['saves', 'target', 'saves.tag']);
 
     $followUsers->each(function ($followUser) use ($processedUsers) {
-      $target = $followUser->target;
-      $saves = $followUser->saves;
+      $target = $this->targetRepository->getTarget();
+      $saves = $this->saveRepository->getAllSaves();
 
       // フォローしたユーザーの貯金記録、または目標設定がない時は'設定されていません'を詰める
       if(!$target || $saves->isEmpty()) {
@@ -84,7 +101,7 @@ class UserService implements UserServiceInterface
         ]);
       } else {
         $firstSave = $saves->shift();
-        $tag = $firstSave->tag;
+        $tag = $this->tagRepository->getTagById($firstSave->tag_id);
         $processedUsers->push([
           'id' => $followUser->id,
           'name' => $followUser->name,
@@ -95,22 +112,6 @@ class UserService implements UserServiceInterface
       }
     });
     return response()->json($processedUsers, Response::HTTP_OK);
-  }
-
-  /**
-   * ログインユーザーがフォローしている人のidを取得
-   *
-   * @return JsonResponse
-   */
-  public function getFollowUsersId(): JsonResponse
-  {
-    $user = Auth::user();
-    $followUsers = $this->userRepository->getFollowUsers();
-    if($followUsers) {
-      $followUsersId = $followUsers->pluck('followee_id')->toArray();
-      return response()->json($followUsersIdArray, Response::HTTP_OK);
-    }
-    return response()->json(null, Response::HTTP_OK);
   }
 
   /**
@@ -129,8 +130,8 @@ class UserService implements UserServiceInterface
     // ログインユーザーがあるユーザーを重ねてフォローできないようにするため削除後に登録
     $this->userRepository->follow($followUser);
 
-    $target = $followUser->target;
-    $saves = $followUser->saves;
+    $target = $this->targetRepository->getTarget();
+    $saves = $this->saveRepository->getAllSaves();
 
     $processedFollowUser = [];
     // フォローしたユーザーの貯金記録、または目標設定がない時は'設定されていません'を詰める
@@ -144,7 +145,7 @@ class UserService implements UserServiceInterface
       ];
     } else {
       $firstSave = $saves->shift();
-      $tag = $firstSave->tag;
+      $tag = $this->tagRepository->getTagById($firstSave->tag_id);
       $processedFollowUser = (object)[
         'id' => $followUser->id,
         'name' => $followUser->name,
@@ -166,37 +167,10 @@ class UserService implements UserServiceInterface
   {
     // ログインユーザー
     $user = Auth::user();
-    // ログインユーザーがフォローしたユーザー
-    $followUser = $this->userRepository->getUserById($userId);
-    $this->userRepository->unfollow($followUser);
+    // ログインユーザーがフォローを外したユーザー
+    $unfollowUser = $this->userRepository->getUserById($userId);
+    $this->userRepository->unfollow($unfollowUser);
 
     return response()->json(null, Response::HTTP_NO_CONTENT);
   }
-  // /**
-  //  * ユーザーの合計貯金額ランキングを表示
-  //  *
-  //  * @return JsonResponse
-  //  */
-  // public function getUsersAmountRanking(): JsonResponse
-  // {
-  //   $user = Auth::user();
-  //   $user = $user->load(['followers', 'followers.saves']);
-  //   $followers = $user->followers;
-  //   if(!$followers) {
-  //     return response()->json(null, Response::HTTP_OK);
-  //   }
-  //   $processedFollowers = collect();
-  //   foreach($followers as $follower) {
-  //     $saves = $follower->saves;
-  //     if(!$saves->isEmpty()) {
-  //       $coins = $Saves->sum('coin');
-  //       $amount = $coins * 500;
-  //       $processedFollowers->push([
-  //         'name' => $follower->name,
-  //         'saveAmount' => $amount
-  //       ]);
-  //     }
-  //   }
-  //   return response()->json($processedFollowers, Response::HTTP_OK);
-  // }
 }

@@ -51,7 +51,10 @@ class AppServiceProvider extends ServiceProvider
             UserServiceInterface::class,
             function ($app) {
                 return new UserService(
-                    $app->make(UserRepositoryInterface::class)
+                    $app->make(UserRepositoryInterface::class),
+                    $app->make(SaveRepositoryInterface::class),
+                    $app->make(TargetRepositoryInterface::class),
+                    $app->make(TagRepositoryInterface::class),
                 );
             });
     }
