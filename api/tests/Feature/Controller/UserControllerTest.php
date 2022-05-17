@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Repositories\User\UserRepository;
 use Illuminate\Database\Eloquent\Collection;
+use Mockery;
 
 class UserControllerTest extends TestCase
 {
