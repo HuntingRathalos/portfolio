@@ -16,7 +16,7 @@ class Authenticate extends Middleware
     {
         // 認証されていないときに403エラーを起こす
         if($request->is('api/*')) {
-            abort(403);
+            return response()->error(Response::HTTP_FORBIDDEN, '許可されていません。一度ログアウトしてから再度お試しください。');
         }
 
         if (! $request->expectsJson()) {

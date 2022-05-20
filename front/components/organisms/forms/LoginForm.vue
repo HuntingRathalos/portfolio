@@ -48,9 +48,11 @@ export default {
         //   .loginWith('laravelSanctum', {
         //     data: this.form
         //   })
-        await this.$auth.loginWith('laravelSanctum', {
-          data: this.form
-        })
+        await this.$auth
+          .loginWith('laravelSanctum', {
+            data: this.form
+          })
+          .catch((err) => console.log(err))
         this.$router.push('/')
         //   .catch((err) => err.response || err)
         // if (response.status === 400) {

@@ -2,6 +2,7 @@
   <div>
     <div>
       <v-row justify="center">
+        <alert-dialog @runMethod="deleteSave" />
         <v-dialog
           v-model="isOpenSaveModal"
           persistent
@@ -16,7 +17,9 @@
                 </h1>
               </div>
               <div v-if="updateFlag" class="ml-auto">
-                <v-icon class="ml-auto" @click="deleteSave">mdi-delete</v-icon>
+                <v-icon class="ml-auto" @click="openAlertModal"
+                  >mdi-delete</v-icon
+                >
               </div>
             </v-card-title>
             <v-card-text>
@@ -66,7 +69,7 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeModal">
+              <v-btn color="blue darken-1" text @click="closeSaveModal">
                 閉じる
               </v-btn>
               <v-btn color="blue darken-1" text @click="createOrUpdateSave">
@@ -127,6 +130,7 @@ import SaveList from '../components/organisms/lists/SaveList.vue'
 import IconModal from '../components/organisms/modals/IconModal.vue'
 import TagInput from '../components/atoms/inputs/TagInput.vue'
 import SubTitleCard from '../components/molecules/cards/SubTitleCard.vue'
+import AlertDialog from '../components/organisms/modals/AlertDialog.vue'
 export default {
   name: 'SavePage',
   components: {
@@ -135,7 +139,8 @@ export default {
     MemoInput,
     SaveModalSlider,
     TagInput,
-    SubTitleCard
+    SubTitleCard,
+    AlertDialog
   },
   data: () => ({
     save: {
@@ -167,10 +172,10 @@ export default {
     },
     isOpenSaveModal: {
       get() {
-        return this.$store.getters['save/openSaveModal']
+        return this.$store.getters['modal/openSaveModal']
       },
       set(newVal) {
-        this.$store.dispatch('save/setOpenSaveModal', newVal)
+        this.$store.dispatch('modal/setOpenSaveModal', newVal)
       }
     },
     multipleCoin() {
@@ -248,7 +253,7 @@ export default {
 
           this.getSavesOneMonth()
         })
-        this.$store.dispatch('save/setOpenSaveModal', false)
+        this.closeSaveModal()
         return
       }
       this.$saveApi.create(this.save).then((res) => {
@@ -271,7 +276,7 @@ export default {
         )
         this.events.push(event)
       })
-      this.$store.dispatch('save/setOpenSaveModal', false)
+      this.closeSaveModal()
     },
     deleteSave() {
       this.getSavesAmount()
@@ -282,7 +287,11 @@ export default {
       this.events = this.events.filter((event) => event.id !== this.saveId)
 
       this.getSavesOneMonth()
-      this.$store.dispatch('save/setOpenSaveModal', false)
+      this.$store.dispatch('modal/setOpenAlertModal', false)
+      this.closeSaveModal()
+    },
+    openAlertModal() {
+      this.$store.dispatch('modal/setOpenAlertModal', true)
     },
     getSavesOneMonth() {
       this.savesOneMonth = JSON.parse(sessionStorage.getItem('saves')).filter(
@@ -297,8 +306,8 @@ export default {
       )
       this.savesOneMonth.sort((a, b) => (a.click_date < b.click_date ? -1 : 1))
     },
-    closeModal() {
-      this.$store.dispatch('save/setOpenSaveModal', false)
+    closeSaveModal() {
+      this.$store.dispatch('modal/setOpenSaveModal', false)
       this.save.tag_id = 1
       this.save.icon_id = 1
       this.save.coin = 0
@@ -312,7 +321,7 @@ export default {
         if (this.saveId === this.saves[i].id) {
           this.save = Object.assign(this.save, this.saves[i])
 
-          this.$store.dispatch('save/setOpenSaveModal', true)
+          this.$store.dispatch('modal/setOpenSaveModal', true)
           return
         }
       }
@@ -349,7 +358,7 @@ export default {
     showEvent(event) {
       this.updateFlag = false
       this.save.click_date = event.date
-      this.$store.dispatch('save/setOpenSaveModal', true)
+      this.$store.dispatch('modal/setOpenSaveModal', true)
     },
     dayFormat(date) {
       return new Date(date.date).getDate()

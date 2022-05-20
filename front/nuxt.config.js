@@ -58,6 +58,7 @@ export default {
     '@nuxtjs/auth-next',
     '@nuxtjs/toast'
   ],
+  loading: '~/components/singleInstance/TheLoading.vue',
   moment: {
     locales: ['ja']
   },
