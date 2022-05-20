@@ -64,6 +64,9 @@ class Handler extends ExceptionHandler
      */
     private function apiErrorResponse($request, Throwable $exception)
     {
+        if($exception instanceof AuthorizationException) {
+                return response()->error(Response::HTTP_FORBIDDEN, '許可されていません。一度ログアウトしてから再度お試しください。');
+        }
         if($this->isHttpException($exception)) {
             $statusCode = $exception->getStatusCode();
 
@@ -71,7 +74,7 @@ class Handler extends ExceptionHandler
                 case 401:
                     return response()->error(Response::HTTP_UNAUTHORIZED, '認証エラーが発生しました。再度ログインし直してください。');
                 case 403:
-                    return response()->error(Response::HTTP_FORBIDDEN, '許可されていません。');
+                    return response()->error(Response::HTTP_FORBIDDEN, '許可されていません。一度ログアウトしてから再度お試しください。');
                 case 404:
                     return response()->error(Response::HTTP_NOT_FOUND, 'ページが見つかりません。');
                 case 500:

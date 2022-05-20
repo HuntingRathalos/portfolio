@@ -1,8 +1,14 @@
-// eslint-disable-next-line import/no-mutable-exports
-// export let axios
+export default function ({ $axios, $toast, error: nuxtError, store }) {
+  $axios.onRequest((config) => {
+    store.dispatch('loading/incrementLoadingCount')
+  })
 
-export default function ({ $axios, $toast, error: nuxtError }) {
+  $axios.onResponse(() => {
+    store.dispatch('loading/decrementLoadingCount')
+  })
+
   $axios.onError((error) => {
+    store.dispatch('loading/decrementLoadingCount')
     if (error.response.status === 400) {
       $toast.error('もう一度入力内容をご確認ください。')
     } else {
@@ -13,6 +19,4 @@ export default function ({ $axios, $toast, error: nuxtError }) {
       return Promise.resolve(false)
     }
   })
-
-  // axios = $axios
 }
