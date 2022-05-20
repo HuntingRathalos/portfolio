@@ -1,17 +1,19 @@
 export const state = () => ({
   openSaveModal: false,
-  savings: [],
-  clickDate: ''
+  openAlertModal: false
 })
 
 export const getters = {
-  // 特定イベントを抜き出すもの,
-  openSaveModal: (state) => state.openSaveModal
+  openSaveModal: (state) => state.openSaveModal,
+  openAlertModal: (state) => state.openAlertModal
 }
 
 export const mutations = {
   setOpenSaveModal(state, openSaveModal) {
     state.openSaveModal = openSaveModal
+  },
+  setOpenAlertModal(state, openAlertModal) {
+    state.openAlertModal = openAlertModal
   }
 }
 
@@ -19,9 +21,7 @@ export const actions = {
   setOpenSaveModal({ commit }, openSaveModal) {
     commit('setOpenSaveModal', openSaveModal)
   },
-  async createSave({ commit, getters }) {
-    const response = await this.$saveApi.create(getters.saving)
-    console.log(response)
-    commit('setSaving', response.data)
+  setOpenAlertModal({ commit }, openAlertModal) {
+    commit('setOpenAlertModal', openAlertModal)
   }
 }
