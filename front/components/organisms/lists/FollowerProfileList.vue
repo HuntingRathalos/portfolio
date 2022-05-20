@@ -20,7 +20,7 @@
           <v-list-item-title>目標金額</v-list-item-title>
 
           <v-list-item-subtitle class="text-center ml-12">
-            {{ followUser.targetAmount }}円
+            {{ followUser.targetAmount }}
           </v-list-item-subtitle>
         </v-list-item>
         <v-list-item>

@@ -106,7 +106,7 @@ class UserService implements UserServiceInterface
           'id' => $followUser->id,
           'name' => $followUser->name,
           'target' => $target->name,
-          'targetAmount' => $target->amount,
+          'targetAmount' => $target->amount."円",
           'tagName' => $tag->name,
         ]);
       }
