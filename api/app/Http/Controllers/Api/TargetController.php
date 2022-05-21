@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Services\Target\TargetServiceInterface;
 use App\Services\Save\SaveServiceInterface;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class TargetController extends Controller
 {
@@ -68,7 +69,11 @@ class TargetController extends Controller
      */
     public function destroy($targetId)
     {
-        $this->targetService->deleteTarget($targetId);
-        return $this->saveService->deleteAllSaves();
+        \DB::transaction(function () use ($targetId) {
+            $this->targetService->deleteTarget($targetId);
+            $this->saveService->deleteAllSaves();
+        });
+
+        return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 }
