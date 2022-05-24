@@ -39,13 +39,13 @@ export default {
       }
     }
   },
-  // mounted() {
-  //   this.getSavesOneWeek()
-  // },
+  mounted() {
+    this.getSavesOneWeek()
+  },
   methods: {
-    async getSavesOneWeek() {
-      await this.$axios
-        .get('/api/saves/week')
+    getSavesOneWeek() {
+      this.$saveApi
+        .getOneWeek()
         .then((res) => {
           const plusCoin = res.data.map((data) => data.pluscoin * 500)
           const minusCoin = res.data.map((data) => data.minuscoin * 500)

@@ -28,6 +28,7 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::apiResource('saves', SaveController::class)->except('show');
     Route::get('/saves/amount', [SaveController::class, 'getAllSavesAmount']);
     Route::get('/saves/week', [SaveController::class, 'getSavesOneWeek']);
+    Route::get('/saves/tag', [SaveController::class, 'getSavesByTagId']);
     Route::get('/saves/ranking', [SaveController::class, 'getSaveRanking']);
 
     Route::apiResource('targets', TargetController::class)->except('show');
@@ -35,7 +36,6 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::prefix('users')->group(function () {
         Route::get('/', [UserController::class, 'getUsersExceptMyself']);
         Route::get('/follow', [UserController::class, 'getFollowUsers']);
-        // Route::get('/follow_id', [UserController::class, 'getFollowUsersId']);
         Route::patch('/follow/{userId}', [UserController::class, 'follow'])->name('users.follow');
         Route::delete('/follow/{userId}', [UserController::class, 'unfollow'])->name('users.unfollow');
     });

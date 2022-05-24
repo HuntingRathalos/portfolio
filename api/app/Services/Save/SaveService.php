@@ -119,6 +119,44 @@ class SaveService implements SaveServiceInterface
     }
 
     /**
+     * 円グラフ用データをtag_idでグループ化して取得し、responseをjsonに整形
+     *
+     * @return JsonResponse
+     */
+    public function getSavesByTagId(): JsonResponse
+    {
+        $allSaves = $this->saveRepository->getAllSaves();
+        if(!$allSaves->isEmpty()) {
+            // 貯金した記録を取得するので、coin > 0になるように絞り込む
+            $filteredSaves = $allSaves->filter(function ($filteredSave) {
+                return $filteredSave->coin > 0;
+            });
+            $processedSaves = collect();
+            // 取得した記録をtag_idでグループ化
+            $savesGroupByTagId = $filteredSaves->groupBy('tag_id');
+            $savesGroupByTagId->each(function($saves, $key) use($processedSaves){
+                $pluscoin = 0;
+                foreach($saves as $save) {
+                    $pluscoin += $save->coin;
+                }
+                // タグの名前を取得
+                $tag = $this->tagRepository->getTagById($key);
+
+                $processedSaves->push([
+                    'tag_name' => $tag->name,
+                    'pluscoin' => $pluscoin,
+                ]);
+            });
+            // pluscoinが多い順に並び替える
+            $sortedSaves = $processedSaves->sortByDesc('pluscoin');
+            $sorted = $sortedSaves->values()->all();
+        } else {
+            return response()->json('', Response::HTTP_OK);
+        }
+        return response()->json($sorted, Response::HTTP_OK);
+    }
+
+    /**
      * ランキング用のデータをtag_idでグループ化して取得し、responseをjsonに整形
      *
      * @return JsonResponse
