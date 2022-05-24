@@ -8,19 +8,16 @@ class SaveApi {
     this.axios = axios
   }
 
-  // async getOneMonth(date) {
-  //   return await this.axios.get(`api/saves/${date}`)
-  // }
   async getSavesAmount() {
     return await this.axios.get('api/saves/amount')
   }
 
   async getOneWeek() {
-    return await this.$axios.get('/api/saves/week')
+    return await this.axios.get('/api/saves/week')
   }
 
   async getGroupedByTag() {
-    return await this.$axios.get('/api/saves/tag')
+    return await this.axios.get('/api/saves/tag')
   }
 
   // async getOneWeek(date) {

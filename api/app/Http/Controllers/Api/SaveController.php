@@ -50,6 +50,16 @@ class SaveController extends Controller
     }
 
     /**
+     * 全貯金記録をタグでグループ化し、円グラフ用にデータを整形して返す
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getSavesByTagId()
+    {
+        return $this->saveService->getSavesByTagId();
+    }
+
+    /**
      * ランキング用のデータをtag_idでグループ化して取得
      *
      * @return \Illuminate\Http\Response

@@ -39,9 +39,9 @@ export default {
       }
     }
   },
-  // mounted() {
-  //   this.getSavesOneWeek()
-  // },
+  mounted() {
+    this.getSavesOneWeek()
+  },
   methods: {
     getSavesOneWeek() {
       this.$saveApi
