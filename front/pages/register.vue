@@ -6,7 +6,8 @@
 import RegisterForm from '../components/organisms/forms/RegisterForm.vue'
 export default {
   name: 'RegisterPage',
+  components: { RegisterForm },
   auth: false,
-  components: { RegisterForm }
+  middleware: 'afterLoddedInRedirect'
 }
 </script>
