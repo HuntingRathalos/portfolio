@@ -6,7 +6,8 @@
 import LoginForm from '../components/organisms/forms/LoginForm.vue'
 export default {
   name: 'LoginPage',
+  components: { LoginForm },
   auth: false,
-  components: { LoginForm }
+  middleware: 'afterLoddedInRedirect'
 }
 </script>
