@@ -1,6 +1,10 @@
 <template>
   <div class="">
-    <alert-dialog @runMethod="deleteTarget" />
+    <alert-dialog @runMethod="deleteTarget">
+      <template #btnText
+        >目標と全ての貯金記録を削除しますがよろしいですか?</template
+      >
+    </alert-dialog>
     <v-card max-width="500" class="mx-auto mt-5 full-width" flat outlined>
       <v-card-title class="text-center pa-8">
         <h1 class="text-h5 font-weight-bold full-width">{{ titleText }}</h1>
@@ -75,6 +79,7 @@ export default {
             console.log(res)
             sessionStorage.setItem('target', JSON.stringify(res.data))
             this.$router.push('/home')
+            this.$toast.success('目標を作成しました。')
           })
         } else {
           this.$targetApi.create(this.form).then((res) => {
@@ -82,6 +87,7 @@ export default {
             sessionStorage.setItem('target', JSON.stringify(res.data))
             this.updateFlag = true
             this.$router.push('/home')
+            this.$toast.success('目標を更新しました。')
           })
         }
       }
@@ -96,6 +102,7 @@ export default {
           sessionStorage.removeItem('saveAmount')
           this.updateFlag = false
           this.$router.push('/top-page')
+          this.$toast.success('削除に成功しました。')
         })
       }
     },

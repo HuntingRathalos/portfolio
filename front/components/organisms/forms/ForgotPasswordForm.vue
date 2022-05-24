@@ -46,7 +46,7 @@ export default {
         await this.$axios.get('sanctum/csrf-cookie')
         const response = await this.$axios
           .post('/api/forgot-password', this.form)
-          .then(console.log())
+          .then(this.$toast.success('パスワードリセットメールを送信しました。'))
           .catch((err) => err.response || err)
 
         if (response.status === 400) {

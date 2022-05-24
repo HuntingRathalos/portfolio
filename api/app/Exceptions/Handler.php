@@ -5,6 +5,10 @@ namespace App\Exceptions;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\AuthenticationException;
 
 class Handler extends ExceptionHandler
 {
@@ -64,23 +68,36 @@ class Handler extends ExceptionHandler
      */
     private function apiErrorResponse($request, Throwable $exception)
     {
-        if($exception instanceof AuthorizationException) {
-                return response()->error(Response::HTTP_FORBIDDEN, '許可されていません。一度ログアウトしてから再度お試しください。');
+        Log::error('[API Error] '.$request->method().': '.$request->fullUrl());
+        Log::error($exception);
+
+        if($exception instanceof AuthenticationException) {
+            return response()->error(Response::HTTP_UNAUTHORIZED, '認証エラーが発生しました。一度ログアウトしてから再度お試しください。');
         }
+
+        if($exception instanceof AuthorizationException) {
+            return response()->error(Response::HTTP_FORBIDDEN, '許可されていません。一度ログアウトしてから再度お試しください。');
+        }
+
+        if ($exception instanceof ModelNotFoundException) {
+            return response()->error(Response::HTTP_NOT_FOUND, 'ページが見つかりません。');
+        }
+
         if($this->isHttpException($exception)) {
             $statusCode = $exception->getStatusCode();
 
             switch($statusCode) {
                 case 401:
-                    return response()->error(Response::HTTP_UNAUTHORIZED, '認証エラーが発生しました。再度ログインし直してください。');
+                    return response()->error(Response::HTTP_UNAUTHORIZED, '認証エラーが発生しました。一度ログアウトしてから再度お試しください。');
                 case 403:
                     return response()->error(Response::HTTP_FORBIDDEN, '許可されていません。一度ログアウトしてから再度お試しください。');
                 case 404:
                     return response()->error(Response::HTTP_NOT_FOUND, 'ページが見つかりません。');
                 case 500:
-                    return response()->error(Response::HTTP_INTERNAL_SERVER_ERROR, 'システムエラーが発生しました。');
+                    return response()->error(Response::HTTP_INTERNAL_SERVER_ERROR, 'システムエラーが発生しました。時間を置いて再度お試しください。');
             }
         }
+        return response()->error(Response::HTTP_INTERNAL_SERVER_ERROR, 'システムエラーが発生しました。時間を置いて再度お試しください。');
     }
 
 }

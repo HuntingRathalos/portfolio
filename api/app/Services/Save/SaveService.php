@@ -54,7 +54,6 @@ class SaveService implements SaveServiceInterface
      */
     public function getAllSavesAmount(): JsonResponse
     {
-
         $allSaves = $this->saveRepository->getAllSaves();
         if(!$allSaves->isEmpty()) {
             $coins = $allSaves->sum('coin');
