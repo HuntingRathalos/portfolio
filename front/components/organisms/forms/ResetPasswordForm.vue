@@ -52,10 +52,10 @@ export default {
   methods: {
     async resetPassword() {
       if (this.$refs.reset_password_form.validate()) {
-        try {
-          await this.$axios.get('sanctum/csrf-cookie')
-          await this.$axios.post('/api/reset-password', this.form)
-        } catch (e) {}
+        await this.$axios.get('sanctum/csrf-cookie')
+        await this.$axios
+          .post('/api/reset-password', this.form)
+          .then(this.$toast.success('パスワードリセットに成功しました。'))
       }
     }
   }

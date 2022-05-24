@@ -44,20 +44,13 @@ export default {
   methods: {
     async doLogin() {
       if (this.$refs.login_form.validate()) {
-        // const response = await this.$auth
-        //   .loginWith('laravelSanctum', {
-        //     data: this.form
-        //   })
-        await this.$auth
-          .loginWith('laravelSanctum', {
+        try {
+          await this.$auth.loginWith('laravelSanctum', {
             data: this.form
           })
-          .catch((err) => console.log(err))
-        this.$router.push('/')
-        //   .catch((err) => err.response || err)
-        // if (response.status === 400) {
-        //   console.log(response)
-        // }
+          this.$router.push('/')
+          this.$toast.success('ログインに成功しました。')
+        } catch {}
       }
     }
   }

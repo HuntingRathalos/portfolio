@@ -53,13 +53,12 @@ export default {
   methods: {
     async signUp() {
       if (this.$refs.register_form.validate()) {
-        await this.$axios.get('/sanctum/csrf-cookie')
-        const response = await this.$axios
-          .post('/api/register', this.form)
-          .catch((err) => err.response || err)
-        if (response.status === 400) {
-          console.log(response)
-        }
+        try {
+          await this.$axios.get('/sanctum/csrf-cookie')
+          const response = await this.$axios.post('/api/register', this.form)
+          this.$router.push('/login')
+          this.$toast.success('会員登録に成功しました。')
+        } catch {}
       }
     }
   }

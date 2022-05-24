@@ -254,6 +254,7 @@ export default {
           this.getSavesOneMonth()
         })
         this.closeSaveModal()
+        this.$toast.success('貯金記録を作成しました。')
         return
       }
       this.$saveApi.create(this.save).then((res) => {
@@ -277,6 +278,7 @@ export default {
         this.events.push(event)
       })
       this.closeSaveModal()
+      this.$toast.success('貯金記録を更新しました。')
     },
     deleteSave() {
       this.getSavesAmount()
@@ -289,6 +291,7 @@ export default {
       this.getSavesOneMonth()
       this.$store.dispatch('modal/setOpenAlertModal', false)
       this.closeSaveModal()
+      this.$toast.success('貯金記録の削除に成功しました。')
     },
     openAlertModal() {
       this.$store.dispatch('modal/setOpenAlertModal', true)

@@ -54,6 +54,7 @@ export default {
             JSON.stringify(this.followUsers)
           )
           this.active = true
+          this.$toast.success(`${this.user.name}さんをフォローしました。`)
         })
       } else {
         this.$userApi.unfollow(this.user.id).then((res) => {
@@ -65,6 +66,7 @@ export default {
             JSON.stringify(this.followUsers)
           )
           this.active = false
+          this.$toast.success(`${this.user.name}さんのフォローを外しました。`)
         })
       }
     }
