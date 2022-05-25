@@ -23,49 +23,51 @@
               </div>
             </v-card-title>
             <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12">
-                    <v-text-field
-                      :value="save.click_date"
-                      prepend-icon="mdi-clock-time-eight-outline"
-                      color="indigo accent-2"
-                      readonly
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col cols="12">
-                    <TagInput :tag-id.sync="save.tag_id" />
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col cols="1">
-                    <v-icon>mdi-cat</v-icon>
-                  </v-col>
-                  <v-col cols="4">
-                    <IconModal @set-icon-id="save.icon_id = $event" />
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col cols="12">
-                    <MemoInput :memo.sync="save.memo" />
-                  </v-col>
-                  <v-col cols="12" class="text-right">
-                    <span class="text-h2 font-weight-light">{{
-                      multipleCoin
-                    }}</span>
-                    <span class="subheading font-weight-light mr-1">円</span>
-                  </v-col>
-                  <v-col cols="12">
-                    <SaveModalSlider
-                      :coin.sync="save.coin"
-                      @increment="save.coin++"
-                      @decrement="save.coin--"
-                    />
-                  </v-col>
-                </v-row>
-              </v-container>
+              <v-form ref="save_form">
+                <v-container>
+                  <v-row>
+                    <v-col cols="12">
+                      <v-text-field
+                        :value="save.click_date"
+                        prepend-icon="mdi-clock-time-eight-outline"
+                        color="indigo accent-2"
+                        readonly
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="12">
+                      <TagInput :tag-id.sync="save.tag_id" />
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="1">
+                      <v-icon>mdi-cat</v-icon>
+                    </v-col>
+                    <v-col cols="4">
+                      <IconModal @set-icon-id="save.icon_id = $event" />
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="12">
+                      <MemoInput :memo.sync="save.memo" />
+                    </v-col>
+                    <v-col cols="12" class="text-right">
+                      <span class="text-h2 font-weight-light">{{
+                        multipleCoin
+                      }}</span>
+                      <span class="subheading font-weight-light mr-1">円</span>
+                    </v-col>
+                    <v-col cols="12">
+                      <SaveModalSlider
+                        :coin.sync="save.coin"
+                        @increment="save.coin++"
+                        @decrement="save.coin--"
+                      />
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-form>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -231,60 +233,73 @@ export default {
       })
     },
     createOrUpdateSave() {
-      if (this.updateFlag === true) {
-        this.getSavesAmount()
-        this.$saveApi.update(this.saveId, this.save).then((res) => {
-          const beforeSave = this.saves.find((save) => save.id === res.data.id)
-          Object.assign(beforeSave, res.data)
-          sessionStorage.setItem('saves', JSON.stringify(this.saves))
+      if (this.$refs.save_form.validate()) {
+        if (this.updateFlag === true) {
+          this.getSavesAmount()
+          this.$saveApi
+            .update(this.saveId, this.save)
+            .then((res) => {
+              const beforeSave = this.saves.find(
+                (save) => save.id === res.data.id
+              )
+              Object.assign(beforeSave, res.data)
+              sessionStorage.setItem('saves', JSON.stringify(this.saves))
 
-          const beforEvent = this.events.find(
-            (event) => event.id === res.data.id
-          )
-          const saveColor =
-            res.data.coin > 0 ? 'indigo accent-2' : 'red lighten-1'
-          const event = this.returnEvent(
-            res.data.id,
-            res.data.coin,
-            saveColor,
-            res.data.click_date
-          )
-          Object.assign(beforEvent, event)
+              const beforEvent = this.events.find(
+                (event) => event.id === res.data.id
+              )
+              const saveColor =
+                res.data.coin > 0 ? 'indigo accent-2' : 'red lighten-1'
+              const event = this.returnEvent(
+                res.data.id,
+                res.data.coin,
+                saveColor,
+                res.data.click_date
+              )
+              Object.assign(beforEvent, event)
 
-          this.getSavesOneMonth()
-          this.$toast.success('貯金記録を更新しました。')
-        })
+              this.getSavesOneMonth()
+              this.$toast.success('記録を更新しました。')
+            })
+            .catch(() => this.$toast.error('記録の更新に失敗しました。'))
+          this.closeSaveModal()
+          return
+        }
+        this.$saveApi
+          .create(this.save)
+          .then((res) => {
+            console.log(res)
+            this.getSavesAmount()
+            this.saves.push(res.data)
+            sessionStorage.setItem('saves', JSON.stringify(this.saves))
+            this.savesOneMonth.push(res.data)
+            this.savesOneMonth.sort((a, b) =>
+              a.click_date < b.click_date ? -1 : 1
+            )
+
+            const saveColor =
+              res.data.coin > 0 ? 'indigo accent-2' : 'red lighten-1'
+            const event = this.returnEvent(
+              res.data.id,
+              res.data.coin,
+              saveColor,
+              res.data.click_date
+            )
+            this.events.push(event)
+            this.$toast.success('記録を作成しました。')
+          })
+          .catch(() => this.$toast.error('記録の作成に失敗しました。'))
         this.closeSaveModal()
-        return
       }
-      this.$saveApi.create(this.save).then((res) => {
-        console.log(res)
-        this.getSavesAmount()
-        this.saves.push(res.data)
-        sessionStorage.setItem('saves', JSON.stringify(this.saves))
-        this.savesOneMonth.push(res.data)
-        this.savesOneMonth.sort((a, b) =>
-          a.click_date < b.click_date ? -1 : 1
-        )
-
-        const saveColor =
-          res.data.coin > 0 ? 'indigo accent-2' : 'red lighten-1'
-        const event = this.returnEvent(
-          res.data.id,
-          res.data.coin,
-          saveColor,
-          res.data.click_date
-        )
-        this.events.push(event)
-        this.$toast.success('貯金記録を作成しました。')
-      })
-      this.closeSaveModal()
     },
     deleteSave() {
-      this.$saveApi.delete(this.saveId).then((res) => {
-        this.getSavesAmount()
-        this.$toast.success('貯金記録の削除に成功しました。')
-      })
+      this.$saveApi
+        .delete(this.saveId)
+        .then((res) => {
+          this.getSavesAmount()
+          this.$toast.success('記録の削除に成功しました。')
+        })
+        .catch(() => this.$toast.error('記録の削除に失敗しました。'))
       this.saves = this.saves.filter((save) => save.id !== this.saveId)
       sessionStorage.setItem('saves', JSON.stringify(this.saves))
 

@@ -112,7 +112,7 @@ class SaveControllerTest extends TestCase
   {
     // モックの引数(レコード作成用データ)作成
     $saveDetails = [
-      'user_id' => $this->user->id,
+      // 'user_id' => $this->user->id,
       'tag_id' => 1,
       'icon_id' => 2,
       'coin' => 3,
@@ -149,8 +149,6 @@ class SaveControllerTest extends TestCase
     $saveId = $save->id;
     // 既存レコードの一部を更新するデータ
     $saveDetails = [
-      'id' => $save->id,
-      'user_id' => $this->user->id,
       'tag_id' => $save->tag_id,
       'icon_id' => $save->icon_id,
       'coin' => $save->coin,

@@ -9,7 +9,6 @@ use Illuminate\Support\Str;
 
 class TargetRequestTest extends TestCase
 {
-
   /**
      * @test
      * @dataProvider validationProvider

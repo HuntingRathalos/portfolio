@@ -16,6 +16,9 @@ use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Log;
+
+use function Psy\debug;
 
 class SaveServiceTest extends TestCase
 {
@@ -122,7 +125,7 @@ class SaveServiceTest extends TestCase
         // モックの戻り値作成
         $data = new Collection(
           Save::factory()->count(2)->make([
-          'click_date' => '2022-05-16'
+          'click_date' => $dateFromThisWeek
         ]));
 
         // SaveRepositoryのgetSavesSpecificPeriodをモック

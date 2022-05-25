@@ -43,14 +43,15 @@ export default {
   methods: {
     async sendForgotPasswordEmail() {
       if (this.$refs.forgot_password_form.validate()) {
-        await this.$axios.get('sanctum/csrf-cookie')
-        const response = await this.$axios
-          .post('/api/forgot-password', this.form)
-          .then(this.$toast.success('パスワードリセットメールを送信しました。'))
-          .catch((err) => err.response || err)
-
-        if (response.status === 400) {
-          console.log(response)
+        try {
+          await this.$axios.get('sanctum/csrf-cookie')
+          const response = await this.$axios.post(
+            '/api/forgot-password',
+            this.form
+          )
+          this.$toast.success('メールを送信しました。')
+        } catch {
+          this.$toast.error('メールの送信に失敗しました。')
         }
       }
     }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\Save\SaveServiceInterface;
 use App\Models\Save;
+use App\Http\Requests\SaveRequest;
 
 class SaveController extends Controller
 {
@@ -72,24 +73,28 @@ class SaveController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\SaveRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SaveRequest $request)
     {
-        return $this->saveService->createSave($request->all());
+        $validated = $request->validated();
+        
+        return $this->saveService->createSave($validated);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\SaveRequest  $request
      * @param  int  $saveId
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, int $saveId)
+    public function update(SaveRequest $request, int $saveId)
     {
-        return $this->saveService->updateSave($saveId, $request->all());
+        $validated = $request->validated();
+
+        return $this->saveService->updateSave($saveId, $validated);
     }
 
     /**

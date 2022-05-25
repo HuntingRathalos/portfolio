@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <v-card outlined class="py-4">
+    <v-card outlined class="pa-4">
       <bar-chart :chart-data="chartData" :options="options" />
     </v-card>
   </div>
@@ -55,11 +55,12 @@ export default {
             datasets: [
               {
                 label: ['貯金額'],
-                backgroundColor: '#f87979',
+                backgroundColor: '#EF5350',
                 data: plusCoin
               },
               {
                 label: ['出費額'],
+                backgroundColor: '#5C6BC0',
                 data: minusCoin
               }
             ]
