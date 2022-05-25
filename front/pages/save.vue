@@ -236,16 +236,47 @@ export default {
       if (this.$refs.save_form.validate()) {
         if (this.updateFlag === true) {
           this.getSavesAmount()
-          this.$saveApi.update(this.saveId, this.save).then((res) => {
-            const beforeSave = this.saves.find(
-              (save) => save.id === res.data.id
-            )
-            Object.assign(beforeSave, res.data)
-            sessionStorage.setItem('saves', JSON.stringify(this.saves))
+          this.$saveApi
+            .update(this.saveId, this.save)
+            .then((res) => {
+              const beforeSave = this.saves.find(
+                (save) => save.id === res.data.id
+              )
+              Object.assign(beforeSave, res.data)
+              sessionStorage.setItem('saves', JSON.stringify(this.saves))
 
-            const beforEvent = this.events.find(
-              (event) => event.id === res.data.id
+              const beforEvent = this.events.find(
+                (event) => event.id === res.data.id
+              )
+              const saveColor =
+                res.data.coin > 0 ? 'indigo accent-2' : 'red lighten-1'
+              const event = this.returnEvent(
+                res.data.id,
+                res.data.coin,
+                saveColor,
+                res.data.click_date
+              )
+              Object.assign(beforEvent, event)
+
+              this.getSavesOneMonth()
+              this.$toast.success('記録を更新しました。')
+            })
+            .catch(() => this.$toast.error('記録の更新に失敗しました。'))
+          this.closeSaveModal()
+          return
+        }
+        this.$saveApi
+          .create(this.save)
+          .then((res) => {
+            console.log(res)
+            this.getSavesAmount()
+            this.saves.push(res.data)
+            sessionStorage.setItem('saves', JSON.stringify(this.saves))
+            this.savesOneMonth.push(res.data)
+            this.savesOneMonth.sort((a, b) =>
+              a.click_date < b.click_date ? -1 : 1
             )
+
             const saveColor =
               res.data.coin > 0 ? 'indigo accent-2' : 'red lighten-1'
             const event = this.returnEvent(
@@ -254,43 +285,21 @@ export default {
               saveColor,
               res.data.click_date
             )
-            Object.assign(beforEvent, event)
-
-            this.getSavesOneMonth()
-            this.$toast.success('貯金記録を更新しました。')
+            this.events.push(event)
+            this.$toast.success('記録を作成しました。')
           })
-          this.closeSaveModal()
-          return
-        }
-        this.$saveApi.create(this.save).then((res) => {
-          console.log(res)
-          this.getSavesAmount()
-          this.saves.push(res.data)
-          sessionStorage.setItem('saves', JSON.stringify(this.saves))
-          this.savesOneMonth.push(res.data)
-          this.savesOneMonth.sort((a, b) =>
-            a.click_date < b.click_date ? -1 : 1
-          )
-
-          const saveColor =
-            res.data.coin > 0 ? 'indigo accent-2' : 'red lighten-1'
-          const event = this.returnEvent(
-            res.data.id,
-            res.data.coin,
-            saveColor,
-            res.data.click_date
-          )
-          this.events.push(event)
-          this.$toast.success('貯金記録を作成しました。')
-        })
+          .catch(() => this.$toast.error('記録の作成に失敗しました。'))
         this.closeSaveModal()
       }
     },
     deleteSave() {
-      this.$saveApi.delete(this.saveId).then((res) => {
-        this.getSavesAmount()
-        this.$toast.success('貯金記録の削除に成功しました。')
-      })
+      this.$saveApi
+        .delete(this.saveId)
+        .then((res) => {
+          this.getSavesAmount()
+          this.$toast.success('記録の削除に成功しました。')
+        })
+        .catch(() => this.$toast.error('記録の削除に失敗しました。'))
       this.saves = this.saves.filter((save) => save.id !== this.saveId)
       sessionStorage.setItem('saves', JSON.stringify(this.saves))
 

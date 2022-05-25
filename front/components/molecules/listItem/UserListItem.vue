@@ -47,27 +47,33 @@ export default {
   methods: {
     followOrUnfollow() {
       if (this.active === false) {
-        this.$userApi.follow(this.user.id).then((res) => {
-          this.followUsers.push(res.data)
-          sessionStorage.setItem(
-            'followUsers',
-            JSON.stringify(this.followUsers)
-          )
-          this.active = true
-          this.$toast.success(`${this.user.name}さんをフォローしました。`)
-        })
+        this.$userApi
+          .follow(this.user.id)
+          .then((res) => {
+            this.followUsers.push(res.data)
+            sessionStorage.setItem(
+              'followUsers',
+              JSON.stringify(this.followUsers)
+            )
+            this.active = true
+            this.$toast.success(`${this.user.name}さんをフォローしました。`)
+          })
+          .catch(() => this.$toast.error('フォローに失敗しました。'))
       } else {
-        this.$userApi.unfollow(this.user.id).then((res) => {
-          this.followUsers = this.followUsers.filter(
-            (followUser) => followUser.id !== this.user.id
-          )
-          sessionStorage.setItem(
-            'followUsers',
-            JSON.stringify(this.followUsers)
-          )
-          this.active = false
-          this.$toast.success(`${this.user.name}さんのフォローを外しました。`)
-        })
+        this.$userApi
+          .unfollow(this.user.id)
+          .then(() => {
+            this.followUsers = this.followUsers.filter(
+              (followUser) => followUser.id !== this.user.id
+            )
+            sessionStorage.setItem(
+              'followUsers',
+              JSON.stringify(this.followUsers)
+            )
+            this.active = false
+            this.$toast.success(`${this.user.name}さんのフォローを外しました。`)
+          })
+          .catch(() => this.$toast.error('フォローを外すことに失敗しました。'))
       }
     }
   }

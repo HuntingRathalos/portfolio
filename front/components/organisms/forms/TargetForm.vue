@@ -85,13 +85,16 @@ export default {
             })
             .catch(() => this.$toast.error('目標の更新に失敗しました。'))
         } else {
-          this.$targetApi.create(this.form).then((res) => {
-            console.log(res)
-            sessionStorage.setItem('target', JSON.stringify(res.data))
-            this.updateFlag = true
-            this.$router.push('/top-page')
-            this.$toast.success('目標を作成しました。')
-          })
+          this.$targetApi
+            .create(this.form)
+            .then((res) => {
+              console.log(res)
+              sessionStorage.setItem('target', JSON.stringify(res.data))
+              this.updateFlag = true
+              this.$router.push('/top-page')
+              this.$toast.success('目標を作成しました。')
+            })
+            .catch(() => this.$toast.error('目標の作成に失敗しました。'))
         }
       }
     },
@@ -99,14 +102,17 @@ export default {
       if (this.$refs.target_form.validate()) {
         this.$store.dispatch('modal/setOpenAlertModal', false)
         const target = JSON.parse(sessionStorage.getItem('target'))
-        this.$targetApi.delete(target.id).then((res) => {
-          sessionStorage.removeItem('target')
-          sessionStorage.removeItem('saves')
-          sessionStorage.removeItem('saveAmount')
-          this.updateFlag = false
-          this.$router.push('/top-page')
-          this.$toast.success('削除に成功しました。')
-        })
+        this.$targetApi
+          .delete(target.id)
+          .then((res) => {
+            sessionStorage.removeItem('target')
+            sessionStorage.removeItem('saves')
+            sessionStorage.removeItem('saveAmount')
+            this.updateFlag = false
+            this.$router.push('/top-page')
+            this.$toast.success('削除に成功しました。')
+          })
+          .catch(() => this.$toast.error('目標の削除に失敗しました。'))
       }
     },
     openAlertModal() {

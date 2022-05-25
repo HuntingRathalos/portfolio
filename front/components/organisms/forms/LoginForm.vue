@@ -50,7 +50,9 @@ export default {
           })
           this.$router.push('/')
           this.$toast.success('ログインに成功しました。')
-        } catch {}
+        } catch {
+          this.$toast.error('ログインに失敗しました。')
+        }
       }
     }
   }

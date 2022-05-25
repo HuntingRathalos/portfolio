@@ -58,7 +58,9 @@ export default {
           const response = await this.$axios.post('/api/register', this.form)
           this.$router.push('/login')
           this.$toast.success('会員登録に成功しました。')
-        } catch {}
+        } catch {
+          this.$toast.error('会員登録に失敗しました。')
+        }
       }
     }
   }
