@@ -15,7 +15,7 @@
           :ranking="ranking"
         >
           <v-sheet class="text-center">
-            <v-badge content="1" overlap left :color="colors[index]">
+            <v-badge :content="index + 1" overlap left :color="colors[index]">
               <v-icon x-large>{{ ranking.icon_code }}</v-icon>
             </v-badge>
             <div class="text-h6 font-weight-medium">{{ ranking.tag_name }}</div>
