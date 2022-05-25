@@ -9,6 +9,7 @@ use App\Services\Save\SaveServiceInterface;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use App\Http\Requests\TargetRequest;
 
 class TargetController extends Controller
 {
@@ -41,24 +42,28 @@ class TargetController extends Controller
     /**
      * 新たな目標を作成する
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\TargetRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TargetRequest $request)
     {
-        return $this->targetService->createTarget($request->all());
+        $validated = $request->validated();
+
+        return $this->targetService->createTarget($validated);
     }
 
     /**
      * 目標を更新する
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\TargetRequest  $request
      * @param  int  $targetId
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $targetId)
+    public function update(TargetRequest $request, int $targetId)
     {
-        return $this->targetService->updateTarget($targetId, $request->all());
+        $validated = $request->validated();
+
+        return $this->targetService->updateTarget($targetId, $validated);
     }
 
     /**
@@ -67,7 +72,7 @@ class TargetController extends Controller
      * @param  int  $targetId
      * @return \Illuminate\Http\Response
      */
-    public function destroy($targetId)
+    public function destroy(int $targetId)
     {
         \DB::transaction(function () use ($targetId) {
             $this->targetService->deleteTarget($targetId);

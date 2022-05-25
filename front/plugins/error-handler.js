@@ -18,4 +18,9 @@ export default function ({ error: nuxtError }) {
     })
     return Promise.resolve(false)
   })
+
+  window.addEventListener('unhandledrejection', (event) => {
+    // alert(event.reason);
+    console.log(event.reason)
+  })
 }

@@ -16,7 +16,8 @@ export default function ({ $axios, $toast, error: nuxtError, store }) {
         statusCode: error.response.data.statusCode,
         message: error.response.data.message
       })
-      return Promise.resolve(false)
+      // return Promise.resolve(false)
+      return Promise.reject(error)
     }
   })
 }

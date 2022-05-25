@@ -75,19 +75,22 @@ export default {
       if (this.$refs.target_form.validate()) {
         const target = JSON.parse(sessionStorage.getItem('target'))
         if (target) {
-          this.$targetApi.update(target.id, this.form).then((res) => {
-            console.log(res)
-            sessionStorage.setItem('target', JSON.stringify(res.data))
-            this.$router.push('/home')
-            this.$toast.success('目標を作成しました。')
-          })
+          this.$targetApi
+            .update(target.id, this.form)
+            .then((res) => {
+              console.log(res)
+              sessionStorage.setItem('target', JSON.stringify(res.data))
+              this.$router.push('/top-page')
+              this.$toast.success('目標を更新しました。')
+            })
+            .catch(() => this.$toast.error('目標の更新に失敗しました。'))
         } else {
           this.$targetApi.create(this.form).then((res) => {
             console.log(res)
             sessionStorage.setItem('target', JSON.stringify(res.data))
             this.updateFlag = true
-            this.$router.push('/home')
-            this.$toast.success('目標を更新しました。')
+            this.$router.push('/top-page')
+            this.$toast.success('目標を作成しました。')
           })
         }
       }

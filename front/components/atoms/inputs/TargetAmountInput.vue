@@ -22,12 +22,6 @@ export default {
     return {
       rules: {
         required: (value) => !!value || '必須項目なので値を入力してください。',
-        // 数値バリデーションつける
-        email: (value) => {
-          const pattern =
-            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-          return pattern.test(value) || '正しい形式で入力してください。'
-        },
         isNum: (value) => {
           const pattern = /^([1-9]\d*|0)$/
           return pattern.test(value) || '数値を入力してください。'
