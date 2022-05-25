@@ -56,7 +56,6 @@ class TargetControllerTest extends TestCase
   {
     // モックの引数(レコード作成用データ)作成
     $targetDetails = [
-      'user_id' => $this->user->id,
       'name' => '本を買う',
       'amount' => 30000,
     ];
@@ -90,7 +89,6 @@ class TargetControllerTest extends TestCase
     $targetId = $target->id;
     // 既存レコードの一部を更新するデータ
     $targetDetails = [
-      'user_id' => $this->user->id,
       'name' => '旅行',
       'amount' => $target->amount,
     ];
