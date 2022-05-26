@@ -20,5 +20,10 @@ class TargetSeeder extends Seeder
             'name' => '旅行に行く!!',
             'amount' => 70000
         ]);
+        Target::factory()->create([
+            'user_id' => 2,
+            'name' => 'ワンピース全巻購入!!',
+            'amount' => 50000
+        ]);
     }
 }

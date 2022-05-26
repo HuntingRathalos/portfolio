@@ -18,6 +18,11 @@ class UserSeeder extends Seeder
             'name' => 'ゲストユーザー',
             'email' => 'guest@example.com'
         ]);
+
+        User::factory()->create([
+            'name' => '山田太郎',
+            'email' => 'taro@example.com'
+        ]);
         // User::factory()->count(5)->create();
     }
 }
