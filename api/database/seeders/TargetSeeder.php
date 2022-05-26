@@ -14,6 +14,11 @@ class TargetSeeder extends Seeder
      */
     public function run()
     {
-        Target::factory()->count(20)->create();
+        // Target::factory()->count(20)->create();
+        Target::factory()->create([
+            'user_id' => 1,
+            'name' => '旅行に行く!!',
+            'amount' => 70000
+        ]);
     }
 }
