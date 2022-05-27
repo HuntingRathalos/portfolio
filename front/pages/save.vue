@@ -16,10 +16,13 @@
                   貯金記録作成
                 </h1>
               </div>
-              <div v-if="updateFlag" class="ml-auto">
+              <div v-if="updateFlag && !$guestJudge" class="ml-auto">
                 <v-icon class="ml-auto" @click="openAlertModal"
                   >mdi-delete</v-icon
                 >
+              </div>
+              <div v-else class="ml-auto">
+                <v-icon class="ml-auto" @click="$guestAlert">mdi-delete</v-icon>
               </div>
             </v-card-title>
             <v-card-text>
@@ -74,7 +77,15 @@
               <v-btn color="blue darken-1" text @click="closeSaveModal">
                 閉じる
               </v-btn>
-              <v-btn color="blue darken-1" text @click="createOrUpdateSave">
+              <v-btn
+                v-if="!$guestJudge"
+                color="blue darken-1"
+                text
+                @click="createOrUpdateSave"
+              >
+                保存
+              </v-btn>
+              <v-btn v-else color="blue darken-1" text @click="$guestAlert">
                 保存
               </v-btn>
             </v-card-actions>
@@ -169,6 +180,12 @@ export default {
     value: moment().format('YYYY-MM-DD')
   }),
   computed: {
+    // isGuest() {
+    //   if(this.$auth.user.id === 1) {
+    //     return true
+    //   }
+    //   return false
+    // },
     calendarTitle() {
       return moment(this.value).format('YYYY年 M月')
     },
@@ -320,7 +337,7 @@ export default {
             .startOf('month')
             .format('YYYY-MM-DD')
           const endDate = moment(this.value).endOf('month').format('YYYY-MM-DD')
-          return clickDate.isBetween(startDate, endDate)
+          return clickDate.isBetween(startDate, endDate, null, '[]')
         }
       )
       this.savesOneMonth.sort((a, b) => (a.click_date < b.click_date ? -1 : 1))

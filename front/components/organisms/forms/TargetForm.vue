@@ -8,10 +8,13 @@
     <v-card max-width="500" class="mx-auto mt-5 full-width" flat outlined>
       <v-card-title class="text-center pa-8">
         <h1 class="text-h5 font-weight-bold full-width">{{ titleText }}</h1>
-        <div v-if="updateFlag" class="ml-auto">
+        <div v-if="updateFlag && !$guestJudge" class="ml-auto">
           <v-icon class="ml-auto" @click.prevent="openAlertModal"
             >mdi-delete</v-icon
           >
+        </div>
+        <div v-else class="ml-auto">
+          <v-icon class="ml-auto" @click="$guestAlert">mdi-delete</v-icon>
         </div>
       </v-card-title>
       <v-divider> </v-divider>
@@ -73,6 +76,10 @@ export default {
   methods: {
     createOrUpdateTarget() {
       if (this.$refs.target_form.validate()) {
+        if (this.$guestJudge()) {
+          this.$guestAlert()
+          return
+        }
         const target = JSON.parse(sessionStorage.getItem('target'))
         if (target) {
           this.$targetApi

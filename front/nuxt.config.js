@@ -33,6 +33,8 @@ export default {
     '~/plugins/axios/modules/target',
     '~/plugins/axios/modules/user',
     '~/plugins/error-handler',
+    '~/plugins/guest-alert',
+    '~/plugins/guest-judge',
     { src: '~/plugins/vue-tags-input', ssr: false }
   ],
 
