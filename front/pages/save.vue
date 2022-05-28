@@ -21,9 +21,9 @@
                   >mdi-delete</v-icon
                 >
               </div>
-              <div v-else class="ml-auto">
+              <!-- <div v-else class="ml-auto">
                 <v-icon class="ml-auto" @click="$guestAlert">mdi-delete</v-icon>
-              </div>
+              </div> -->
             </v-card-title>
             <v-card-text>
               <v-form ref="save_form">
@@ -77,15 +77,7 @@
               <v-btn color="blue darken-1" text @click="closeSaveModal">
                 閉じる
               </v-btn>
-              <v-btn
-                v-if="!$guestJudge"
-                color="blue darken-1"
-                text
-                @click="createOrUpdateSave"
-              >
-                保存
-              </v-btn>
-              <v-btn v-else color="blue darken-1" text @click="$guestAlert">
+              <v-btn color="blue darken-1" text @click="createOrUpdateSave">
                 保存
               </v-btn>
             </v-card-actions>
@@ -160,7 +152,7 @@ export default {
       tag_id: 1,
       icon_id: 1,
       coin: 0,
-      memo: '',
+      memo: 'なし',
       click_date: ''
     },
     updateFlag: false,
@@ -251,6 +243,10 @@ export default {
     },
     createOrUpdateSave() {
       if (this.$refs.save_form.validate()) {
+        if (this.$guestJudge()) {
+          this.$guestAlert()
+          return
+        }
         if (this.updateFlag === true) {
           this.getSavesAmount()
           this.$saveApi
@@ -347,7 +343,7 @@ export default {
       this.save.tag_id = 1
       this.save.icon_id = 1
       this.save.coin = 0
-      this.save.memo = ''
+      this.save.memo = 'なし'
       this.save.click_date = ''
     },
     setSave(saveId) {
@@ -356,7 +352,6 @@ export default {
       for (let i = 0; i < this.saves.length; i++) {
         if (this.saveId === this.saves[i].id) {
           this.save = Object.assign(this.save, this.saves[i])
-
           this.$store.dispatch('modal/setOpenSaveModal', true)
           return
         }

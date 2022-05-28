@@ -12,7 +12,8 @@ use App\Repositories\Save\SaveRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Carbon\Carbon;
 use Mockery;
-
+use WithoutMiddleware;
+use App\Http\Middleware\VerifyNotGuest;
 
 class SaveControllerTest extends TestCase
 {
@@ -23,6 +24,10 @@ class SaveControllerTest extends TestCase
   public function setUp(): void
   {
       parent::setUp();
+
+      // ゲストユーザー以外のユーザーでテストする
+      $this->withMiddleware();
+      $this->withoutMiddleware(VerifyNotGuest::class);
 
       // 依存しているリポジトリのモック作成
       $this->saveRepositoryMock = Mockery::mock(SaveRepository::class);

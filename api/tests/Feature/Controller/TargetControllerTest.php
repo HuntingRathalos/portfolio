@@ -10,7 +10,8 @@ use App\Repositories\Target\TargetRepository;
 use App\Models\User;
 use App\Models\Target;
 use Mockery;
-
+use WithoutMiddleware;
+use App\Http\Middleware\VerifyNotGuest;
 
 class TargetControllerTest extends TestCase
 {
@@ -21,6 +22,10 @@ class TargetControllerTest extends TestCase
   public function setUp(): void
   {
       parent::setUp();
+
+      // ゲストユーザー以外のユーザーでテストする
+      $this->withMiddleware();
+      $this->withoutMiddleware(VerifyNotGuest::class);
 
       // 依存しているリポジトリのモック作成
       $this->targetRepositoryMock = Mockery::mock(TargetRepository::class);

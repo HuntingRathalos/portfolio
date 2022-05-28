@@ -13,9 +13,9 @@
             >mdi-delete</v-icon
           >
         </div>
-        <div v-else class="ml-auto">
+        <!-- <div v-else class="ml-auto">
           <v-icon class="ml-auto" @click="$guestAlert">mdi-delete</v-icon>
-        </div>
+        </div> -->
       </v-card-title>
       <v-divider> </v-divider>
       <div class="px-6 py-8">

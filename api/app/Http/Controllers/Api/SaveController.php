@@ -17,6 +17,7 @@ class SaveController extends Controller
      */
     public function __construct(SaveServiceInterface $saveService)
     {
+        $this->middleware('verify.notguest')->only('store', 'update', 'destroy');
         $this->saveService = $saveService;
     }
 
