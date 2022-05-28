@@ -79,7 +79,7 @@ class SaveController extends Controller
     public function store(SaveRequest $request)
     {
         $validated = $request->validated();
-        
+
         return $this->saveService->createSave($validated);
     }
 

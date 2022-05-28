@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
+use App\Exceptions\UserNotFoundException;
 
 class Handler extends ExceptionHandler
 {
@@ -71,6 +72,10 @@ class Handler extends ExceptionHandler
         Log::error('[API Error] '.$request->method().': '.$request->fullUrl());
         Log::error($exception);
 
+        if($exception instanceof UserNotFoundException) {
+            return response()->error(Response::HTTP_NOT_FOUND, 'ユーザーが見つかりません。ログイン情報をご確認ください。');
+        }
+        
         if($exception instanceof AuthenticationException) {
             return response()->error(Response::HTTP_UNAUTHORIZED, '認証エラーが発生しました。一度ログアウトしてから再度お試しください。');
         }
