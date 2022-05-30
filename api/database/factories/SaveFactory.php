@@ -28,7 +28,7 @@ class SaveFactory extends Factory
             'icon_id' => $this->faker->numberBetween(1, 25),
             'coin' => $this->faker->numberBetween(0, 50),
             'memo' => $this->faker->text(30),
-            'click_date' => $this->faker->dateTimeBetween($startDate = 'now', $endDate = '+8 week'),
+            'click_date' => $this->faker->dateTimeBetween($startDate = 'now', $endDate = '+4 week'),
         ];
     }
 }

@@ -16,11 +16,14 @@
                   貯金記録作成
                 </h1>
               </div>
-              <div v-if="updateFlag" class="ml-auto">
+              <div v-if="updateFlag && !$guestJudge" class="ml-auto">
                 <v-icon class="ml-auto" @click="openAlertModal"
                   >mdi-delete</v-icon
                 >
               </div>
+              <!-- <div v-else class="ml-auto">
+                <v-icon class="ml-auto" @click="$guestAlert">mdi-delete</v-icon>
+              </div> -->
             </v-card-title>
             <v-card-text>
               <v-form ref="save_form">
@@ -149,7 +152,7 @@ export default {
       tag_id: 1,
       icon_id: 1,
       coin: 0,
-      memo: '',
+      memo: 'なし',
       click_date: ''
     },
     updateFlag: false,
@@ -169,6 +172,12 @@ export default {
     value: moment().format('YYYY-MM-DD')
   }),
   computed: {
+    // isGuest() {
+    //   if(this.$auth.user.id === 1) {
+    //     return true
+    //   }
+    //   return false
+    // },
     calendarTitle() {
       return moment(this.value).format('YYYY年 M月')
     },
@@ -234,6 +243,10 @@ export default {
     },
     createOrUpdateSave() {
       if (this.$refs.save_form.validate()) {
+        if (this.$guestJudge()) {
+          this.$guestAlert()
+          return
+        }
         if (this.updateFlag === true) {
           this.getSavesAmount()
           this.$saveApi
@@ -320,7 +333,7 @@ export default {
             .startOf('month')
             .format('YYYY-MM-DD')
           const endDate = moment(this.value).endOf('month').format('YYYY-MM-DD')
-          return clickDate.isBetween(startDate, endDate)
+          return clickDate.isBetween(startDate, endDate, null, '[]')
         }
       )
       this.savesOneMonth.sort((a, b) => (a.click_date < b.click_date ? -1 : 1))
@@ -330,7 +343,7 @@ export default {
       this.save.tag_id = 1
       this.save.icon_id = 1
       this.save.coin = 0
-      this.save.memo = ''
+      this.save.memo = 'なし'
       this.save.click_date = ''
     },
     setSave(saveId) {
@@ -339,7 +352,6 @@ export default {
       for (let i = 0; i < this.saves.length; i++) {
         if (this.saveId === this.saves[i].id) {
           this.save = Object.assign(this.save, this.saves[i])
-
           this.$store.dispatch('modal/setOpenSaveModal', true)
           return
         }

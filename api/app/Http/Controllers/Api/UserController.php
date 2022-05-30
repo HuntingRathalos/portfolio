@@ -23,6 +23,7 @@ class UserController extends Controller
         UserServiceInterface $userService
         )
     {
+        $this->middleware('verify.notguest')->only('follow', 'unfollow');
         $this->userRepository = $userRepository;
         $this->userService = $userService;
     }

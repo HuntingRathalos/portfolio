@@ -1,7 +1,7 @@
 <template>
   <v-text-field
     v-model="setMemo"
-    :rules="[rules.maxCount30]"
+    :rules="[rules.maxCount30, rules.required]"
     label="一言メモ"
     prepend-icon="mdi-note-text-outline"
     color="indigo accent-2"
@@ -18,6 +18,7 @@ export default {
   data() {
     return {
       rules: {
+        required: (value) => !!value || '必須項目なので値を入力してください。',
         maxCount30: (value) =>
           value.length <= 30 || '文字数をオーバーしています。'
       }

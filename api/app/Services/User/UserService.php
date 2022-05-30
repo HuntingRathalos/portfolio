@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\Log;
 
 class UserService implements UserServiceInterface
 {
+  // ゲストユーザー用のIDを定数として保持
+  private const GUEST_USER_ID = 2;
+
   private $userRepository;
   private $saveRepository;
   private $targetRepository;
@@ -72,14 +75,19 @@ class UserService implements UserServiceInterface
     $followUsers = $this->userRepository->getFollowUsers();
     $processedUsers = collect();
 
-    // フォローしているユーザーがいない時は、ゲストユーザーを返す
+    // フォローしているユーザーがいない時は、ゲストユーザーをフォローする
     if($followUsers->isEmpty()) {
+      // ゲストユーザー
+      $followUser = $this->userRepository->getUserById(self::GUEST_USER_ID);
+      // ログインユーザーがあるユーザーを重ねてフォローできないようにするため削除後に登録
+      $this->userRepository->follow($followUser);
+
       $processedUsers->push([
-        'id' => 400,
-        'name' => 'plpl',
-        'target' => '設定されていません。',
-        'targetAmount' => '設定されていません。',
-        'tagName' => '設定されていません。'
+        'id' => self::GUEST_USER_ID,
+        'name' => '山田太郎',
+        'target' => 'ワンピース全巻購入!!',
+        'targetAmount' => 50000,
+        'tagName' => '外食'
       ]);
       return response()->json($processedUsers, Response::HTTP_OK);
     }

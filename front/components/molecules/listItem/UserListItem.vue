@@ -46,6 +46,10 @@ export default {
   },
   methods: {
     followOrUnfollow() {
+      if (this.$guestJudge()) {
+        this.$guestAlert()
+        return
+      }
       if (this.active === false) {
         this.$userApi
           .follow(this.user.id)

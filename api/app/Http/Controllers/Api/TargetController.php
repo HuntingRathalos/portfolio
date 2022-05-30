@@ -25,6 +25,7 @@ class TargetController extends Controller
         SaveServiceInterface $saveService,
         )
     {
+        $this->middleware('verify.notguest')->only('store', 'update', 'destroy');
         $this->targetService = $targetService;
         $this->saveService = $saveService;
     }

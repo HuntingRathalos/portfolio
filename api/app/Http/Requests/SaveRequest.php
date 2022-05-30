@@ -29,7 +29,7 @@ class SaveRequest extends FormRequest
             'tag_id' => 'required|integer',
             'icon_id' => 'required|integer',
             'coin' => 'required|numeric|between:-50,50',
-            'memo' => 'nullable|string|max:30',
+            'memo' => 'required|string|max:30',
             'click_date' => 'required|date',
         ];
     }
