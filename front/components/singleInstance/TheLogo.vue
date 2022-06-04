@@ -8,7 +8,7 @@
 export default {
   data() {
     return {
-      image_src: require('@/assets/1523255528.png')
+      image_src: require('@/assets/coin.png')
     }
   }
 }
