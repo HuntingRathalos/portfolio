@@ -1,9 +1,7 @@
 <template>
   <v-app-bar app color="white">
-    <the-logo />
-    <v-toolbar-title class="text-subtitle-2">
-      {{ appName }}
-    </v-toolbar-title>
+    <v-img :src="require('@/assets/logo.png')" max-height="56" max-width="120">
+    </v-img>
     <v-spacer />
 
     <v-toolbar-items class="ml-2">
@@ -21,12 +19,9 @@
 </template>
 
 <script>
-import TheLogo from './TheLogo.vue'
 export default {
-  components: { TheLogo },
-  data({ $config: { appName } }) {
+  data() {
     return {
-      appName,
       headerTexts: ['ログイン', 'ログアウト']
     }
   },
