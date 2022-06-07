@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app color="white">
+  <v-app-bar app :color="headerColor">
     <v-img :src="require('@/assets/logo.png')" max-height="56" max-width="120">
     </v-img>
     <v-spacer />
@@ -20,11 +20,21 @@
 
 <script>
 export default {
-  data() {
-    return {
-      headerTexts: ['ログイン', 'ログアウト']
+  props: {
+    headerColor: {
+      type: String,
+      default: 'white'
+    },
+    headerTexts: {
+      type: Array,
+      default: null
     }
   },
+  // data() {
+  //   return {
+  //     headerTexts: ['ログイン', 'ログアウト']
+  //   }
+  // },
   methods: {
     async doHeaderText(headerText) {
       if (headerText === 'ログイン') {

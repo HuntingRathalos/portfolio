@@ -3,7 +3,7 @@
     :class="className"
     :type="type"
     :color="color"
-    width="100%"
+    width="width"
     height="42px"
     rounded
   >
@@ -24,6 +24,10 @@ export default {
     type: {
       type: String,
       default: 'submit'
+    },
+    width: {
+      type: [String, Number],
+      default: '100%'
     }
   }
 }

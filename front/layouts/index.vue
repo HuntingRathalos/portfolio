@@ -6,19 +6,17 @@
         <Nuxt />
       </v-container>
     </v-main>
-    <the-footer />
   </v-app>
 </template>
 
 <script>
-import TheFooter from '../components/singleInstance/TheFooter.vue'
 import TheHeader from '../components/singleInstance/TheHeader.vue'
 export default {
   name: 'DefaultLayout',
-  components: { TheHeader, TheFooter },
+  components: { TheHeader },
   data() {
     return {
-      headerTexts: ['ログイン', 'ログアウト']
+      headerTexts: ['会員登録', 'ゲストログイン', 'ログイン']
     }
   },
   methods: {
