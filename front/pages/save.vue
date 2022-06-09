@@ -21,9 +21,6 @@
                   >mdi-delete</v-icon
                 >
               </div>
-              <!-- <div v-else class="ml-auto">
-                <v-icon class="ml-auto" @click="$guestAlert">mdi-delete</v-icon>
-              </div> -->
             </v-card-title>
             <v-card-text>
               <v-form ref="save_form">
@@ -172,12 +169,6 @@ export default {
     value: moment().format('YYYY-MM-DD')
   }),
   computed: {
-    // isGuest() {
-    //   if(this.$auth.user.id === 1) {
-    //     return true
-    //   }
-    //   return false
-    // },
     calendarTitle() {
       return moment(this.value).format('YYYY年 M月')
     },

@@ -1,92 +1,118 @@
 <template>
-  <v-row justify="center" align="center">
-    <v-col cols="12" sm="8" md="6">
-      <v-card class="logo py-4 d-flex justify-center">
-        <NuxtLogo />
-        <VuetifyLogo />
-      </v-card>
-      <v-card>
-        <v-card-title class="headline"> </v-card-title>
-        <v-card-text>
-          <p>
-            Vuetify is a progressive Material Design component framework for
-            Vue.js. It was designed to empower developers to create amazing
-            applications.
-          </p>
-          <p>
-            For more information on Vuetify, check out the
-            <a
-              href="https://vuetifyjs.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              documentation </a
-            >.
-          </p>
-          <p>
-            If you have questions, please join the official
-            <a
-              href="https://chat.vuetifyjs.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="chat"
-            >
-              discord </a
-            >.
-          </p>
-          <p>
-            Find a bug? Report it on the github
-            <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="contribute"
-            >
-              issue board </a
-            >.
-          </p>
-          <p>
-            Thank you for developing with Vuetify and I look forward to bringing
-            more exciting features in the future.
-          </p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
+  <div class="">
+    <v-row align="center" class="grey--text text--darken-3">
+      <v-col cols="12" md="6" class="text-right ml-md-auto mx-xs-auto">
+        <div class="font-weight-bold mt-6 mb-6" :class="titleSize">
+          継続できる500円貯金<br />始めてみませんか。
+        </div>
+        <div class="font-weight-bold" :class="subTitleSize">
+          手軽にあなたの継続を可視化できる<br />貯金記録サービス
+        </div>
+      </v-col>
+      <v-col cols="12" md="6" class="d-flex justify-center">
+        <v-img
+          :src="require('@/assets/Piggy bank-bro.svg')"
+          max-height="400"
+          max-width="450"
+        >
+        </v-img>
+      </v-col>
+    </v-row>
+    <div
+      class="mx-auto indigo lighten-4 grey--text text--darken-3 px-6"
+      style="max-width: 800px"
+    >
+      <v-row class="d-flex mt-n8" style="max-height: 600px">
+        <v-col class="align-self-center" cols="12" md="7">
+          <div class="text-h6 font-weight-bold mb-4">カレンダーへの記録</div>
+          <div class="text-body-1">
+            カレンダーに印がつくのですぐに振り返ることができます。
           </div>
-          <hr class="my-3" />
-          <a
-            href="https://nuxtjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
+        </v-col>
+        <v-col cols="12" md="5">
+          <v-img
+            class="mx-auto"
+            :src="require('@/assets/Date picker-rafiki.svg')"
+            max-height="400"
+            max-width="500"
           >
-            Nuxt Documentation
-          </a>
-          <br />
-          <a
-            href="https://github.com/nuxt/nuxt.js"
-            target="_blank"
-            rel="noopener noreferrer"
+          </v-img>
+        </v-col>
+      </v-row>
+      <v-row class="d-flex mt-n8">
+        <v-col class="align-self-center" cols="12" md="7">
+          <div class="text-h6 font-weight-bold mb-4">
+            グラフによる「可視化」
+          </div>
+          <div class="text-body-1">
+            ２つのグラフによる「可視化」があなたの継続を手伝います。
+          </div>
+        </v-col>
+        <v-col cols="12" md="5">
+          <v-img
+            class="mx-auto"
+            :src="require('@/assets/Pie chart-rafiki.svg')"
+            max-height="400"
+            max-width="500"
           >
-            Nuxt GitHub
-          </a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn color="primary" nuxt to="/inspire"> Continue </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-col>
-  </v-row>
+          </v-img>
+        </v-col>
+      </v-row>
+      <v-row class="d-flex mt-n8">
+        <v-col class="align-self-center" cols="12" md="7">
+          <div class="text-h6 font-weight-bold mb-4">ニュース閲覧機能</div>
+          <div class="text-body-1">
+            あなたがアプリを開く習慣を身につけることができます。
+          </div>
+        </v-col>
+        <v-col cols="12" md="5">
+          <v-img
+            class="mx-auto"
+            :src="require('@/assets/Exciting news-rafiki.svg')"
+            max-height="400"
+            max-width="500"
+          >
+          </v-img>
+        </v-col>
+      </v-row>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
   name: 'IndexPage',
-  auth: false
-  // async asyncData ({ $axios }) {
-  //   const post = await $axios.$get('/api/store/s')
-  //   return {
-  //     post,
-  //   }
-  // },
+  layout: 'index',
+  auth: false,
+  computed: {
+    titleSize() {
+      const brackPointName = this.$vuetify.breakpoint.name
+      if (brackPointName === 'xs') {
+        return 'text-h5'
+      } else if (brackPointName === 'md') {
+        return 'text-h4'
+      } else {
+        return 'text-h3'
+      }
+    },
+    subTitleSize() {
+      const brackPointName = this.$vuetify.breakpoint.name
+      if (brackPointName === 'xs') {
+        return 'text-body-1'
+      } else if (brackPointName === 'md') {
+        return 'text-h6'
+      } else {
+        return 'text-h6'
+      }
+    }
+  },
+  methods: {
+    goRegister() {
+      this.$router.push('/register')
+    },
+    goGuestLogin() {
+      this.$router.push('/guest')
+    }
+  }
 }
 </script>

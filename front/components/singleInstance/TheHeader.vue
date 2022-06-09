@@ -1,9 +1,7 @@
 <template>
-  <v-app-bar app color="white">
-    <the-logo />
-    <v-toolbar-title class="text-subtitle-2">
-      {{ appName }}
-    </v-toolbar-title>
+  <v-app-bar app :color="headerColor">
+    <v-img :src="require('@/assets/logo.png')" max-height="56" max-width="120">
+    </v-img>
     <v-spacer />
 
     <v-toolbar-items class="ml-2">
@@ -21,15 +19,22 @@
 </template>
 
 <script>
-import TheLogo from './TheLogo.vue'
 export default {
-  components: { TheLogo },
-  data({ $config: { appName } }) {
-    return {
-      appName,
-      headerTexts: ['ログイン', 'ログアウト']
+  props: {
+    headerColor: {
+      type: String,
+      default: 'white'
+    },
+    headerTexts: {
+      type: Array,
+      default: null
     }
   },
+  // data() {
+  //   return {
+  //     headerTexts: ['ログイン', 'ログアウト']
+  //   }
+  // },
   methods: {
     async doHeaderText(headerText) {
       if (headerText === 'ログイン') {
