@@ -7,6 +7,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\TransferException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 class NewsService implements NewsServiceInterface
 {
@@ -43,13 +44,15 @@ class NewsService implements NewsServiceInterface
 
         $url = config('newsapi.news_api_url') . "top-headlines?country=jp&category=' .$paramCatecory. '&apiKey=" . config('newsapi.news_api_key');
         $method = "GET";
-        $count = 20;
+        $count = 10;
 
         $client = new Client();
         $response = $client->request($method, $url);
 
         $jsonResult = $response->getBody();
         $result = json_decode($jsonResult, true);
+        Log::debug($result);
+        
         $articles = $result['articles'];
 
         $news = [];

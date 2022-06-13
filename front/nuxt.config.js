@@ -32,6 +32,7 @@ export default {
     '~/plugins/axios/modules/save',
     '~/plugins/axios/modules/target',
     '~/plugins/axios/modules/user',
+    '~/plugins/axios/modules/news',
     '~/plugins/error-handler',
     '~/plugins/guest-alert',
     '~/plugins/guest-judge',
