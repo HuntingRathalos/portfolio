@@ -6,9 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Services\News\NewsServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ConnectException;
-use GuzzleHttp\Exception\TransferException;
 
 class NewsController extends Controller
 {
