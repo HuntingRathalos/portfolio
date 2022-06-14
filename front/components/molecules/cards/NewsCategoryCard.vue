@@ -26,11 +26,14 @@ export default {
       default: null
     }
   },
+   created() {
+    this.$store.dispatch('news/updateCategory', this.news.category)
+  },
   methods: {
     goNewsList() {
       const category = this.news.category
       this.$router.push({ path: `/news/${category}` })
     }
-  }
+  },
 }
 </script>

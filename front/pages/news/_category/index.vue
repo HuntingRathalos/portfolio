@@ -8,7 +8,7 @@
     </div>
     <v-row justify="center">
       <v-col
-        v-for="news in newsArray"
+        v-for="news in articles"
         :key="news.id"
         cols="12"
         sm="6"
@@ -21,6 +21,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import NewsItemCard from '../../../components/organisms/cards/NewsItemCard.vue'
 export default {
   name: 'NewsList',
@@ -28,34 +29,35 @@ export default {
   auth: false,
   data() {
     return {
-      newsArray: [
-        {
-          id: 1
-        },
-        {
-          id: 2
-        },
-        {
-          id: 3
-        },
-        {
-          id: 4
-        },
-        {
-          id: 5
-        },
-        {
-          id: 6
-        }
-      ]
+      // newsArray: [
+      //   {
+      //     id: 1
+      //   },
+      //   {
+      //     id: 2
+      //   },
+      //   {
+      //     id: 3
+      //   },
+      //   {
+      //     id: 4
+      //   },
+      //   {
+      //     id: 5
+      //   },
+      //   {
+      //     id: 6
+      //   }
+      // ]
     }
+  },
+  computed: {
+      ...mapGetters('news', {
+        articles: 'getArticlesByCategory'
+      })
+  },
+  created() {
+    this.$store.dispatch('news/getArticles')
   }
-  // methods: {
-  //   goNewsDetail() {
-  //     const category = this.$route.params.category
-  //     this.$router.push({ path: `/news/${category}/${id}`})
-  //     this.$router.push({ path: `/news/${category}/1`})
-  //   }
-  // }
 }
 </script>

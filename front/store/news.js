@@ -19,8 +19,8 @@ export const getters = {
 
 export const mutations = {
   setArticles(state, data) {
-    const newsData = data.data
-    const newsCategory = data.category
+    const newsData = data
+    const newsCategory = state.activeCategory
     state.newsData[newsCategory] = newsData
   },
 
@@ -37,6 +37,7 @@ export const actions = {
     } else {
       // const newsArticles = await changeCategory(category)
       const res = this.$newsApi.getNewsByCategory(category)
+      console.log(res)
       commit('setArticles', res.data)
       // return res.data
     }
