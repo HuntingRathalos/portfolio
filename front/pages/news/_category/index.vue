@@ -21,7 +21,7 @@
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import NewsItemCard from '../../../components/organisms/cards/NewsItemCard.vue'
 export default {
   name: 'NewsList',
@@ -52,12 +52,18 @@ export default {
     }
   },
   computed: {
-      ...mapGetters('news', {
-        articles: 'getArticlesByCategory'
-      })
+    ...mapGetters('news', {
+      articles: 'getArticlesByCategory'
+    })
+  },
+  medhods: {
+    ...mapActions({
+      getArticles: 'modules/news/getArticles'
+    })
   },
   created() {
-    this.$store.dispatch('news/getArticles')
+    // this.$store.dispatch('news/getArticles')
+    this.getArticles()
   }
 }
 </script>

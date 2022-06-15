@@ -19,6 +19,7 @@
   </v-card>
 </template>
 <script>
+import { mapGetters, mapActions } from 'vuex'
 export default {
   props: {
     news: {
@@ -26,14 +27,19 @@ export default {
       default: null
     }
   },
-   created() {
-    this.$store.dispatch('news/updateCategory', this.news.category)
-  },
+  //  created() {
+  //   this.$store.dispatch('news/updateCategory', this.news.category)
+  // },
   methods: {
+    ...mapActions({
+      updateCategory: 'modules/news/updateCategory'
+    }),
     goNewsList() {
+      // this.$store.dispatch('news/updateCategory', this.news.category)
       const category = this.news.category
+      this.updateCategory(category)
       this.$router.push({ path: `/news/${category}` })
     }
-  },
+  }
 }
 </script>

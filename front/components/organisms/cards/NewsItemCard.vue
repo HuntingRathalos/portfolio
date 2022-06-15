@@ -1,9 +1,6 @@
 <template>
   <v-card>
-    <v-img
-      height="220"
-      src="news.thumbnail"
-    ></v-img>
+    <v-img height="220" :src="news.thumbnail"></v-img>
 
     <v-card-title class="justify-center">{{ news.title }}</v-card-title>
 
@@ -27,6 +24,6 @@ export default {
       type: Object,
       default: null
     }
-  },
+  }
 }
 </script>
