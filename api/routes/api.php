@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\SaveController;
 use App\Http\Controllers\Api\TargetController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\NewsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,3 +41,5 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
         Route::delete('/follow/{userId}', [UserController::class, 'unfollow'])->name('users.unfollow');
     });
   });
+
+  Route::get('/news', [NewsController::class, 'index']);

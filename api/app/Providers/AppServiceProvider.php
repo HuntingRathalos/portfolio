@@ -6,9 +6,11 @@ use Illuminate\Support\ServiceProvider;
 use App\Services\Save\SaveServiceInterface;
 use App\Services\Target\TargetServiceInterface;
 use App\Services\User\UserServiceInterface;
+use App\Services\News\NewsServiceInterface;
 use App\Services\Save\SaveService;
 use App\Services\Target\TargetService;
 use App\Services\User\UserService;
+use App\Services\News\NewsService;
 use App\Repositories\Save\SaveRepositoryInterface;
 use App\Repositories\Tag\TagRepositoryInterface;
 use App\Repositories\Target\TargetRepositoryInterface;
@@ -57,6 +59,8 @@ class AppServiceProvider extends ServiceProvider
                     $app->make(TagRepositoryInterface::class),
                 );
             });
+
+        $this->app->bind(NewsServiceInterface::class, NewsService::class);
     }
 
     /**
