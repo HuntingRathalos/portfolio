@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Services\News\NewsServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Log;
 
 class NewsController extends Controller
 {
@@ -30,7 +29,6 @@ class NewsController extends Controller
     {
         $category = $request->category;
 
-        Log::debug($category);
         return $this->newsService->getNewsByCategory($category);
     }
 }

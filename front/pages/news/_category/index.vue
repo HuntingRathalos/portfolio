@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <div class="text-left">
-      <v-btn to="/news" text color="blue" nuxt class="mr-auto">
+      <v-btn to="/news" text color="blue" nuxt class="mr-auto mb-2">
         <v-icon> mdi-chevron-left </v-icon>
         カテゴリー選択へ
       </v-btn>
@@ -9,11 +9,11 @@
     <v-row justify="center">
       <v-col
         v-for="news in articles"
-        :key="news.id"
-        cols="12"
+        :key="news.title"
+        cols="11"
         sm="6"
-        md="4"
-        lg="3"
+        md="5"
+        lg="4"
       >
         <news-item-card :news="news" />
       </v-col>
@@ -27,43 +27,26 @@ export default {
   name: 'NewsList',
   components: { NewsItemCard },
   auth: false,
-  data() {
-    return {
-      // newsArray: [
-      //   {
-      //     id: 1
-      //   },
-      //   {
-      //     id: 2
-      //   },
-      //   {
-      //     id: 3
-      //   },
-      //   {
-      //     id: 4
-      //   },
-      //   {
-      //     id: 5
-      //   },
-      //   {
-      //     id: 6
-      //   }
-      // ]
-    }
-  },
   computed: {
     ...mapGetters('news', {
       articles: 'getArticlesByCategory'
     })
   },
-  medhods: {
-    ...mapActions({
-      getArticles: 'modules/news/getArticles'
-    })
-  },
   created() {
-    // this.$store.dispatch('news/getArticles')
-    this.getArticles()
+    if (this.articles.length) {
+      return false
+    } else {
+      this.$newsApi
+        .getNewsByCategory(this.$route.params.category)
+        .then((res) => {
+          this.getArticles(res.data)
+        })
+    }
+  },
+  methods: {
+    ...mapActions({
+      getArticles: 'news/getArticles'
+    })
   }
 }
 </script>

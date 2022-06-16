@@ -30,17 +30,17 @@ export const mutations = {
 }
 
 export const actions = {
-  getArticles({ commit, state }) {
-    const category = state.activeCategory
-    if (state.newsData[category].length) {
-      return false
-    } else {
-      // const newsArticles = await changeCategory(category)
-      const res = this.$newsApi.getNewsByCategory(category)
-      console.log(res)
-      commit('setArticles', res.data)
-      // return res.data
-    }
+  getArticles({ commit, state }, data) {
+    // const category = state.activeCategory
+    // if (state.newsData[category].length) {
+    //   return false
+    // } else {
+    //   const res = this.$newsApi.getNewsByCategory(category)
+    //   console.log(res)
+    //   // commit('setArticles', res.data)
+    //   return res.data
+    // }
+    commit('setArticles', data)
   },
   updateCategory({ commit, state }, category) {
     if (state.activeCategory !== category) {

@@ -27,18 +27,14 @@ export default {
       default: null
     }
   },
-  //  created() {
-  //   this.$store.dispatch('news/updateCategory', this.news.category)
-  // },
   methods: {
     ...mapActions({
-      updateCategory: 'modules/news/updateCategory'
+      updateCategory: 'news/updateCategory'
     }),
     goNewsList() {
-      // this.$store.dispatch('news/updateCategory', this.news.category)
-      const category = this.news.category
-      this.updateCategory(category)
-      this.$router.push({ path: `/news/${category}` })
+      const storeProperty = this.news.storeProperty
+      this.updateCategory(storeProperty)
+      this.$router.push({ path: `/news/${storeProperty}` })
     }
   }
 }

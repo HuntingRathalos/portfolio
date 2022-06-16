@@ -19,32 +19,38 @@ export default {
         {
           color: '#f87979',
           icon: 'mdi-handshake-outline',
-          category: 'ビジネス'
+          category: 'ビジネス',
+          storeProperty: 'business'
         },
         {
           color: '#303F9F',
           icon: 'mdi-robot-happy-outline',
-          category: 'エンターテイメント'
+          category: 'エンターテイメント',
+          storeProperty: 'entertainment'
         },
         {
           color: '#80DEEA',
           icon: 'mdi-bottle-tonic-plus-outline',
-          category: '健康'
+          category: '健康',
+          storeProperty: 'health'
         },
         {
           color: '#66BB6A',
           icon: 'mdi-flask-outline',
-          category: '科学'
+          category: '科学',
+          storeProperty: 'science'
         },
         {
           color: '#FFCA28',
           icon: 'mdi-ski',
-          category: 'スポーツ'
+          category: 'スポーツ',
+          storeProperty: 'sports'
         },
         {
           color: '#B388FF',
           icon: 'mdi-robot',
-          category: 'テクノロジー'
+          category: 'テクノロジー',
+          storeProperty: 'technology'
         }
       ]
     }
