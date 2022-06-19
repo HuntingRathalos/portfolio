@@ -1,18 +1,5 @@
 export const state = () => ({
-  posts: [
-    {
-      id: 1,
-      name: '雨'
-    },
-    {
-      id: 2,
-      name: 'とり'
-    },
-    {
-      id: 3,
-      name: '草'
-    }
-  ],
+  posts: [],
   likePosts: []
 })
 
@@ -21,39 +8,38 @@ export const getters = {
 }
 
 export const mutations = {
-  createPost(state, payload) {
-    console.log(payload)
+  create(state, payload) {
     state.posts.unshift(payload)
   },
-  updatePost(state, payload) {
+  update(state, payload) {
     const post = state.posts.find((post) => post.id === payload.id)
     Object.assign(post, payload)
   },
-  deletePost(state, payload) {
+  delete(state, payload) {
     state.posts.filter((post) => post.id !== payload.id)
   },
-  likePost(state, payload) {
+  like(state, payload) {
     state.likePosts.unshift(payload)
   },
-  unlikePost(state, payload) {
+  unlike(state, payload) {
     state.likePosts.filter((likePost) => likePost.id !== payload.id)
   }
 }
 
 export const actions = {
-  createPost({ commit }, payload) {
-    commit('createPost', payload)
+  create({ commit }, payload) {
+    commit('create', payload)
   },
-  updatePost({ commit }, payload) {
-    commit('updatePost', payload)
+  update({ commit }, payload) {
+    commit('update', payload)
   },
-  deletePost({ commit }, payload) {
-    commit('deletePost', payload)
+  delete({ commit }, payload) {
+    commit('delete', payload)
   },
-  likePost({ commit }, payload) {
-    commit('likePost', payload)
+  like({ commit }, payload) {
+    commit('like', payload)
   },
-  unlikePost({ commit }, payload) {
-    commit('likePost', payload)
+  unlike({ commit }, payload) {
+    commit('like', payload)
   }
 }

@@ -56,13 +56,18 @@
 
     <v-card-actions class="ml-auto">
       <div class="ml-auto">
-        <v-btn icon text color="grey darken-2">
+        <v-btn
+          icon
+          text
+          color="grey darken-2"
+          @click="$emit('openEditPostModal')"
+        >
           <v-icon> mdi-pencil-box-multiple </v-icon>
         </v-btn>
-        <v-btn icon text color="grey darken-2" @click="deletePost">
+        <v-btn icon text color="grey darken-2" @click="$emit('deletePost')">
           <v-icon> mdi-delete </v-icon>
         </v-btn>
-        <v-btn icon text color="grey darken-2" @click="likePost">
+        <v-btn icon text color="grey darken-2" @click="$emit('likePost')">
           <v-icon> mdi-heart </v-icon>
         </v-btn>
       </div>
