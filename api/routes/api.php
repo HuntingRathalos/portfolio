@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\SaveController;
 use App\Http\Controllers\Api\TargetController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\NewsController;
+use App\Http\Controllers\Api\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,11 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::get('/saves/ranking', [SaveController::class, 'getSaveRanking']);
 
     Route::apiResource('targets', TargetController::class)->except('show');
+
+    Route::apiResource('posts', PostController::class);
+    Route::get('/posts/like', [PostController::class, 'getLikePosts']);
+    Route::patch('/posts/like/{postId}', [PostController::class, 'like']);
+    Route::delete('/posts/like/{postId}', [PostController::class, 'unlike']);
 
     Route::prefix('users')->group(function () {
         Route::get('/', [UserController::class, 'getUsersExceptMyself']);

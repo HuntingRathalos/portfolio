@@ -27,6 +27,7 @@
                   <span>自己評価</span>
                   <v-row justify="center">
                     <v-rating
+                      v-model="post.self_evaluation"
                       background-color="orange lighten-3"
                       color="orange"
                       large
@@ -62,7 +63,7 @@ export default {
         id: null,
         good_description: '',
         bad_description: '',
-        self_rating: 3
+        self_evaluation: 3
       }
     }
   },

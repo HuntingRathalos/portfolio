@@ -16,9 +16,9 @@ class PostApi {
     return await this.axios.get(`api/posts${id}`)
   }
 
-  // async getLikePosts() {
-  //   return await this.axios.get('api/posts/')
-  // }
+  async getLikePosts() {
+    return await this.axios.get('api/posts/like')
+  }
 
   async create(post) {
     return await this.axios.post('api/posts', post)
