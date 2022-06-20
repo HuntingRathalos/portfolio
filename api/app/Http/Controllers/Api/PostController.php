@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\Post\PostServiceInterface;
 use App\Models\Post;
+use App\Http\Requests\PostRequest;
 
 class PostController extends Controller
 {
@@ -41,67 +42,69 @@ class PostController extends Controller
     /**
      * 新たな振り返り投稿を作成して返却
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\PostRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        return $this->postService->createPost($request->all());
+        $validated = $request->validated();
+        return $this->postService->createPost($validated);
     }
 
     /**
      * ID番目の振り返り投稿を取得して返却
      *
-     * @param  int  $id
+     * @param  int  $postId
      * @return \Illuminate\Http\Response
      */
-    public function show(int $id)
+    public function show(int $postId)
     {
-        return $this->postService->getPostById($id);
+        return $this->postService->getPostById($postId);
     }
 
     /**
      * 振り返り投稿を更新して返却
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\PostRequest  $request
+     * @param  int  $postId
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, int $id)
+    public function update(PostRequest $request, int $postId)
     {
-        return $this->postService->updatePost($id, $request->all());
+        $validated = $request->validated();
+        return $this->postService->updatePost($postId, $validated);
     }
 
     /**
      * 振り返り投稿を削除
      *
-     * @param  int  $id
+     * @param  int  $postId
      * @return \Illuminate\Http\Response
      */
-    public function destroy(int $id)
+    public function destroy(int $postId)
     {
-        return $this->postService->deletePost($id);
+        return $this->postService->deletePost($postId);
     }
 
     /**
      * 振り返り投稿をお気に入り登録して返却
      *
-     * @param integer $id
+     * @param integer $postId
      * @return \Illuminate\Http\Response
      */
-    public function like(int $id)
+    public function like(int $postId)
     {
-        return $this->postService->likePost($id);
+        return $this->postService->likePost($postId);
     }
 
     /**
      * 振り返り投稿のお気に入りを解除
      *
-     * @param integer $id
+     * @param integer $postId
      * @return \Illuminate\Http\Response
      */
-    public function unlike(int $id)
+    public function unlike(int $postId)
     {
-        return $this->postService->unlikePost($id);
+        return $this->postService->unlikePost($postId);
     }
 }
