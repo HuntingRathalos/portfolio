@@ -40,6 +40,6 @@ export const actions = {
     commit('like', payload)
   },
   unlike({ commit }, payload) {
-    commit('like', payload)
+    commit('unlike', payload)
   }
 }

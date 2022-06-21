@@ -42,7 +42,7 @@
               @open-edit-post-modal="openEditPostModal(post.id)"
               @delete-post="deletePost(post.id)"
               @like-post="likePost(post.id)"
-              @unlike-post="likePost(post.id)"
+              @unlike-post="unlikePost(post.id)"
             />
           </v-tab-item>
           <v-tab-item class="pa-1">
@@ -106,6 +106,16 @@ export default {
           this.$toast.success('お気に入りにしました。')
         })
         .catch(() => this.$toast.error('お気に入りに失敗しました。'))
+    },
+    unlikePost(id) {
+      this.$postApi
+        .unlike(id)
+        .then((res) => {
+          console.log(res)
+          this.unlike(res.data)
+          this.$toast.success('お気に入りを解除しました。')
+        })
+        .catch(() => this.$toast.error('お気に入り解除に失敗しました。'))
     }
   }
 }
