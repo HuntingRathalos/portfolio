@@ -4,10 +4,10 @@
       <v-card class="mx-auto">
         <v-toolbar class="indigo accent-1" flat>
           <v-toolbar-title class="white--text font-weight-bold">
-            振り返り記録を編集する
+            振り返り記録を作成する
           </v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-icon dark @click="closeDialog"> mdi-close </v-icon>
+          <v-icon dark @click="closeModal"> mdi-close </v-icon>
         </v-toolbar>
         <v-form>
           <v-card-text>
@@ -15,12 +15,12 @@
               <v-row>
                 <v-col cols="12" class="pa-0">
                   <good-description-input
-                    :good_description.sync="post.good_description"
+                    :good-description.sync="post.good_description"
                   />
                 </v-col>
                 <v-col cols="12" class="pa-0">
                   <bad-description-input
-                    :bad_description.sync="post.bad_description"
+                    :bad-description.sync="post.bad_description"
                   />
                 </v-col>
                 <v-col cols="12" class="pa-0">
@@ -38,7 +38,7 @@
                 </v-col>
                 <v-col cols="12">
                   <v-row justify="center pt-5">
-                    <v-btn color="success" class="white--text" @click="create"
+                    <v-btn color="success" class="white--text" @click="createPost"
                       >送信
                     </v-btn>
                   </v-row>
@@ -60,7 +60,6 @@ export default {
   data() {
     return {
       post: {
-        id: null,
         good_description: '',
         bad_description: '',
         self_evaluation: 3
@@ -70,7 +69,6 @@ export default {
   computed: {
     ...mapGetters('modal', {
       openCreatePostModal: 'openCreatePostModal',
-      create: 'post/create'
     }),
     isOpenCreatePostModal: {
       get() {
@@ -83,17 +81,24 @@ export default {
   },
   methods: {
     ...mapActions({
-      setOpenCreatePostModal: 'modal/setOpenCreatePostModal'
+      setOpenCreatePostModal: 'modal/setOpenCreatePostModal',
+      create: 'post/create'
     }),
     closeModal() {
       this.setOpenCreatePostModal(false)
     },
-    create() {
+    resetModal() {
+      this.post.good_description = ''
+      this.post.bad_description = ''
+      this.post.self_evaluation = 3
+    },
+    createPost() {
       this.$postApi
         .create(this.post)
         .then((res) => {
           console.log(res)
           this.create(res.data)
+          this.resetModal()
           this.closeModal()
           this.$toast.success('記録を作成しました。')
         })

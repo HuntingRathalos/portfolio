@@ -37,7 +37,8 @@ class PostRepository implements PostRepositoryInterface
    */
   public function getAllPosts(): Collection
   {
-       return User::find(Auth::id())->posts;
+      //  return User::find(Auth::id())->posts;
+       return $this->model->get();
   }
 
   /**

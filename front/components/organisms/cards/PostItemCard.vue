@@ -2,8 +2,8 @@
   <v-card class="mx-auto" flat>
     <v-card flat class="text-center pt-2">
       <!-- <h2 class="font-weight-medium">pooさん</h2> -->
-      <h2 class="font-weight-medium">authモジュールのやつ</h2>
-      <h4 class="font-weight-medium">{{ post.created_at }}</h4>
+      <h2 class="font-weight-medium">{{ $auth.user.name }}さん</h2>
+      <h4 class="font-weight-medium">{{ post.updated_at }}</h4>
     </v-card>
     <v-card-actions class="mb-2">
       <v-row>
@@ -14,6 +14,7 @@
           <v-row justify="center">
             <v-rating
               background-color="orange lighten-3"
+              readonly
               color="orange"
               large
               length="5"
@@ -34,7 +35,7 @@
             color="green accent-3"
             label="良かったポイント"
             :value="post.good_description"
-            rows="3"
+            rows="2"
           ></v-textarea>
         </v-col>
       </v-row>
@@ -48,7 +49,7 @@
             color="red accent-2"
             label="わるかったポイント"
             :value="post.bad_description"
-            rows="3"
+            rows="2"
           ></v-textarea>
         </v-col>
       </v-row>

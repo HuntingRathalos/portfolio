@@ -13,7 +13,7 @@ class PostApi {
   }
 
   async getPostById(id) {
-    return await this.axios.get(`api/posts${id}`)
+    return await this.axios.get(`api/posts/${id}`)
   }
 
   async getLikePosts() {

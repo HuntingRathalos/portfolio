@@ -4,10 +4,10 @@
       <v-card class="mx-auto">
         <v-toolbar class="indigo accent-1" flat>
           <v-toolbar-title class="white--text font-weight-bold">
-            振り返り記録を作成する
+            振り返り記録を編集する
           </v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-icon dark @click="closeDialog"> mdi-close </v-icon>
+          <v-icon dark @click="closeModal"> mdi-close </v-icon>
         </v-toolbar>
         <v-form>
           <v-card-text>
@@ -15,12 +15,12 @@
               <v-row>
                 <v-col cols="12" class="pa-0">
                   <good-description-input
-                    :good_description.sync="post.good_description"
+                    :good-description.sync="post.good_description"
                   />
                 </v-col>
                 <v-col cols="12" class="pa-0">
                   <bad-description-input
-                    :bad_description.sync="post.bad_description"
+                    :bad-description.sync="post.bad_description"
                   />
                 </v-col>
                 <v-col cols="12" class="pa-0">
@@ -63,13 +63,12 @@ export default {
   props: {
     postId: {
       type: Number,
-      required: true
-    }
+      default: null
+    },
   },
   data() {
     return {
       post: {
-        id: null,
         good_description: '',
         bad_description: '',
         self_evaluation: 3,
@@ -89,9 +88,14 @@ export default {
       }
     }
   },
-  created() {
-    this.getPostById()
+  watch: {
+    async postId () {
+      await this.getPostById()
+    }
   },
+  // mounted() {
+  //   this.getPostById()
+  // },
   methods: {
     ...mapActions({
       setOpenEditPostModal: 'modal/setOpenEditPostModal',
@@ -103,15 +107,18 @@ export default {
     getPostById() {
       this.$postApi.getPostById(this.postId).then((res) => {
         console.log(res)
-        Object.assign(this.post, res.data)
+        // Object.assign(this.post, res.data)
+        this.post.good_description = res.data.good_description
+        this.post.bad_description = res.data.bad_description
+        this.post.self_evaluation = res.data.self_evaluation
       })
     },
-    update() {
+    updatePost() {
       this.$postApi
-        .update(this.post)
+        .update(this.postId, this.post)
         .then((res) => {
           console.log(res)
-          this.updatet(res.data)
+          this.update(res.data)
           this.closeModal()
           this.$toast.success('記録を更新しました。')
         })

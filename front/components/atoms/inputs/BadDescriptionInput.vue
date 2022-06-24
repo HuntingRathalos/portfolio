@@ -1,11 +1,12 @@
 <template>
   <v-textarea
     v-model="setBadDescription"
+    counter="50"
     prepend-icon="mdi-emoticon-cry-outline"
     :rules="[rules.maxCount60]"
     color="green accent-3"
     label="悪かったポイント"
-    rows="3"
+    rows="2"
   ></v-textarea>
 </template>
 <script>

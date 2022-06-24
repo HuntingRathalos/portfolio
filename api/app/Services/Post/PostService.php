@@ -29,7 +29,7 @@ class PostService implements PostServiceInterface
      */
     public function getPostById(int $postId): JsonResponse
     {
-        $post = $this->postRepository->getPostById();
+        $post = $this->postRepository->getPostById($postId);
         return response()->json($post, Response::HTTP_OK);
     }
 

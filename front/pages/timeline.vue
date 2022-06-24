@@ -23,7 +23,7 @@
           </v-tab>
         </v-tabs>
         <v-tabs-items v-model="tab">
-          <v-tab-item class="pa-1">
+          <v-tab-item class="pa-1" value="post_list">
             <v-col cols="12">
               <v-btn
                 block
@@ -32,15 +32,15 @@
                 rounded
                 @click="openCreatePostModal"
               >
-                新しいガジェットを追加する
+                新しく振り返りを追加する
               </v-btn>
             </v-col>
             <post-item-card
               v-for="post in posts"
               :key="post.id"
               :post="post"
-              @open-edit-post-modal="openEditPostModal(post.id)"
-              @delete-post="deletePost(post.id)"
+              @openEditPostModal="openEditPostModal(post.id)"
+              @deletePost="deletePost(post.id)"
               @like-post="likePost(post.id)"
               @unlike-post="unlikePost(post.id)"
             />
@@ -54,7 +54,7 @@
   </v-container>
 </template>
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import PostItemCard from '../components/organisms/cards/PostItemCard.vue'
 import PostLikeCard from '../components/organisms/cards/PostLikeCard.vue'
 import CreatePostModal from '../components/organisms/modals/CreatePostModal.vue'
@@ -69,9 +69,14 @@ export default {
       postId: null
     }
   },
+  computed: {
+    ...mapGetters('post', {
+      posts: 'posts',
+    }),
+  },
   methods: {
     ...mapActions({
-      setOpeCreatetPostModal: 'modal/setOpeCreatetPostModal',
+      setOpenCreatePostModal: 'modal/setOpenCreatePostModal',
       setOpenEditPostModal: 'modal/setOpenEditPostModal',
       delete: 'post/delete',
       like: 'post/like'
@@ -84,7 +89,7 @@ export default {
       // モーダルでid番目のpostを取得して反映させる
     },
     openCreatePostModal() {
-      this.setOpeCreatetPostModal(true)
+      this.setOpenCreatePostModal(true)
     },
     deletePost(id) {
       this.$postApi

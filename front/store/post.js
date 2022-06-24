@@ -16,13 +16,13 @@ export const mutations = {
     Object.assign(post, payload)
   },
   delete(state, payload) {
-    state.posts.filter((post) => post.id !== payload.id)
+    state.posts = state.posts.filter((post) => post.id !== payload)
   },
   like(state, payload) {
     state.likePosts.unshift(payload)
   },
   unlike(state, payload) {
-    state.likePosts.filter((likePost) => likePost.id !== payload.id)
+    state.likePosts.filter((likePost) => likePost.id !== payload)
   }
 }
 

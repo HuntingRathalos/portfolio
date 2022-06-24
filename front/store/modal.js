@@ -34,7 +34,7 @@ export const actions = {
   setOpenAlertModal({ commit }, openAlertModal) {
     commit('setOpenAlertModal', openAlertModal)
   },
-  openCreatePostModal({ commit }, openCreatePostModal) {
+  setOpenCreatePostModal({ commit }, openCreatePostModal) {
     commit('setOpenCreatePostModal', openCreatePostModal)
   },
   setOpenEditPostModal({ commit }, openEditPostModal) {
