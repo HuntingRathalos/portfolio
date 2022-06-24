@@ -71,9 +71,13 @@ export default {
   },
   computed: {
     ...mapGetters('post', {
-      posts: 'posts',
-    }),
+      posts: 'posts'
+    })
   },
+  // created() {
+  //   this.$postApi.get()
+  //   this.$postApi.getLikePosts()
+  // },
   methods: {
     ...mapActions({
       setOpenCreatePostModal: 'modal/setOpenCreatePostModal',

@@ -38,7 +38,10 @@
                 </v-col>
                 <v-col cols="12">
                   <v-row justify="center pt-5">
-                    <v-btn color="success" class="white--text" @click="createPost"
+                    <v-btn
+                      color="success"
+                      class="white--text"
+                      @click="createPost"
                       >送信
                     </v-btn>
                   </v-row>
@@ -68,7 +71,7 @@ export default {
   },
   computed: {
     ...mapGetters('modal', {
-      openCreatePostModal: 'openCreatePostModal',
+      openCreatePostModal: 'openCreatePostModal'
     }),
     isOpenCreatePostModal: {
       get() {
@@ -86,6 +89,7 @@ export default {
     }),
     closeModal() {
       this.setOpenCreatePostModal(false)
+      this.resetModal()
     },
     resetModal() {
       this.post.good_description = ''
@@ -98,7 +102,7 @@ export default {
         .then((res) => {
           console.log(res)
           this.create(res.data)
-          this.resetModal()
+          // this.resetModal()
           this.closeModal()
           this.$toast.success('記録を作成しました。')
         })

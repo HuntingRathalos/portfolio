@@ -64,14 +64,14 @@ export default {
     postId: {
       type: Number,
       default: null
-    },
+    }
   },
   data() {
     return {
       post: {
         good_description: '',
         bad_description: '',
-        self_evaluation: 3,
+        self_evaluation: 3
       }
     }
   },
@@ -89,7 +89,7 @@ export default {
     }
   },
   watch: {
-    async postId () {
+    async postId() {
       await this.getPostById()
     }
   },

@@ -1,9 +1,9 @@
 <template>
   <v-textarea
     v-model="setBadDescription"
-    counter="50"
+    counter="45"
     prepend-icon="mdi-emoticon-cry-outline"
-    :rules="[rules.maxCount60]"
+    :rules="[rules.required, rules.maxCount45]"
     color="green accent-3"
     label="悪かったポイント"
     rows="2"
@@ -20,8 +20,9 @@ export default {
   data() {
     return {
       rules: {
-        maxCount60: (value) =>
-          value.length <= 60 || '文字数をオーバーしています。'
+        required: (value) => !!value || '必須項目なので値を入力してください。',
+        maxCount45: (value) =>
+          value.length <= 45 || '文字数をオーバーしています。'
       }
     }
   },

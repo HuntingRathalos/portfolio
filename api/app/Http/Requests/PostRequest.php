@@ -26,8 +26,8 @@ class PostRequest extends FormRequest
     public function rules()
     {
         return [
-            'good_description' => 'max:60',
-            'bad_description' => 'max:60',
+            'good_description' => 'max:45',
+            'bad_description' => 'max:45',
             'self_evaluation' => 'required|integer',
         ];
     }
@@ -44,9 +44,9 @@ class PostRequest extends FormRequest
     public function messages()
     {
         return [
-            // 'good_description.required' => '良かったポイントは必須です。',
+            'good_description.required' => '良かったポイントは必須です。',
             'good_description.max' => '文字数をオーバーしています。',
-            // 'bad_description.required' => '悪かったポイントは必須です。',
+            'bad_description.required' => '悪かったポイントは必須です。',
             'bad_description.max' => '文字数をオーバーしています。',
             'self_evaluation.required' => '自己評価は必須です。',
             'self_evaluation.integer' => '正しい形式で入力してください。',
