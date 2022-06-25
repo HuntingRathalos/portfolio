@@ -68,7 +68,22 @@
         <v-btn icon text color="grey darken-2" @click="$emit('deletePost')">
           <v-icon> mdi-delete </v-icon>
         </v-btn>
-        <v-btn icon text color="grey darken-2" @click="$emit('likePost')">
+        <v-btn
+          v-if="active"
+          icon
+          text
+          color="red lighten-1"
+          @click="likePost(post.id)"
+        >
+          <v-icon> mdi-heart </v-icon>
+        </v-btn>
+        <v-btn
+          v-else
+          icon
+          text
+          color="grey darken-2"
+          @click="unlikePost(post.id)"
+        >
           <v-icon> mdi-heart </v-icon>
         </v-btn>
       </div>
@@ -77,15 +92,54 @@
   </v-card>
 </template>
 <script>
+import { mapActions } from 'vuex'
 export default {
   props: {
     post: {
       type: Object,
       default: null
+    },
+    likePostsId: {
+      type: Array,
+      required: true
+    }
+  },
+  data() {
+    return {
+      active: false
+    }
+  },
+  created() {
+    const judge = this.likePostsId.indexOf(this.post.id)
+    if (judge !== -1) {
+      this.active = true
     }
   },
   methods: {
-    likePost() {}
+    ...mapActions({
+      like: 'post/like',
+      unlike: 'post/unlike'
+    }),
+    likePost(id) {
+      this.$postApi
+        .like(id)
+        .then((res) => {
+          console.log(res)
+          this.like(res.data)
+          this.$toast.success('お気に入りにしました。')
+        })
+        .catch(() => this.$toast.error('お気に入りに失敗しました。'))
+    },
+    unlikePost(id) {
+      this.$postApi
+        .unlike(id)
+        .then((res) => {
+          console.log(res)
+          this.unlike(id)
+          this.$toast.success('お気に入りを解除しました。')
+        })
+        .catch(() => this.$toast.error('お気に入り解除に失敗しました。'))
+    }
   }
 }
 </script>

@@ -3,7 +3,7 @@
     <v-card flat class="text-center pt-2">
       <!-- <h2 class="font-weight-medium">pooさん</h2> -->
       <h2 class="font-weight-medium">authモジュールのやつ</h2>
-      <h4 class="font-weight-medium">{{ post.created_at }}</h4>
+      <h4 class="font-weight-medium">{{ post.updated_at }}</h4>
     </v-card>
     <v-card-actions class="mb-2">
       <v-row>
@@ -54,13 +54,13 @@
       </v-row>
     </v-card-actions>
 
-    <v-card-actions class="ml-auto">
+    <!-- <v-card-actions class="ml-auto">
       <div class="ml-auto">
         <v-btn icon text color="grey darken-2">
           <v-icon> mdi-heart </v-icon>
         </v-btn>
       </div>
-    </v-card-actions>
+    </v-card-actions> -->
     <v-divider></v-divider>
   </v-card>
 </template>

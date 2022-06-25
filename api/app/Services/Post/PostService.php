@@ -41,6 +41,17 @@ class PostService implements PostServiceInterface
     public function getAllPosts(): JsonResponse
     {
         $allposts = $this->postRepository->getAllPosts();
+
+        // if(!$allposts->isEmpty()) {
+        //     $processPosts = collect();
+        //     $allposts->each(function($post) use ($processPosts) {
+        //         $processPost = $this->processPost($post);
+        //         $processPosts->push($processPost);
+        //     });
+        // } else {
+        //     return response()->json('', Response::HTTP_OK);
+        // }
+        // $processPostsを返す
         return response()->json($allPosts, Response::HTTP_OK);
     }
 
@@ -52,6 +63,13 @@ class PostService implements PostServiceInterface
     public function getLikePosts(): JsonResponse
     {
         $likePosts =  $this->postRepository->getLikePosts();
+
+        // $processPosts = collect();
+        // $likePosts->each(function($post) use ($processPosts) {
+        //     $processPost = $this->processPost($post);
+        //     $processPosts->push($processPost);
+        // });
+
         return response()->json($likePosts, Response::HTTP_OK);
     }
 
@@ -64,6 +82,9 @@ class PostService implements PostServiceInterface
     public function createPost(array $postDetails): JsonResponse
     {
         $post = $this->postRepository->createPost($postDetails);
+
+        // $processPost = $this->processPost($post);
+
         return response()->json($post, Response::HTTP_CREATED);
     }
 
@@ -77,6 +98,10 @@ class PostService implements PostServiceInterface
     public function updatePost(int $postId, array $postDetails): JsonResponse
     {
         $this->postRepository->updatePost($postId, $postDetails);
+
+        // $post = $this->postRepository->getPostById($postId);
+        // $processPost = $this->processPost($post);
+
         return response()->json($this->postRepository->getPostById($postId), Response::HTTP_CREATED);
     }
 
@@ -95,6 +120,10 @@ class PostService implements PostServiceInterface
     public function likePost(int $postId): JsonResponse
     {
       $this->postRepository->likePost($postId);
+
+    //   $post = $this->postRepository->getPostById($postId);
+    //   $processPost = $this->processPost($post);
+
       return response()->json($this->postRepository->getPostById($postId), Response::HTTP_CREATED);
     }
 
@@ -103,4 +132,21 @@ class PostService implements PostServiceInterface
       $this->postRepository->unlikePost($postId);
       return response()->json(null, Response::HTTP_NO_CONTENT);
     }
+
+    // /**
+    //  * postにユーザーネームを付与して返却する
+    //  *
+    //  * @param Post $post
+    //  * @return void
+    //  */
+    // protected function processPost(Post $post) {
+    //     return $processPost = [
+    //         'id' => $post->id,
+    //         'name' => $post->user->name,
+    //         'good_description' => $post->good_description,
+    //         'bad_description' => $post->bad_description,
+    //         'self_evaluation' => $post->self_evaluation,
+    //         'updated_at' => $post->updated_at,
+    //     ];
+    // }
 }

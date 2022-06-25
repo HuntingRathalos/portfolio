@@ -4,10 +4,17 @@ export const state = () => ({
 })
 
 export const getters = {
-  posts: (state) => state.posts
+  posts: (state) => state.posts,
+  likePosts: (state) => state.likePosts
 }
 
 export const mutations = {
+  get(state, payload) {
+    state.posts = payload
+  },
+  getLiked(state, payload) {
+    state.posts = payload
+  },
   create(state, payload) {
     state.posts.unshift(payload)
   },
@@ -27,6 +34,12 @@ export const mutations = {
 }
 
 export const actions = {
+  get({ commit }, payload) {
+    commit('get', payload)
+  },
+  getLiked({ commit }, payload) {
+    commit('getLiked', payload)
+  },
   create({ commit }, payload) {
     commit('create', payload)
   },

@@ -8,9 +8,9 @@
           v-model="tab"
           fixed-tabs
           centered
-          background-color="cyan darken-1"
+          background-color="indigo accent-1"
           color="white"
-          slider-color="orange"
+          slider-color="teal accent-3"
           icons-and-text
         >
           <v-tab class="ma-0 pa-0" href="#post_list">
@@ -39,14 +39,19 @@
               v-for="post in posts"
               :key="post.id"
               :post="post"
+              :like-posst-id="likePostId"
               @openEditPostModal="openEditPostModal(post.id)"
               @deletePost="deletePost(post.id)"
-              @like-post="likePost(post.id)"
-              @unlike-post="unlikePost(post.id)"
+              @likePost="likePost(post.id)"
+              @unlikePost="unlikePost(post.id)"
             />
           </v-tab-item>
           <v-tab-item class="pa-1">
-            <post-like-card />
+            <post-like-card
+              v-for="post in likePosts"
+              :key="post.id"
+              :like-post="post"
+            />
           </v-tab-item>
         </v-tabs-items>
       </v-col>
@@ -66,22 +71,35 @@ export default {
   data() {
     return {
       tab: 'post_list',
-      postId: null
+      postId: null,
+      likePostsId: []
     }
   },
   computed: {
     ...mapGetters('post', {
-      posts: 'posts'
+      posts: 'posts',
+      likePosts: 'likePosts'
     })
   },
   // created() {
-  //   this.$postApi.get()
-  //   this.$postApi.getLikePosts()
+  //   const posts = this.$postApi.get()
+  //   this.get(posts)
+
+  //   const likePosts = this.$postApi.getLikePosts()
+
+  //   if(likePosts) {
+  //     this.getLiked(likePosts)
+  //     storeに格納する前にID配列を作る
+  //     const likePostsId = likePosts.map((likePost) => likePost.id)
+  //     this.likePostsId = likePostsId
+  //   }
   // },
   methods: {
     ...mapActions({
       setOpenCreatePostModal: 'modal/setOpenCreatePostModal',
       setOpenEditPostModal: 'modal/setOpenEditPostModal',
+      get: 'post/get',
+      getLiked: 'post/getLiked',
       delete: 'post/delete',
       like: 'post/like'
     }),
@@ -99,32 +117,10 @@ export default {
       this.$postApi
         .delete(id)
         .then((res) => {
-          console.log(res)
-          // id一回使ってなかったらresでidを返すようにする
           this.delete(id)
           this.$toast.success('記録の削除に成功しました。')
         })
         .catch(() => this.$toast.error('記録の削除に失敗しました。'))
-    },
-    likePost(id) {
-      this.$postApi
-        .like(id)
-        .then((res) => {
-          console.log(res)
-          this.like(res.data)
-          this.$toast.success('お気に入りにしました。')
-        })
-        .catch(() => this.$toast.error('お気に入りに失敗しました。'))
-    },
-    unlikePost(id) {
-      this.$postApi
-        .unlike(id)
-        .then((res) => {
-          console.log(res)
-          this.unlike(res.data)
-          this.$toast.success('お気に入りを解除しました。')
-        })
-        .catch(() => this.$toast.error('お気に入り解除に失敗しました。'))
     }
   }
 }
