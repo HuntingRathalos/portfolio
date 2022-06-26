@@ -40,7 +40,7 @@ class PostService implements PostServiceInterface
      */
     public function getAllPosts(): JsonResponse
     {
-        $allposts = $this->postRepository->getAllPosts();
+        $allPosts = $this->postRepository->getAllPosts();
 
         // if(!$allposts->isEmpty()) {
         //     $processPosts = collect();

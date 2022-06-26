@@ -26,8 +26,8 @@ class PostRequest extends FormRequest
     public function rules()
     {
         return [
-            'good_description' => 'max:45',
-            'bad_description' => 'max:45',
+            'good_description' => 'required|max:45',
+            'bad_description' => 'required|max:45',
             'self_evaluation' => 'required|integer',
         ];
     }

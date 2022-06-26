@@ -29,7 +29,6 @@
       <v-row class="mx-auto">
         <v-col cols="12">
           <v-textarea
-            autofocus
             readonly
             success
             color="green accent-3"
@@ -73,7 +72,7 @@
           icon
           text
           color="red lighten-1"
-          @click="likePost(post.id)"
+          @click="unlikePost(post.id)"
         >
           <v-icon> mdi-heart </v-icon>
         </v-btn>
@@ -82,7 +81,7 @@
           icon
           text
           color="grey darken-2"
-          @click="unlikePost(post.id)"
+          @click="likePost(post.id)"
         >
           <v-icon> mdi-heart </v-icon>
         </v-btn>
@@ -101,7 +100,7 @@ export default {
     },
     likePostsId: {
       type: Array,
-      required: true
+      default: null
     }
   },
   data() {
@@ -110,9 +109,11 @@ export default {
     }
   },
   created() {
-    const judge = this.likePostsId.indexOf(this.post.id)
-    if (judge !== -1) {
-      this.active = true
+    if(this.likePostsId.length !== 0) {
+      const judge = this.likePostsId.indexOf(this.post.id)
+      if (judge !== -1) {
+        this.active = true
+      }
     }
   },
   methods: {
@@ -125,6 +126,7 @@ export default {
         .like(id)
         .then((res) => {
           console.log(res)
+          this.active = true
           this.like(res.data)
           this.$toast.success('お気に入りにしました。')
         })
@@ -135,6 +137,7 @@ export default {
         .unlike(id)
         .then((res) => {
           console.log(res)
+          this.active = false
           this.unlike(id)
           this.$toast.success('お気に入りを解除しました。')
         })

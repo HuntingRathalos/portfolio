@@ -39,7 +39,7 @@
               v-for="post in posts"
               :key="post.id"
               :post="post"
-              :like-posst-id="likePostId"
+              :like-posts-id="likePostsId"
               @openEditPostModal="openEditPostModal(post.id)"
               @deletePost="deletePost(post.id)"
               @likePost="likePost(post.id)"
@@ -81,19 +81,20 @@ export default {
       likePosts: 'likePosts'
     })
   },
-  // created() {
-  //   const posts = this.$postApi.get()
-  //   this.get(posts)
+  created() {
+    this.$postApi.get().then((res) => {
+        this.get(res.data)
+        })
 
-  //   const likePosts = this.$postApi.getLikePosts()
+    // const likePosts = this.$postApi.getLikePosts()
 
-  //   if(likePosts) {
-  //     this.getLiked(likePosts)
-  //     storeに格納する前にID配列を作る
-  //     const likePostsId = likePosts.map((likePost) => likePost.id)
-  //     this.likePostsId = likePostsId
-  //   }
-  // },
+    // if(likePosts) {
+    //   this.getLiked(likePosts)
+    //   storeに格納する前にID配列を作る
+    //   const likePostsId = likePosts.map((likePost) => likePost.id)
+    //   this.likePostsId = likePostsId
+    // }
+  },
   methods: {
     ...mapActions({
       setOpenCreatePostModal: 'modal/setOpenCreatePostModal',

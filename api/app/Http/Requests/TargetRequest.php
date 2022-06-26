@@ -45,7 +45,7 @@ class TargetRequest extends FormRequest
             'name.required' => '目標は必須です。',
             'name.max' => '文字数をオーバーしています。',
             'amount.required' => '目標額は必須です。',
-            'amount.intger' => '正しい形式で入力してください。',
+            'amount.integer' => '正しい形式で入力してください。',
         ];
     }
 

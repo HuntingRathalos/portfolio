@@ -28,7 +28,6 @@
       <v-row class="mx-auto">
         <v-col cols="12">
           <v-textarea
-            autofocus
             readonly
             success
             color="green accent-3"
