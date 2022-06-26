@@ -23,11 +23,11 @@
           </v-tab>
         </v-tabs>
         <v-tabs-items v-model="tab">
-          <v-tab-item class="pa-1" value="post_list">
+          <v-tab-item class="pa-1 tab_item overflow-y-auto" value="post_list">
             <v-col cols="12">
               <v-btn
                 block
-                color="orange"
+                color="teal accent-3"
                 dark
                 rounded
                 @click="openCreatePostModal"
@@ -85,10 +85,8 @@ export default {
     })
 
     this.$postApi.getLikePosts().then((res) => {
-      console.log(res)
       if (res.data) {
         this.getLiked(res.data)
-        // storeに格納する前にID配列を作る
         const likePostsId = res.data.map((likePost) => likePost.id)
         this.likePostsId = likePostsId
       }
@@ -105,10 +103,7 @@ export default {
     }),
     openEditPostModal(id) {
       this.postId = id
-      // モーダルにpropsで渡す
-      // モーダルをひらく
       this.setOpenEditPostModal(true)
-      // モーダルでid番目のpostを取得して反映させる
     },
     openCreatePostModal() {
       this.setOpenCreatePostModal(true)
@@ -125,3 +120,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+ .tab_item {
+   max-height: 90vh;
+ }
+</style>

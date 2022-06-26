@@ -4,12 +4,12 @@
       <v-card class="mx-auto">
         <v-toolbar class="indigo accent-1" flat>
           <v-toolbar-title class="white--text font-weight-bold">
-            振り返り記録を作成する
+            振り返りを作成する
           </v-toolbar-title>
           <v-spacer></v-spacer>
           <v-icon dark @click="closeModal"> mdi-close </v-icon>
         </v-toolbar>
-        <v-form>
+        <v-form ref="create_post_form">
           <v-card-text>
             <v-container>
               <v-row>
@@ -39,7 +39,7 @@
                 <v-col cols="12">
                   <v-row justify="center" class="pt-5">
                     <v-btn
-                      color="success"
+                      color="teal accent-3"
                       class="white--text"
                       @click="createPost"
                       >送信
@@ -97,14 +97,16 @@ export default {
       this.post.self_evaluation = 3
     },
     createPost() {
-      this.$postApi
-        .create(this.post)
-        .then((res) => {
-          this.create(res.data)
-          this.closeModal()
-          this.$toast.success('記録を作成しました。')
-        })
-        .catch(() => this.$toast.error('記録の作成に失敗しました。'))
+      if (this.$refs.create_post_form.validate()) {
+        this.$postApi
+          .create(this.post)
+          .then((res) => {
+            this.create(res.data)
+            this.closeModal()
+            this.$toast.success('記録を作成しました。')
+          })
+          .catch(() => this.$toast.error('記録の作成に失敗しました。'))
+      }
     }
   }
 }

@@ -4,12 +4,12 @@
       <v-card class="mx-auto">
         <v-toolbar class="indigo accent-1" flat>
           <v-toolbar-title class="white--text font-weight-bold">
-            振り返り記録を編集する
+            振り返りを編集する
           </v-toolbar-title>
           <v-spacer></v-spacer>
           <v-icon dark @click="closeModal"> mdi-close </v-icon>
         </v-toolbar>
-        <v-form>
+        <v-form ref="edit_post_form">
           <v-card-text>
             <v-container>
               <v-row>
@@ -39,7 +39,7 @@
                 <v-col cols="12">
                   <v-row justify="center" class="pt-5">
                     <v-btn
-                      color="success"
+                      color="teal accent-3"
                       class="white--text"
                       @click="updatePost"
                       >送信
@@ -114,15 +114,17 @@ export default {
       })
     },
     updatePost() {
-      this.$postApi
-        .update(this.postId, this.post)
-        .then((res) => {
-          console.log(res)
-          this.update(res.data)
-          this.closeModal()
-          this.$toast.success('記録を更新しました。')
-        })
-        .catch(() => this.$toast.error('記録の更新に失敗しました。'))
+      if (this.$refs.edit_post_form.validate()) {
+        this.$postApi
+          .update(this.postId, this.post)
+          .then((res) => {
+            console.log(res)
+            this.update(res.data)
+            this.closeModal()
+            this.$toast.success('記録を更新しました。')
+          })
+          .catch(() => this.$toast.error('記録の更新に失敗しました。'))
+      }
     }
   }
 }

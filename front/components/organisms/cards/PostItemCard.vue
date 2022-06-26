@@ -53,7 +53,10 @@
       </v-row>
     </v-card-actions>
 
-    <v-card-actions class="ml-auto">
+    <v-card-actions
+      v-if="post.user_id === $auth.user.id"
+      class="ml-auto"
+    >
       <div class="ml-auto">
         <v-btn
           icon
@@ -66,6 +69,10 @@
         <v-btn icon text color="grey darken-2" @click="$emit('deletePost')">
           <v-icon> mdi-delete </v-icon>
         </v-btn>
+      </div>
+    </v-card-actions>
+    <v-card-actions v-else class="ml-auto">
+      <div class="ml-auto">
         <v-btn
           v-if="active"
           icon
