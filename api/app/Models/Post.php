@@ -46,6 +46,6 @@ class Post extends Model
 
     public function getUpdatedAtAttribute($value)
     {
-        return Carbon::parse($value)->format('Y-m-d');
+        return Carbon::parse($value)->toDateTimeString();
     }
 }

@@ -32,10 +32,10 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
 
     Route::apiResource('targets', TargetController::class)->except('show');
 
-    Route::apiResource('posts', PostController::class);
     Route::get('/posts/like', [PostController::class, 'getLikePosts']);
     Route::patch('/posts/like/{postId}', [PostController::class, 'like']);
     Route::delete('/posts/like/{postId}', [PostController::class, 'unlike']);
+    Route::apiResource('posts', PostController::class);
 
     Route::prefix('users')->group(function () {
         Route::get('/', [UserController::class, 'getUsersExceptMyself']);

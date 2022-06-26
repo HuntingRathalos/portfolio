@@ -18,7 +18,7 @@
             <v-icon>mdi-clock-time-eight</v-icon>
           </v-tab>
           <v-tab class="ma-0 pa-0" href="#post_like">
-            いいね
+            お気に入り
             <v-icon>mdi-heart-settings</v-icon>
           </v-tab>
         </v-tabs>
@@ -42,15 +42,13 @@
               :like-posts-id="likePostsId"
               @openEditPostModal="openEditPostModal(post.id)"
               @deletePost="deletePost(post.id)"
-              @likePost="likePost(post.id)"
-              @unlikePost="unlikePost(post.id)"
             />
           </v-tab-item>
-          <v-tab-item class="pa-1">
+          <v-tab-item class="pa-1" value="post_like">
             <post-like-card
               v-for="post in likePosts"
               :key="post.id"
-              :like-post="post"
+              :post="post"
             />
           </v-tab-item>
         </v-tabs-items>
@@ -83,17 +81,18 @@ export default {
   },
   created() {
     this.$postApi.get().then((res) => {
-        this.get(res.data)
-        })
+      this.get(res.data)
+    })
 
-    // const likePosts = this.$postApi.getLikePosts()
-
-    // if(likePosts) {
-    //   this.getLiked(likePosts)
-    //   storeに格納する前にID配列を作る
-    //   const likePostsId = likePosts.map((likePost) => likePost.id)
-    //   this.likePostsId = likePostsId
-    // }
+    this.$postApi.getLikePosts().then((res) => {
+      console.log(res)
+      if (res.data) {
+        this.getLiked(res.data)
+        // storeに格納する前にID配列を作る
+        const likePostsId = res.data.map((likePost) => likePost.id)
+        this.likePostsId = likePostsId
+      }
+    })
   },
   methods: {
     ...mapActions({

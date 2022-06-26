@@ -13,14 +13,16 @@ export const mutations = {
     state.posts = payload
   },
   getLiked(state, payload) {
-    state.posts = payload
+    state.likePosts = payload
   },
   create(state, payload) {
     state.posts.unshift(payload)
   },
   update(state, payload) {
-    const post = state.posts.find((post) => post.id === payload.id)
-    Object.assign(post, payload)
+    state.posts = state.posts.filter((post) => post.id !== payload.id)
+    state.posts.unshift(payload)
+    // const post = state.posts.find((post) => post.id === payload.id)
+    // Object.assign(post, payload)
   },
   delete(state, payload) {
     state.posts = state.posts.filter((post) => post.id !== payload)
@@ -29,7 +31,9 @@ export const mutations = {
     state.likePosts.unshift(payload)
   },
   unlike(state, payload) {
-    state.likePosts.filter((likePost) => likePost.id !== payload)
+    state.likePosts = state.likePosts.filter(
+      (likePost) => likePost.id !== payload
+    )
   }
 }
 

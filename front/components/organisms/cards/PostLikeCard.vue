@@ -1,8 +1,7 @@
 <template>
   <v-card class="mx-auto" flat>
     <v-card flat class="text-center pt-2">
-      <!-- <h2 class="font-weight-medium">pooさん</h2> -->
-      <h2 class="font-weight-medium">authモジュールのやつ</h2>
+      <h2 class="font-weight-medium">{{ post.name }}さん</h2>
       <h4 class="font-weight-medium">{{ post.updated_at }}</h4>
     </v-card>
     <v-card-actions class="mb-2">

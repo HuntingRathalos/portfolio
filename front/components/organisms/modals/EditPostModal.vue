@@ -37,7 +37,7 @@
                   </v-row>
                 </v-col>
                 <v-col cols="12">
-                  <v-row justify="center pt-5">
+                  <v-row justify="center" class="pt-5">
                     <v-btn
                       color="success"
                       class="white--text"

@@ -1,8 +1,7 @@
 <template>
   <v-card class="mx-auto" flat>
     <v-card flat class="text-center pt-2">
-      <!-- <h2 class="font-weight-medium">pooさん</h2> -->
-      <h2 class="font-weight-medium">{{ $auth.user.name }}さん</h2>
+      <h2 class="font-weight-medium">{{ post.name }}さん</h2>
       <h4 class="font-weight-medium">{{ post.updated_at }}</h4>
     </v-card>
     <v-card-actions class="mb-2">
@@ -109,7 +108,7 @@ export default {
     }
   },
   created() {
-    if(this.likePostsId.length !== 0) {
+    if (this.likePostsId.length !== 0) {
       const judge = this.likePostsId.indexOf(this.post.id)
       if (judge !== -1) {
         this.active = true
@@ -125,7 +124,6 @@ export default {
       this.$postApi
         .like(id)
         .then((res) => {
-          console.log(res)
           this.active = true
           this.like(res.data)
           this.$toast.success('お気に入りにしました。')
@@ -136,7 +134,6 @@ export default {
       this.$postApi
         .unlike(id)
         .then((res) => {
-          console.log(res)
           this.active = false
           this.unlike(id)
           this.$toast.success('お気に入りを解除しました。')

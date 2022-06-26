@@ -37,7 +37,7 @@
                   </v-row>
                 </v-col>
                 <v-col cols="12">
-                  <v-row justify="center pt-5">
+                  <v-row justify="center" class="pt-5">
                     <v-btn
                       color="success"
                       class="white--text"
@@ -100,9 +100,7 @@ export default {
       this.$postApi
         .create(this.post)
         .then((res) => {
-          console.log(res)
           this.create(res.data)
-          // this.resetModal()
           this.closeModal()
           this.$toast.success('記録を作成しました。')
         })
