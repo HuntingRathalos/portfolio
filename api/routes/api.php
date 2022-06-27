@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\SaveController;
 use App\Http\Controllers\Api\TargetController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\NewsController;
+use App\Http\Controllers\Api\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,9 +18,6 @@ use App\Http\Controllers\Api\NewsController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-// Route::get('/store/s', function() {
-//     return response()->json(['name' => '山田太郎', 'gender' => '男','mail' => 'yamada@test.com']);
-// });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -33,6 +31,11 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::get('/saves/ranking', [SaveController::class, 'getSaveRanking']);
 
     Route::apiResource('targets', TargetController::class)->except('show');
+
+    Route::get('/posts/like', [PostController::class, 'getLikePosts']);
+    Route::patch('/posts/like/{postId}', [PostController::class, 'like']);
+    Route::delete('/posts/like/{postId}', [PostController::class, 'unlike']);
+    Route::apiResource('posts', PostController::class);
 
     Route::prefix('users')->group(function () {
         Route::get('/', [UserController::class, 'getUsersExceptMyself']);

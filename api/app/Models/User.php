@@ -66,6 +66,26 @@ class User extends Authenticatable
     }
 
     /**
+     * リレーション - postsテーブル
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Post::class);
+    }
+
+    /**
+     * リレーション - likesテーブル(usersテーブルとpostsテーブルの中間テーブル)
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function likes(): BelongsToMany
+    {
+        return $this->belongsToMany(Post::class, 'likes')->withTimestamps();
+    }
+
+    /**
      * リレーション - followsテーブル(usersテーブルとusersテーブルの中間テーブル)
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

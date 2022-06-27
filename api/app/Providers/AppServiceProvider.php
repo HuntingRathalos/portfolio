@@ -7,15 +7,18 @@ use App\Services\Save\SaveServiceInterface;
 use App\Services\Target\TargetServiceInterface;
 use App\Services\User\UserServiceInterface;
 use App\Services\News\NewsServiceInterface;
+use App\Services\Post\PostServiceInterface;
 use App\Services\Save\SaveService;
 use App\Services\Target\TargetService;
 use App\Services\User\UserService;
 use App\Services\News\NewsService;
+use App\Services\Post\PostService;
 use App\Repositories\Save\SaveRepositoryInterface;
 use App\Repositories\Tag\TagRepositoryInterface;
 use App\Repositories\Target\TargetRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Repositories\Icon\IconRepositoryInterface;
+use App\Repositories\Post\PostRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -57,6 +60,14 @@ class AppServiceProvider extends ServiceProvider
                     $app->make(SaveRepositoryInterface::class),
                     $app->make(TargetRepositoryInterface::class),
                     $app->make(TagRepositoryInterface::class),
+                );
+            });
+
+        $this->app->bind(
+            PostServiceInterface::class,
+            function ($app) {
+                return new PostService(
+                    $app->make(PostRepositoryInterface::class),
                 );
             });
 

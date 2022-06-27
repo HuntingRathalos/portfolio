@@ -28,7 +28,7 @@ export default {
 </script>
 <style scoped>
 .loader-background {
-  z-index: 99;
+  z-index: 500;
   position: fixed;
   background: #0a0a0a;
   opacity: 0.4;
