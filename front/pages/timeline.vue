@@ -1,7 +1,8 @@
 <template>
   <v-container>
     <create-post-modal />
-    <edit-post-modal :post-id="postId" />
+    <edit-post-modal :post-id="postEditId" />
+    <alert-dialog @runMethod="deletePost" />
     <v-row justify="center">
       <v-col lg="6" sm="8" cols="12">
         <v-tabs
@@ -41,7 +42,7 @@
               :post="post"
               :like-posts-id="likePostsId"
               @openEditPostModal="openEditPostModal(post.id)"
-              @deletePost="deletePost(post.id)"
+              @deletePost="openAlertModal(post.id)"
             />
           </v-tab-item>
           <v-tab-item class="pa-1" value="post_like">
@@ -60,16 +61,24 @@
 import { mapGetters, mapActions } from 'vuex'
 import PostItemCard from '../components/organisms/cards/PostItemCard.vue'
 import PostLikeCard from '../components/organisms/cards/PostLikeCard.vue'
+import AlertDialog from '../components/organisms/modals/AlertDialog.vue'
 import CreatePostModal from '../components/organisms/modals/CreatePostModal.vue'
 import EditPostModal from '../components/organisms/modals/EditPostModal.vue'
 export default {
   name: 'TimelinePage',
-  components: { PostItemCard, PostLikeCard, CreatePostModal, EditPostModal },
+  components: {
+    PostItemCard,
+    PostLikeCard,
+    CreatePostModal,
+    EditPostModal,
+    AlertDialog
+  },
   auth: false,
   data() {
     return {
       tab: 'post_list',
-      postId: null,
+      postEditId: null,
+      postDeleteId: null,
       likePostsId: []
     }
   },
@@ -96,23 +105,33 @@ export default {
     ...mapActions({
       setOpenCreatePostModal: 'modal/setOpenCreatePostModal',
       setOpenEditPostModal: 'modal/setOpenEditPostModal',
+      setOpenAlertModal: 'modal/setOpenAlertModal',
       get: 'post/get',
       getLiked: 'post/getLiked',
       delete: 'post/delete',
       like: 'post/like'
     }),
     openEditPostModal(id) {
-      this.postId = id
+      this.postEditId = id
       this.setOpenEditPostModal(true)
     },
     openCreatePostModal() {
       this.setOpenCreatePostModal(true)
     },
-    deletePost(id) {
+    openAlertModal(id) {
+      this.postDeleteId = id
+      this.setOpenAlertModal(true)
+    },
+    deletePost() {
+      if (this.$guestJudge()) {
+        this.$guestAlert()
+        return
+      }
       this.$postApi
-        .delete(id)
-        .then((res) => {
-          this.delete(id)
+        .delete(this.postDeleteId)
+        .then(() => {
+          this.delete(this.postDeleteId)
+          this.setOpenAlertModal(false)
           this.$toast.success('記録の削除に成功しました。')
         })
         .catch(() => this.$toast.error('記録の削除に失敗しました。'))
@@ -121,7 +140,7 @@ export default {
 }
 </script>
 <style scoped>
- .tab_item {
-   max-height: 90vh;
- }
+.tab_item {
+  max-height: 90vh;
+}
 </style>

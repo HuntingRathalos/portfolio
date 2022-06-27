@@ -53,10 +53,7 @@
       </v-row>
     </v-card-actions>
 
-    <v-card-actions
-      v-if="post.user_id === $auth.user.id"
-      class="ml-auto"
-    >
+    <v-card-actions v-if="post.user_id === $auth.user.id" class="ml-auto">
       <div class="ml-auto">
         <v-btn
           icon
@@ -128,6 +125,10 @@ export default {
       unlike: 'post/unlike'
     }),
     likePost(id) {
+      if (this.$guestJudge()) {
+        this.$guestAlert()
+        return
+      }
       this.$postApi
         .like(id)
         .then((res) => {
@@ -138,6 +139,10 @@ export default {
         .catch(() => this.$toast.error('お気に入りに失敗しました。'))
     },
     unlikePost(id) {
+      if (this.$guestJudge()) {
+        this.$guestAlert()
+        return
+      }
       this.$postApi
         .unlike(id)
         .then((res) => {

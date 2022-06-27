@@ -93,9 +93,6 @@ export default {
       await this.getPostById()
     }
   },
-  // mounted() {
-  //   this.getPostById()
-  // },
   methods: {
     ...mapActions({
       setOpenEditPostModal: 'modal/setOpenEditPostModal',
@@ -106,8 +103,6 @@ export default {
     },
     getPostById() {
       this.$postApi.getPostById(this.postId).then((res) => {
-        console.log(res)
-        // Object.assign(this.post, res.data)
         this.post.good_description = res.data.good_description
         this.post.bad_description = res.data.bad_description
         this.post.self_evaluation = res.data.self_evaluation
@@ -115,10 +110,13 @@ export default {
     },
     updatePost() {
       if (this.$refs.edit_post_form.validate()) {
+        if (this.$guestJudge()) {
+          this.$guestAlert()
+          return
+        }
         this.$postApi
           .update(this.postId, this.post)
           .then((res) => {
-            console.log(res)
             this.update(res.data)
             this.closeModal()
             this.$toast.success('記録を更新しました。')

@@ -98,6 +98,10 @@ export default {
     },
     createPost() {
       if (this.$refs.create_post_form.validate()) {
+        if (this.$guestJudge()) {
+          this.$guestAlert()
+          return
+        }
         this.$postApi
           .create(this.post)
           .then((res) => {

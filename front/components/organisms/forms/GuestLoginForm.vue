@@ -10,7 +10,7 @@
           <v-form ref="guest_login_form" @submit.prevent="guestLogin">
             <v-text-field
               type="email"
-              disabled
+              readonly
               value="guest@example.com"
               outlined
               dense
@@ -18,7 +18,7 @@
             />
             <v-text-field
               type="text"
-              disabled
+              readonly
               value="password"
               outlined
               rounded

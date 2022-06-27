@@ -17,6 +17,7 @@ class PostController extends Controller
      */
     public function __construct(PostServiceInterface $postService)
     {
+        $this->middleware('verify.notguest')->only('store', 'update', 'destroy', 'like', 'unlike');
         $this->postService = $postService;
     }
     /**

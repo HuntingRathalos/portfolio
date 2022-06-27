@@ -1,26 +1,38 @@
 <template>
-  <v-dialog v-model="isOpenAlertModal" max-width="300px">
+  <v-dialog v-model="isOpenAlertModal" max-width="500px" persistent>
     <v-card>
-      <v-card-title>
-        <div class="text-center">
-          <h1 class="text-h5 font-weight-medium" style="width: 100%">
-            <slot name="titleText">本当に削除しますか?</slot>
-          </h1>
-        </div>
-      </v-card-title>
-      <v-card-actions>
+      <v-toolbar class="indigo accent-1" flat>
+        <v-toolbar-title class="white--text font-weight-bold">
+          <!-- 投稿を削除しますか？ -->
+          <slot name="titleText">本当に削除しますか?</slot>
+        </v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="closeAlertModal">
-          閉じる
-        </v-btn>
-        <v-btn color="blue darken-1" text @click="$emit('runMethod')">
-          <slot name="btnText">削除</slot>
-        </v-btn>
-      </v-card-actions>
+        <v-icon dark @click="closeAlertModal"> mdi-close </v-icon>
+      </v-toolbar>
+      <v-card-text>
+        <v-container>
+          <v-row>
+            <v-col cols="12">
+              <slot name="btnText" class="text-h3"
+                >この操作は取り消せません。投稿が削除されます。</slot
+              >
+              <!-- <h3>この操作は取り消せません。投稿が削除されます。</h3> -->
+            </v-col>
+            <v-col cols="12">
+              <v-row justify="center">
+                <v-btn color="white--text red" @click="$emit('runMethod')"
+                  >削除
+                </v-btn>
+              </v-row>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card-text>
     </v-card>
   </v-dialog>
 </template>
 <script>
+import { mapActions } from 'vuex'
 export default {
   computed: {
     isOpenAlertModal: {

@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Save;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,6 +20,7 @@ class DatabaseSeeder extends Seeder
             IconSeeder::class,
             SaveSeeder::class,
             TargetSeeder::class,
+            PostSeeder::class,
         ]);
     }
 }
