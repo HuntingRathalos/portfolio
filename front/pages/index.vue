@@ -84,6 +84,7 @@ export default {
   name: 'IndexPage',
   layout: 'index',
   auth: false,
+  middleware: 'afterLoddedInRedirect',
   computed: {
     titleSize() {
       const brackPointName = this.$vuetify.breakpoint.name
@@ -104,14 +105,6 @@ export default {
       } else {
         return 'text-h6'
       }
-    }
-  },
-  methods: {
-    goRegister() {
-      this.$router.push('/register')
-    },
-    goGuestLogin() {
-      this.$router.push('/guest')
     }
   }
 }

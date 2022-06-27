@@ -1,6 +1,6 @@
 <template>
   <v-app :style="{ background: $vuetify.theme.themes.light.background }">
-    <the-header :header-texts="headerTexts" />
+    <the-header :header-items="headerItems" />
     <v-main>
       <v-container>
         <Nuxt />
@@ -18,14 +18,12 @@ export default {
   components: { TheHeader, TheFooter },
   data() {
     return {
-      headerTexts: ['ログイン', 'ログアウト']
-    }
-  },
-  methods: {
-    async doLogout() {
-      try {
-        await this.$auth.logout()
-      } catch (e) {}
+      headerItems: [
+        {
+          text: 'ログアウト',
+          icon: 'mdi-logout'
+        }
+      ]
     }
   }
 }
