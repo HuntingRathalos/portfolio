@@ -48,7 +48,7 @@ export default {
           await this.$auth.loginWith('laravelSanctum', {
             data: this.form
           })
-          this.$router.push('/')
+          this.$router.push('/top-page')
           this.$toast.success('ログインに成功しました。')
         } catch {
           this.$toast.error('ログインに失敗しました。')

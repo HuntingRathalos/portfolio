@@ -12,10 +12,22 @@
       <v-icon>mdi-calendar-check</v-icon>
     </v-btn>
 
-    <v-btn @click="goUserList">
-      <span>ユーザーリスト</span>
+    <v-btn @click="goTimeline">
+      <span>振り返り</span>
 
-      <v-icon>mdi-format-list-bulleted</v-icon>
+      <v-icon>mdi-format-clock-outline</v-icon>
+    </v-btn>
+
+    <v-btn @click="goNews">
+      <span>ニュース</span>
+
+      <v-icon>mdi-format-newspaper-variant</v-icon>
+    </v-btn>
+
+    <v-btn @click="goStatistics">
+      <span>統計</span>
+
+      <v-icon>mdi-format-chart-bar</v-icon>
     </v-btn>
   </v-bottom-navigation>
 </template>
@@ -28,8 +40,14 @@ export default {
     goCalendar() {
       this.$router.push('/save')
     },
-    goUserList() {
-      this.$router.push('/users')
+    goTimeline() {
+      this.$router.push('/timeline')
+    },
+    goNews() {
+      this.$router.push('/news')
+    },
+    goStatistics() {
+      this.$router.push('/statistics')
     }
   }
 }

@@ -23,7 +23,6 @@
               outlined
               rounded
               dense
-              @click:append="passwordShow = !passwordShow"
             />
             <v-card-actions>
               <v-row justify="end" class="pb-8 pt-4">
