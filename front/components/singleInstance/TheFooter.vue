@@ -48,7 +48,7 @@ export default {
     },
     goStatistics() {
       this.$router.push('/statistics')
-    },
+    }
   }
 }
 </script>
