@@ -2,8 +2,8 @@
   <div class="">
     <v-row>
       <v-col class="mx-auto" cols="12">
-        <v-card outlined>
-          <v-card-title>目標 {{ target.name }}</v-card-title>
+        <v-card outlined @click="goTarget">
+          <v-card-title> 目標 :{{ target.name }}</v-card-title>
         </v-card>
       </v-col>
     </v-row>
@@ -58,24 +58,24 @@ export default {
       remainAmount: 0
     }
   },
-  created() {
-    const saveAmount = JSON.parse(sessionStorage.getItem('saveAmount'))
-    if (saveAmount) {
-      this.saveAmount = JSON.parse(sessionStorage.getItem('saveAmount'))
-      this.getTarget()
-    } else {
-      this.getSaves()
-      this.getSavesAmount()
-      this.getTarget()
-    }
-  },
-  mounted() {
-    const users = JSON.parse(sessionStorage.getItem('users'))
-    if (!users || users === undefined) {
-      this.getUsers()
-      this.getFollowUsers()
-    }
-  },
+  // created() {
+  //   const saveAmount = JSON.parse(sessionStorage.getItem('saveAmount'))
+  //   if (saveAmount) {
+  //     this.saveAmount = JSON.parse(sessionStorage.getItem('saveAmount'))
+  //     this.getTarget()
+  //   } else {
+  //     this.getSaves()
+  //     this.getSavesAmount()
+  //     this.getTarget()
+  //   }
+  // },
+  // mounted() {
+  //   const users = JSON.parse(sessionStorage.getItem('users'))
+  //   if (!users || users === undefined) {
+  //     this.getUsers()
+  //     this.getFollowUsers()
+  //   }
+  // },
   methods: {
     getSaves() {
       this.$saveApi.get().then((res) => {
@@ -118,6 +118,11 @@ export default {
         sessionStorage.setItem('followUsers', JSON.stringify(res.data))
       })
     }
+  },
+  goTarget() {
+    // これを発火させる
+    // 記録をつけるボタンをトップページに置くかも
+    this.$router.push('/target')
   }
 }
 </script>

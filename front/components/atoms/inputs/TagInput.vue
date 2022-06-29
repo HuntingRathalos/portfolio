@@ -2,10 +2,10 @@
   <v-select
     v-model="setTagId"
     :items="items"
-    color="indigo accent-2"
+    color="green accent-3"
     item-text="tagName"
     item-value="id"
-    label="タグ"
+    label="我慢したもの"
     prepend-icon="mdi-tag"
   ></v-select>
 </template>
@@ -18,7 +18,6 @@ export default {
     }
   },
   data: () => ({
-    // items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
     items: [
       { tagName: '外食', id: 1 },
       { tagName: '飲み会', id: 2 },

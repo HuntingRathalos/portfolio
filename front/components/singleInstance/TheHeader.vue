@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <v-app-bar app>
+    <v-app-bar app color="indigo accent-1">
       <router-link to="/">
         <v-img
           :src="require('@/assets/logo.png')"
@@ -20,7 +20,8 @@
         <v-btn
           v-for="headerItem in headerItems"
           :key="headerItem.icon"
-          class="font-weight-medium"
+          class="font-weight-bold"
+          color="white"
           text
           @click="doHeaderText(headerItem.text)"
         >

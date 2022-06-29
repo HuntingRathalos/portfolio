@@ -1,16 +1,16 @@
 <template>
   <div>
     <div>
+      <alert-dialog @runMethod="deleteSave" />
       <v-row justify="center">
-        <alert-dialog @runMethod="deleteSave" />
         <v-dialog
           v-model="isOpenSaveModal"
           persistent
-          max-width="600px"
+          max-width="550px"
           :fullscreen="isFullscreen"
         >
           <v-card>
-            <v-card-title class="text-center">
+            <!-- <v-card-title class="text-center">
               <div class="text-center full-width">
                 <h1 class="text-h5 font-weight-medium full-width">
                   貯金記録作成
@@ -21,7 +21,14 @@
                   >mdi-delete</v-icon
                 >
               </div>
-            </v-card-title>
+            </v-card-title> -->
+            <v-toolbar class="indigo accent-1" flat>
+              <v-toolbar-title class="white--text font-weight-bold">
+                貯金記録を作成する
+              </v-toolbar-title>
+              <v-spacer></v-spacer>
+              <v-icon dark @click="closeSaveModal"> mdi-close </v-icon>
+            </v-toolbar>
             <v-card-text>
               <v-form ref="save_form">
                 <v-container>
@@ -30,14 +37,15 @@
                       <v-text-field
                         :value="save.click_date"
                         prepend-icon="mdi-clock-time-eight-outline"
-                        color="indigo accent-2"
+                        color="green accent-3"
                         readonly
                       ></v-text-field>
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col cols="12">
-                      <TagInput :tag-id.sync="save.tag_id" />
+                      <tag-input :tag-id.sync="save.tag_id" />
+                      <!-- <TagInput :tag-id.sync="save.tag_id" /> -->
                     </v-col>
                   </v-row>
                   <v-row>
@@ -45,31 +53,62 @@
                       <v-icon>mdi-cat</v-icon>
                     </v-col>
                     <v-col cols="4">
-                      <IconModal @set-icon-id="save.icon_id = $event" />
+                      <icon-modal
+                        @set-icon-id="save.icon_id = $event"
+                        @set-icon-code="iconCode = $event"
+                      />
+                      <!-- <IconModal
+                        @set-icon-id="save.icon_id = $event"
+                        @set-icon-code="iconCode = $event"
+                      /> -->
+                    </v-col>
+                    <v-col cols="7">
+                      <!-- <v-icon>{{ iconId }}</v-icon> -->
+                      <div align="right">
+                        <v-btn plain outlined fab color="teal accent-3">
+                          <v-icon>{{ iconCode }}</v-icon>
+                        </v-btn>
+                      </div>
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col cols="12">
-                      <MemoInput :memo.sync="save.memo" />
+                      <memo-input :memo.sync="save.memo" />
+                      <!-- <MemoInput :memo.sync="save.memo" /> -->
                     </v-col>
-                    <v-col cols="12" class="text-right">
+                    <v-col cols="12" class="text-right pt-0">
                       <span class="text-h2 font-weight-light">{{
                         multipleCoin
                       }}</span>
                       <span class="subheading font-weight-light mr-1">円</span>
                     </v-col>
                     <v-col cols="12">
-                      <SaveModalSlider
+                      <save-modal-slider
                         :coin.sync="save.coin"
                         @increment="save.coin++"
                         @decrement="save.coin--"
                       />
+                      <!-- <SaveModalSlider
+                        :coin.sync="save.coin"
+                        @increment="save.coin++"
+                        @decrement="save.coin--"
+                      /> -->
+                    </v-col>
+                    <v-col cols="12">
+                      <v-row justify="center" class="pt-5">
+                        <v-btn
+                          color="teal accent-3"
+                          class="white--text"
+                          @click="createOrUpdateSave"
+                          >送信
+                        </v-btn>
+                      </v-row>
                     </v-col>
                   </v-row>
                 </v-container>
               </v-form>
             </v-card-text>
-            <v-card-actions>
+            <!-- <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="closeSaveModal">
                 閉じる
@@ -77,7 +116,7 @@
               <v-btn color="blue darken-1" text @click="createOrUpdateSave">
                 保存
               </v-btn>
-            </v-card-actions>
+            </v-card-actions> -->
           </v-card>
         </v-dialog>
       </v-row>
@@ -103,13 +142,12 @@
           :weekday-format="weekdayFormat"
           :month-format="monthFormat"
           :events="events"
-          :event-color="getEventColor"
           @change="getEvents"
           @click:date="showEvent"
           @click:day="showEvent"
         >
           <template #event="{ event }">
-            <div class="event-name text-subtitle-2">{{ event.name }}</div>
+            <div class="event-name">{{ event.name }}</div>
           </template>
         </v-calendar>
       </v-card>
@@ -119,12 +157,22 @@
         <sub-title-card class="pb-1 pt-8">
           <template #subTitle>今月の貯金記録</template>
         </sub-title-card>
-        <SaveList :saves="savesOneMonth" @save-id-send="setSave" />
+        <save-list
+          :saves="savesOneMonth"
+          @save-edit-id-send="setSave"
+          @save-delete-id-send="openAlertModal"
+        />
+        <!-- <SaveList
+          :saves="savesOneMonth"
+          @save-edit-id-send="setSave"
+          @save-delete-id-send="openAlertModal"
+          /> -->
       </v-col>
     </v-row>
   </div>
 </template>
 <script>
+import { mapActions } from 'vuex'
 import moment from 'moment'
 import MemoInput from '../components/atoms/inputs/MemoInput.vue'
 import SaveModalSlider from '../components/molecules/sliders/SaveModalSlider.vue'
@@ -152,6 +200,7 @@ export default {
       memo: 'なし',
       click_date: ''
     },
+    iconCode: 'mdi-book-open-variant',
     updateFlag: false,
     saveId: null,
     events: [],
@@ -177,7 +226,8 @@ export default {
         return this.$store.getters['modal/openSaveModal']
       },
       set(newVal) {
-        this.$store.dispatch('modal/setOpenSaveModal', newVal)
+        // this.$store.dispatch('modal/setOpenSaveModal', newVal)
+        this.setOpenSaveModal(newVal)
       }
     },
     multipleCoin() {
@@ -217,6 +267,10 @@ export default {
     this.getEvents()
   },
   methods: {
+    ...mapActions({
+      setOpenAlertModal: 'modal/setOpenAlertModal',
+      setOpenSaveModal: 'modal/setOpenSaveModal'
+    }),
     prevCalender() {
       this.$refs.calendar.prev()
       this.getSavesOneMonth()
@@ -297,9 +351,13 @@ export default {
       }
     },
     deleteSave() {
+      if (this.$guestJudge()) {
+        this.$guestAlert()
+        return
+      }
       this.$saveApi
         .delete(this.saveId)
-        .then((res) => {
+        .then(() => {
           this.getSavesAmount()
           this.$toast.success('記録の削除に成功しました。')
         })
@@ -310,7 +368,8 @@ export default {
       this.events = this.events.filter((event) => event.id !== this.saveId)
 
       this.getSavesOneMonth()
-      this.$store.dispatch('modal/setOpenAlertModal', false)
+      // this.$store.dispatch('modal/setOpenAlertModal', false)
+      this.setOpenAlertModal(false)
       this.closeSaveModal()
     },
     openAlertModal() {
@@ -330,7 +389,8 @@ export default {
       this.savesOneMonth.sort((a, b) => (a.click_date < b.click_date ? -1 : 1))
     },
     closeSaveModal() {
-      this.$store.dispatch('modal/setOpenSaveModal', false)
+      // this.$store.dispatch('modal/setOpenSaveModal', false)
+      this.setOpenSaveModal(false)
       this.save.tag_id = 1
       this.save.icon_id = 1
       this.save.coin = 0
@@ -343,7 +403,8 @@ export default {
       for (let i = 0; i < this.saves.length; i++) {
         if (this.saveId === this.saves[i].id) {
           this.save = Object.assign(this.save, this.saves[i])
-          this.$store.dispatch('modal/setOpenSaveModal', true)
+          // this.$store.dispatch('modal/setOpenSaveModal', true)
+          this.setOpenSaveModal(true)
           return
         }
       }
@@ -374,13 +435,14 @@ export default {
       }
       return event
     },
-    getEventColor(event) {
-      return event.color
-    },
+    // getEventColor(event) {
+    //   return event.color
+    // },
     showEvent(event) {
       this.updateFlag = false
       this.save.click_date = event.date
-      this.$store.dispatch('modal/setOpenSaveModal', true)
+      // this.$store.dispatch('modal/setOpenSaveModal', true)
+      this.setOpenSaveModal(true)
     },
     dayFormat(date) {
       return new Date(date.date).getDate()

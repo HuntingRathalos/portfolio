@@ -18,9 +18,11 @@
             <v-badge :content="index + 1" overlap left :color="colors[index]">
               <v-icon x-large>{{ ranking.icon_code }}</v-icon>
             </v-badge>
-            <div class="text-h6 font-weight-medium">{{ ranking.tag_name }}</div>
+            <div class="text-subtitle-2 font-weight-medium">
+              {{ ranking.tag_name }}
+            </div>
             <div class="text-h6 font-weight-medium">
-              {{ ranking.tag_count }}
+              {{ ranking.tag_count }}回
             </div>
           </v-sheet>
         </v-col>
