@@ -1,6 +1,17 @@
 <template>
   <div class="">
     <v-row>
+       <v-col cols="12">
+          <v-btn
+            block
+            color="orange"
+            dark
+            rounded
+            @click="goSave"
+          >
+            貯金記録を作成する
+          </v-btn>
+        </v-col>
       <v-col class="mx-auto" cols="12">
         <v-card outlined @click="goTarget">
           <v-card-title> 目標 :{{ target.name }}</v-card-title>
@@ -123,6 +134,9 @@ export default {
     // これを発火させる
     // 記録をつけるボタンをトップページに置くかも
     this.$router.push('/target')
+  },
+  goSave() {
+    this.$router.push('/save')
   }
 }
 </script>
