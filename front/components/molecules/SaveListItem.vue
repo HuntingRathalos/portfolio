@@ -5,7 +5,7 @@
       <v-icon dark @click="closeModal"> mdi-close </v-icon>
       <v-icon dark @click="closeModal"> mdi-close </v-icon> -->
       <div class="ml-auto">
-        <v-btn  icon text small color="grey darken-2" @click="sendSaveEditId">
+        <v-btn icon text small color="grey darken-2" @click="sendSaveEditId">
           <v-icon> mdi-pencil-box-multiple </v-icon>
         </v-btn>
         <v-btn icon text small color="grey darken-2" @click="sendSaveDeleteId">

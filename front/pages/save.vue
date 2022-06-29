@@ -23,7 +23,10 @@
               </div>
             </v-card-title> -->
             <v-toolbar class="indigo accent-1" flat>
-              <v-toolbar-title v-if="!updateFlag" class="white--text font-weight-bold">
+              <v-toolbar-title
+                v-if="!updateFlag"
+                class="white--text font-weight-bold"
+              >
                 貯金記録を作成する
               </v-toolbar-title>
               <v-toolbar-title v-else class="white--text font-weight-bold">
@@ -73,12 +76,7 @@
                             <v-icon>{{ iconCode }}</v-icon>
                           </v-btn>
                         </v-card> -->
-                        <v-btn
-                          dark
-
-                          height="42px"
-                          color="orange"
-                        >
+                        <v-btn dark height="42px" color="orange">
                           <v-icon>{{ iconCode }}</v-icon>
                         </v-btn>
                       </div>
@@ -112,7 +110,6 @@
                         <v-btn
                           color="orange"
                           class="white--text"
-
                           @click="createOrUpdateSave"
                           >送信
                         </v-btn>

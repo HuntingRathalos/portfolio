@@ -16,7 +16,7 @@
             <EmailInput :email.sync="form.email" />
             <v-card-actions>
               <v-row class="pt-4" justify="end">
-                <BaseButton class="pt-4" :color="btnColor"
+                <BaseButton :color="btnColor"
                   >パスワードリセットメール送信</BaseButton
                 >
               </v-row>

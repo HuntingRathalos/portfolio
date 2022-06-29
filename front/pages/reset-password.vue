@@ -6,6 +6,8 @@
 import ResetPasswordForm from '../components/organisms/forms/ResetPasswordForm.vue'
 export default {
   name: 'ResetPasswordPage',
-  components: { ResetPasswordForm }
+  components: { ResetPasswordForm },
+  layout: 'auth',
+  auth: false
 }
 </script>

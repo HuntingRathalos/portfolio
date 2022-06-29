@@ -1,28 +1,16 @@
 <template>
   <div class="">
     <v-row>
-       <v-col cols="12">
-          <v-btn
-            block
-            color="orange"
-            dark
-            rounded
-            @click="goSave"
-          >
-            貯金記録を作成する
-          </v-btn>
-        </v-col>
-       <v-col cols="12">
-          <v-btn
-            block
-            color="orange"
-            dark
-            rounded
-            @click="goTarget"
-          >
-            目標を作成する
-          </v-btn>
-        </v-col>
+      <v-col cols="12">
+        <v-btn block color="orange" dark rounded @click="goSave">
+          貯金記録を作成する
+        </v-btn>
+      </v-col>
+      <v-col cols="12">
+        <v-btn block color="orange" dark rounded @click="goTarget">
+          目標を作成する
+        </v-btn>
+      </v-col>
       <v-col class="mx-auto" cols="12">
         <v-card outlined>
           <v-card-title> 目標 :{{ target.name }}</v-card-title>
@@ -148,6 +136,6 @@ export default {
     goSave() {
       this.$router.push('/save')
     }
-  },
+  }
 }
 </script>

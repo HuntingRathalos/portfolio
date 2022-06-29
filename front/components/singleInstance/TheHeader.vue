@@ -77,7 +77,7 @@ export default {
           try {
             await this.$auth.logout()
             this.$router.push('/')
-            this.$toast.success('ログアウト')
+            this.$toast.success('ログアウトに成功しました。')
           } catch {
             this.$toast.error('ログアウトに失敗しました。')
           }
@@ -87,6 +87,9 @@ export default {
           break
         case 'ゲストログイン':
           this.$router.push('/guest')
+          break
+        case 'トップページ':
+          this.$router.push('/')
           break
       }
     }
