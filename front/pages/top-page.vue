@@ -12,8 +12,19 @@
             貯金記録を作成する
           </v-btn>
         </v-col>
+       <v-col cols="12">
+          <v-btn
+            block
+            color="orange"
+            dark
+            rounded
+            @click="goTarget"
+          >
+            目標を作成する
+          </v-btn>
+        </v-col>
       <v-col class="mx-auto" cols="12">
-        <v-card outlined @click="goTarget">
+        <v-card outlined>
           <v-card-title> 目標 :{{ target.name }}</v-card-title>
         </v-card>
       </v-col>
@@ -69,24 +80,24 @@ export default {
       remainAmount: 0
     }
   },
-  // created() {
-  //   const saveAmount = JSON.parse(sessionStorage.getItem('saveAmount'))
-  //   if (saveAmount) {
-  //     this.saveAmount = JSON.parse(sessionStorage.getItem('saveAmount'))
-  //     this.getTarget()
-  //   } else {
-  //     this.getSaves()
-  //     this.getSavesAmount()
-  //     this.getTarget()
-  //   }
-  // },
-  // mounted() {
-  //   const users = JSON.parse(sessionStorage.getItem('users'))
-  //   if (!users || users === undefined) {
-  //     this.getUsers()
-  //     this.getFollowUsers()
-  //   }
-  // },
+  created() {
+    const saveAmount = JSON.parse(sessionStorage.getItem('saveAmount'))
+    if (saveAmount) {
+      this.saveAmount = JSON.parse(sessionStorage.getItem('saveAmount'))
+      this.getTarget()
+    } else {
+      this.getSaves()
+      this.getSavesAmount()
+      this.getTarget()
+    }
+  },
+  mounted() {
+    const users = JSON.parse(sessionStorage.getItem('users'))
+    if (!users || users === undefined) {
+      this.getUsers()
+      this.getFollowUsers()
+    }
+  },
   methods: {
     getSaves() {
       this.$saveApi.get().then((res) => {
@@ -128,15 +139,15 @@ export default {
         console.log(res.data)
         sessionStorage.setItem('followUsers', JSON.stringify(res.data))
       })
+    },
+    goTarget() {
+      // これを発火させる
+      // 記録をつけるボタンをトップページに置くかも
+      this.$router.push('/target')
+    },
+    goSave() {
+      this.$router.push('/save')
     }
   },
-  goTarget() {
-    // これを発火させる
-    // 記録をつけるボタンをトップページに置くかも
-    this.$router.push('/target')
-  },
-  goSave() {
-    this.$router.push('/save')
-  }
 }
 </script>

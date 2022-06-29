@@ -23,8 +23,11 @@
               </div>
             </v-card-title> -->
             <v-toolbar class="indigo accent-1" flat>
-              <v-toolbar-title class="white--text font-weight-bold">
+              <v-toolbar-title v-if="!updateFlag" class="white--text font-weight-bold">
                 貯金記録を作成する
+              </v-toolbar-title>
+              <v-toolbar-title v-else class="white--text font-weight-bold">
+                貯金記録を編集する
               </v-toolbar-title>
               <v-spacer></v-spacer>
               <v-icon dark @click="closeSaveModal"> mdi-close </v-icon>
@@ -64,8 +67,18 @@
                     </v-col>
                     <v-col cols="7">
                       <!-- <v-icon>{{ iconId }}</v-icon> -->
-                      <div align="right">
-                        <v-btn plain outlined fab color="teal accent-3">
+                      <div align="center">
+                        <!-- <v-card>
+                          <v-btn plain outlined  color="teal accent-3">
+                            <v-icon>{{ iconCode }}</v-icon>
+                          </v-btn>
+                        </v-card> -->
+                        <v-btn
+                          dark
+
+                          height="42px"
+                          color="orange"
+                        >
                           <v-icon>{{ iconCode }}</v-icon>
                         </v-btn>
                       </div>
@@ -97,8 +110,9 @@
                     <v-col cols="12">
                       <v-row justify="center" class="pt-5">
                         <v-btn
-                          color="teal accent-3"
+                          color="orange"
                           class="white--text"
+
                           @click="createOrUpdateSave"
                           >送信
                         </v-btn>
@@ -137,6 +151,7 @@
           v-model="value"
           class="red--text"
           locale="ja-jp"
+          :event-more="false"
           event-more-text="その他{0}件"
           :day-format="dayFormat"
           :weekday-format="weekdayFormat"
@@ -145,6 +160,7 @@
           @change="getEvents"
           @click:date="showEvent"
           @click:day="showEvent"
+          @click:more="showEvent"
         >
           <template #event="{ event }">
             <div class="event-name">{{ event.name }}</div>

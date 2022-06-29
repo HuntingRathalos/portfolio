@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="list overflow-y-auto">
     <SaveListItem
       v-for="save in saves"
       :key="save.id"
@@ -31,3 +31,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+.list {
+  max-height: 400px;
+}
+</style>

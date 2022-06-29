@@ -1,6 +1,6 @@
 <template>
   <v-card :class="marginClass">
-    <v-icon @click="$emit('closeIconModal', false, iconCode)">
+    <v-icon @click="$emit('sendId', false, iconCode)">
       {{ iconCode.code }}
     </v-icon>
   </v-card>

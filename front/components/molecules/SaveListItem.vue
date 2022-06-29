@@ -1,15 +1,17 @@
 <template>
   <v-card max-width="1161" class="mx-auto" :class="marginClass">
-    <v-toolbar class="indigo accent-1 ml-auto" dense flat>
+    <v-toolbar class="deep-purple lighten-3" dense flat>
       <!-- <v-spacer></v-spacer>
       <v-icon dark @click="closeModal"> mdi-close </v-icon>
       <v-icon dark @click="closeModal"> mdi-close </v-icon> -->
-      <v-btn icon text small color="grey darken-2" @click="sendSaveEditId">
-        <v-icon> mdi-pencil-box-multiple </v-icon>
-      </v-btn>
-      <v-btn icon text small color="grey darken-2" @click="sendSaveDeleteId">
-        <v-icon> mdi-delete </v-icon>
-      </v-btn>
+      <div class="ml-auto">
+        <v-btn  icon text small color="grey darken-2" @click="sendSaveEditId">
+          <v-icon> mdi-pencil-box-multiple </v-icon>
+        </v-btn>
+        <v-btn icon text small color="grey darken-2" @click="sendSaveDeleteId">
+          <v-icon> mdi-delete </v-icon>
+        </v-btn>
+      </div>
     </v-toolbar>
     <!-- <v-list-item @click="sendSaveId"> -->
     <v-list-item>

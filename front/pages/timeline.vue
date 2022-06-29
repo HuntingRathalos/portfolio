@@ -28,7 +28,7 @@
             <v-col cols="12">
               <v-btn
                 block
-                color="teal accent-3"
+                color="orange"
                 dark
                 rounded
                 @click="openCreatePostModal"

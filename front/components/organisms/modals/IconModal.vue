@@ -22,7 +22,7 @@
           :key="iconCode.id"
           :icon-code="iconCode"
           margin-class="ma-2"
-          @closeIconModal="closeIconModal"
+          @sendId="sendId"
         />
         <!-- <SingleIcon
           v-for="iconCode in iconCodes"
@@ -35,7 +35,7 @@
       <v-card-actions class="ml-auto">
         <v-btn
           color="teal accent-3"
-          class="white--text ml-auto"
+          class="white--text mx-auto"
           @click="openIconModal = false"
         >
           閉じる
@@ -159,10 +159,13 @@ export default {
     //     this.$emit('set-icon-id', iconId)
     //   }
     // },
-    closeIconModal(isopenIconeModal, iconCode) {
+    sendId(isopenIconeModal, iconCode) {
       this.openIconModal = isopenIconeModal
       this.$emit('set-icon-id', iconCode.id)
       this.$emit('set-icon-code', iconCode.code)
+    },
+    closeIconModal() {
+      this.openIconModal = false
     }
   }
 }
