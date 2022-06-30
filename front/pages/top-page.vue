@@ -29,7 +29,7 @@
         <simple-card>
           <template #amountName>貯金額</template>
           <template #amount>{{ saveAmount }}円</template>
-          <template #content>今日 :0円</template>
+          <template #content></template>
         </simple-card>
       </v-col>
     </v-row>

@@ -1,7 +1,7 @@
 <template>
   <v-card
     class="mx-auto mb-3"
-    :color="news.color"
+    color="orange"
     dark
     elevation="3"
     outlined
