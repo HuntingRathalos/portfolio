@@ -129,8 +129,6 @@ export default {
       })
     },
     goTarget() {
-      // これを発火させる
-      // 記録をつけるボタンをトップページに置くかも
       this.$router.push('/target')
     },
     goSave() {

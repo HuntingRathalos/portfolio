@@ -1,7 +1,9 @@
 <template>
   <v-card outlined>
-    <v-card-title class="text-right">合計 :{{ saveAmount }}円</v-card-title>
-    <v-card-text class="black--text text-right">
+    <v-card-title class="text-right pb-0"
+      >合計 :{{ saveAmount }}円</v-card-title
+    >
+    <v-card-text class="black--text text-right pb-0">
       <v-row>
         <v-col cols="6">
           <div class="text-body-1">貯金</div>
@@ -21,8 +23,8 @@ export default {
     return {
       saves: [],
       saveAmount: 0,
-      plusAmountArray: 0,
-      minusAmountArray: 0
+      plusAmountArray: [],
+      minusAmountArray: []
     }
   },
   computed: {

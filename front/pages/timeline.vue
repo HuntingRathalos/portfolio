@@ -58,8 +58,8 @@
                 <v-img
                   class="mx-auto"
                   :src="require('@/assets/Writer block-rafiki.svg')"
-                  max-height="400"
-                  max-width="500"
+                  max-height="350"
+                  max-width="400"
                 >
                 </v-img>
                 <p class="text-center">お気に入りした投稿がありません。</p>
