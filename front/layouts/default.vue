@@ -20,6 +20,10 @@ export default {
     return {
       headerItems: [
         {
+          text: 'ユーザーリスト',
+          icon: 'mdi-format-list-bulleted'
+        },
+        {
           text: 'ログアウト',
           icon: 'mdi-logout'
         }

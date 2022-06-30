@@ -75,21 +75,8 @@ class UserService implements UserServiceInterface
     $followUsers = $this->userRepository->getFollowUsers();
     $processedUsers = collect();
 
-    // フォローしているユーザーがいない時は、ゲストユーザーをフォローする
     if($followUsers->isEmpty()) {
-      // ゲストユーザー
-      $followUser = $this->userRepository->getUserById(self::GUEST_USER_ID);
-      // ログインユーザーがあるユーザーを重ねてフォローできないようにするため削除後に登録
-      $this->userRepository->follow($followUser);
-
-      $processedUsers->push([
-        'id' => self::GUEST_USER_ID,
-        'name' => '山田太郎',
-        'target' => 'ワンピース全巻購入!!',
-        'targetAmount' => 50000,
-        'tagName' => '外食'
-      ]);
-      return response()->json($processedUsers, Response::HTTP_OK);
+      return response()->json($followUsers, Response::HTTP_OK);
     }
 
     $followUsers = $followUsers->load(['saves', 'target', 'saves.tag']);
@@ -100,23 +87,13 @@ class UserService implements UserServiceInterface
 
       // フォローしたユーザーの貯金記録、または目標設定がない時は'設定されていません'を詰める
       if(!$target || $saves->isEmpty()) {
-        $processedUsers->push([
-          'id' => $followUser->id,
-          'name' => $followUser->name,
-          'target' => '設定されていません。',
-          'targetAmount' => '設定されていません。',
-          'tagName' => '設定されていません。'
-        ]);
+        $processedUser = $this->processUser($followUser->id, $followUser->name, null, null, null);
+        $processedUsers->push($processedUser);
       } else {
         $firstSave = $saves->shift();
         $tag = $this->tagRepository->getTagById($firstSave->tag_id);
-        $processedUsers->push([
-          'id' => $followUser->id,
-          'name' => $followUser->name,
-          'target' => $target->name,
-          'targetAmount' => $target->amount."円",
-          'tagName' => $tag->name,
-        ]);
+        $processedUser = $this->processUser($followUser->id, $followUser->name, $target->name, $target->amount, $tag->name);
+        $processedUsers->push($processedUser);
       }
     });
     return response()->json($processedUsers, Response::HTTP_OK);
@@ -144,23 +121,12 @@ class UserService implements UserServiceInterface
     $processedFollowUser = [];
     // フォローしたユーザーの貯金記録、または目標設定がない時は'設定されていません'を詰める
     if(!$target || $saves->isEmpty()) {
-      $processedFollowUser = (object)[
-        'id' => $followUser->id,
-        'name' => $followUser->name,
-        'target' => '設定されていません。',
-        'targetAmount' => '設定されていません。',
-        'tagName' => '設定されていません。'
-      ];
+      $processedFollowUser = $this->processUser($followUser->id, $followUser->name, null, null, null);
+
     } else {
       $firstSave = $saves->shift();
       $tag = $this->tagRepository->getTagById($firstSave->tag_id);
-      $processedFollowUser = (object)[
-        'id' => $followUser->id,
-        'name' => $followUser->name,
-        'target' => $target->name,
-        'targetAmount' => $target->amount,
-        'tagName' => $tag->name,
-      ];
+      $processedFollowUser = $this->processUser($followUser->id, $followUser->name, $target->name, $target->amount, $tag->name);
     }
     return response()->json($processedFollowUser, Response::HTTP_CREATED);
   }
@@ -180,5 +146,15 @@ class UserService implements UserServiceInterface
     $this->userRepository->unfollow($unfollowUser);
 
     return response()->json(null, Response::HTTP_NO_CONTENT);
+  }
+
+  protected function processUser(int $id, string $name, ?string $target, ?int $amount, ?string $tag) {
+    return [
+      'id' => $id,
+      'name' => $name,
+      'target' => $target ?? '設定されていません。',
+      'targetAmount' => $amount ?? '設定されていません。',
+      'tagName' => $tag ?? '設定されていません。'
+    ];
   }
 }

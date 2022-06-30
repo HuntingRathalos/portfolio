@@ -91,6 +91,9 @@ export default {
         case 'トップページ':
           this.$router.push('/')
           break
+        case 'ユーザーリスト':
+          this.$router.push('/users')
+          break
       }
     }
   }

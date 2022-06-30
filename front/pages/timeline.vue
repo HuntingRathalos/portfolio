@@ -11,7 +11,7 @@
           centered
           background-color="indigo accent-1"
           color="white"
-          slider-color="teal accent-3"
+          slider-color="orange"
           icons-and-text
         >
           <v-tab class="ma-0 pa-0" href="#post_list">
@@ -46,11 +46,26 @@
             />
           </v-tab-item>
           <v-tab-item class="pa-1" value="post_like">
-            <post-like-card
-              v-for="post in likePosts"
-              :key="post.id"
-              :post="post"
-            />
+            <div v-if="likePosts.length !== 0">
+              <post-like-card
+                v-for="post in likePosts"
+                :key="post.id"
+                :post="post"
+              />
+            </div>
+            <div v-else style="max-width: 820px" class="mx-auto">
+              <v-card flat color="grey lighten-3">
+                <v-img
+                  class="mx-auto"
+                  :src="require('@/assets/Writer block-rafiki.svg')"
+                  max-height="400"
+                  max-width="500"
+                >
+                </v-img>
+                <p class="text-center">お気に入りした投稿がありません。</p>
+                <p class="text-center">お気に入りしてみましょう！</p>
+              </v-card>
+            </div>
           </v-tab-item>
         </v-tabs-items>
       </v-col>
