@@ -20,7 +20,13 @@
     </div>
     <v-card max-width="800" class="mx-auto">
       <v-list subheader two-line class="pa-0" outlined>
-        <v-subheader> ユーザーリスト </v-subheader>
+        <!-- <v-subheader> ユーザーリスト </v-subheader> -->
+        <v-toolbar class="indigo accent-1" flat dense>
+          <v-toolbar-title class="white--text text-subtitle-2 font-weight-bold">
+            ユーザーリスト
+          </v-toolbar-title>
+        </v-toolbar>
+        <div class="list overflow-y-auto"></div>
         <user-list-item
           v-for="user in filteredUsers"
           :key="user.id"
@@ -66,3 +72,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+.list {
+  max-height: 400px;
+}
+</style>

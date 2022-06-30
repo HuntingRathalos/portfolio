@@ -1,6 +1,6 @@
 <template>
   <div class="list overflow-y-auto">
-    <SaveListItem
+    <save-list-item
       v-for="save in saves"
       :key="save.id"
       :save="save"
