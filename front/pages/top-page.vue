@@ -8,7 +8,7 @@
       </v-col>
       <v-col cols="12">
         <v-btn block color="orange" dark rounded @click="goTarget">
-          目標を作成する
+          目標を立てる
         </v-btn>
       </v-col>
       <v-col class="mx-auto" cols="12">

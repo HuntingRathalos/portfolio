@@ -13,12 +13,12 @@
             ref="forgot_password_form"
             @submit.prevent="sendForgotPasswordEmail"
           >
-            <EmailInput :email.sync="form.email" />
+            <email-input :email.sync="form.email" />
             <v-card-actions>
               <v-row class="pt-4" justify="end">
-                <BaseButton :color="btnColor"
-                  >パスワードリセットメール送信</BaseButton
-                >
+                <base-button :color="btnColor">
+                  パスワードリセットメール送信
+                </base-button>
               </v-row>
             </v-card-actions>
           </v-form>
@@ -34,7 +34,7 @@ export default {
   components: { EmailInput, BaseButton },
   data() {
     return {
-      btnColor: 'indigo accent-2',
+      btnColor: 'orange',
       form: {
         email: ''
       }

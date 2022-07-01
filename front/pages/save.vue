@@ -10,18 +10,6 @@
           :fullscreen="isFullscreen"
         >
           <v-card>
-            <!-- <v-card-title class="text-center">
-              <div class="text-center full-width">
-                <h1 class="text-h5 font-weight-medium full-width">
-                  貯金記録作成
-                </h1>
-              </div>
-              <div v-if="updateFlag && !$guestJudge" class="ml-auto">
-                <v-icon class="ml-auto" @click="openAlertModal"
-                  >mdi-delete</v-icon
-                >
-              </div>
-            </v-card-title> -->
             <v-toolbar class="indigo accent-1" flat>
               <v-toolbar-title
                 v-if="!updateFlag"
@@ -51,7 +39,6 @@
                   <v-row>
                     <v-col cols="12">
                       <tag-input :tag-id.sync="save.tag_id" />
-                      <!-- <TagInput :tag-id.sync="save.tag_id" /> -->
                     </v-col>
                   </v-row>
                   <v-row>
@@ -63,19 +50,9 @@
                         @set-icon-id="save.icon_id = $event"
                         @set-icon-code="iconCode = $event"
                       />
-                      <!-- <IconModal
-                        @set-icon-id="save.icon_id = $event"
-                        @set-icon-code="iconCode = $event"
-                      /> -->
                     </v-col>
                     <v-col cols="7">
-                      <!-- <v-icon>{{ iconId }}</v-icon> -->
                       <div align="center">
-                        <!-- <v-card>
-                          <v-btn plain outlined  color="teal accent-3">
-                            <v-icon>{{ iconCode }}</v-icon>
-                          </v-btn>
-                        </v-card> -->
                         <v-btn dark height="42px" color="orange">
                           <v-icon>{{ iconCode }}</v-icon>
                         </v-btn>
@@ -85,7 +62,6 @@
                   <v-row>
                     <v-col cols="12">
                       <memo-input :memo.sync="save.memo" />
-                      <!-- <MemoInput :memo.sync="save.memo" /> -->
                     </v-col>
                     <v-col cols="12" class="text-right pt-0">
                       <span class="text-h2 font-weight-light">{{
@@ -99,11 +75,6 @@
                         @increment="save.coin++"
                         @decrement="save.coin--"
                       />
-                      <!-- <SaveModalSlider
-                        :coin.sync="save.coin"
-                        @increment="save.coin++"
-                        @decrement="save.coin--"
-                      /> -->
                     </v-col>
                     <v-col cols="12">
                       <v-row justify="center" class="pt-5">
@@ -119,15 +90,6 @@
                 </v-container>
               </v-form>
             </v-card-text>
-            <!-- <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeSaveModal">
-                閉じる
-              </v-btn>
-              <v-btn color="blue darken-1" text @click="createOrUpdateSave">
-                保存
-              </v-btn>
-            </v-card-actions> -->
           </v-card>
         </v-dialog>
       </v-row>
@@ -175,11 +137,6 @@
           @save-edit-id-send="setSave"
           @save-delete-id-send="openAlertModal"
         />
-        <!-- <SaveList
-          :saves="savesOneMonth"
-          @save-edit-id-send="setSave"
-          @save-delete-id-send="openAlertModal"
-          /> -->
       </v-col>
     </v-row>
   </div>
@@ -239,7 +196,6 @@ export default {
         return this.$store.getters['modal/openSaveModal']
       },
       set(newVal) {
-        // this.$store.dispatch('modal/setOpenSaveModal', newVal)
         this.setOpenSaveModal(newVal)
       }
     },
@@ -381,7 +337,6 @@ export default {
       this.events = this.events.filter((event) => event.id !== this.saveId)
 
       this.getSavesOneMonth()
-      // this.$store.dispatch('modal/setOpenAlertModal', false)
       this.setOpenAlertModal(false)
       this.closeSaveModal()
     },
@@ -402,7 +357,6 @@ export default {
       this.savesOneMonth.sort((a, b) => (a.click_date < b.click_date ? -1 : 1))
     },
     closeSaveModal() {
-      // this.$store.dispatch('modal/setOpenSaveModal', false)
       this.setOpenSaveModal(false)
       this.save.tag_id = 1
       this.save.icon_id = 1
@@ -416,7 +370,6 @@ export default {
       for (let i = 0; i < this.saves.length; i++) {
         if (this.saveId === this.saves[i].id) {
           this.save = Object.assign(this.save, this.saves[i])
-          // this.$store.dispatch('modal/setOpenSaveModal', true)
           this.setOpenSaveModal(true)
           return
         }
@@ -448,13 +401,9 @@ export default {
       }
       return event
     },
-    // getEventColor(event) {
-    //   return event.color
-    // },
     showEvent(event) {
       this.updateFlag = false
       this.save.click_date = event.date
-      // this.$store.dispatch('modal/setOpenSaveModal', true)
       this.setOpenSaveModal(true)
     },
     dayFormat(date) {

@@ -10,14 +10,14 @@
       <div style="max-width: 336px" class="mx-auto">
         <v-card-text>
           <v-form ref="reset_password_form" @submit.prevent="resetPassword">
-            <EmailInput :email.sync="form.email" />
-            <PasswordInput :password.sync="form.password" />
-            <PasswordConfirmationInput
+            <email-input :email.sync="form.email" />
+            <password-input :password.sync="form.password" />
+            <password-confirmation-input
               :password_confirmation="form.password_confirmation"
             />
             <v-card-actions>
               <v-row class="pt-4" justify="end">
-                <BaseButton :color="btnColor">パスワードリセット</BaseButton>
+                <base-button :color="btnColor">パスワードリセット</base-button>
               </v-row>
             </v-card-actions>
           </v-form>
@@ -40,7 +40,7 @@ export default {
   },
   data() {
     return {
-      btnColor: 'indigo accent-2',
+      btnColor: 'orange',
       form: {
         email: this.$route.query.email || '',
         password: '',

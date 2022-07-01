@@ -5,6 +5,7 @@
     :color="color"
     width="100%"
     height="42px"
+    dark
     rounded
   >
     <slot></slot>
@@ -15,7 +16,7 @@ export default {
   props: {
     className: {
       type: String,
-      default: 'info'
+      default: 'mb-0'
     },
     color: {
       type: String,
