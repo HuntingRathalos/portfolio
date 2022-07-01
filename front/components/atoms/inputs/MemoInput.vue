@@ -4,7 +4,7 @@
     :rules="[rules.maxCount30, rules.required]"
     label="一言メモ"
     prepend-icon="mdi-note-text-outline"
-    color="indigo accent-2"
+    color="green accent-3"
   />
 </template>
 <script>

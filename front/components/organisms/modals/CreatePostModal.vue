@@ -39,7 +39,7 @@
                 <v-col cols="12">
                   <v-row justify="center" class="pt-5">
                     <v-btn
-                      color="teal accent-3"
+                      color="orange"
                       class="white--text"
                       @click="createPost"
                       >送信

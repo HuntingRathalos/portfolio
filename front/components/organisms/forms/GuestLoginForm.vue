@@ -41,7 +41,7 @@ export default {
   components: { BaseButton },
   data() {
     return {
-      btnColor: 'indigo accent-2'
+      btnColor: 'orange'
     }
   },
   methods: {

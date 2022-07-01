@@ -55,12 +55,12 @@ export default {
             datasets: [
               {
                 label: ['貯金額'],
-                backgroundColor: '#EF5350',
+                backgroundColor: '#5C6BC0',
                 data: plusCoin
               },
               {
                 label: ['出費額'],
-                backgroundColor: '#5C6BC0',
+                backgroundColor: '#EF5350',
                 data: minusCoin
               }
             ]

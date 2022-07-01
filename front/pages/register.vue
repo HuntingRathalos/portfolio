@@ -8,6 +8,7 @@ export default {
   name: 'RegisterPage',
   components: { RegisterForm },
   auth: false,
+  layout: 'auth',
   middleware: 'afterLoddedInRedirect'
 }
 </script>

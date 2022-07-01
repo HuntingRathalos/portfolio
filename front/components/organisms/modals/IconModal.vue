@@ -6,21 +6,38 @@
       </v-btn>
     </template>
     <v-card>
-      <v-card-title> アイコン一覧 </v-card-title>
+      <v-toolbar class="indigo accent-1" flat>
+        <v-toolbar-title class="white--text font-weight-bold">
+          アイコン一覧
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-icon dark @click="closeIconModal"> mdi-close </v-icon>
+      </v-toolbar>
       <v-sheet
         class="d-flex justify-space-around flex-wrap px-2"
         max-width="250px"
       >
-        <SingleIcon
+        <single-icon
+          v-for="iconCode in iconCodes"
+          :key="iconCode.id"
+          :icon-code="iconCode"
+          margin-class="ma-2"
+          @sendId="sendId"
+        />
+        <!-- <SingleIcon
           v-for="iconCode in iconCodes"
           :key="iconCode.id"
           :icon-code="iconCode"
           margin-class="ma-2"
           @closeIconModal="closeIconModal"
-        />
+        /> -->
       </v-sheet>
-      <v-card-actions>
-        <v-btn color="primary" text @click="openIconModal = false">
+      <v-card-actions class="ml-auto">
+        <v-btn
+          color="teal accent-3"
+          class="white--text mx-auto"
+          @click="openIconModal = false"
+        >
           閉じる
         </v-btn>
       </v-card-actions>
@@ -137,9 +154,18 @@ export default {
     ]
   }),
   methods: {
-    closeIconModal(isopenIconeModal, iconId) {
+    //   closeIconModal(isopenIconeModal, iconId) {
+    //     this.openIconModal = isopenIconeModal
+    //     this.$emit('set-icon-id', iconId)
+    //   }
+    // },
+    sendId(isopenIconeModal, iconCode) {
       this.openIconModal = isopenIconeModal
-      this.$emit('set-icon-id', iconId)
+      this.$emit('set-icon-id', iconCode.id)
+      this.$emit('set-icon-code', iconCode.code)
+    },
+    closeIconModal() {
+      this.openIconModal = false
     }
   }
 }

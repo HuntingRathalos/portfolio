@@ -8,15 +8,15 @@
       <div style="max-width: 336px" class="mx-auto">
         <v-card-text>
           <v-form ref="register_form" @submit.prevent="signUp">
-            <NameInput :name.sync="form.name" />
-            <EmailInput :email.sync="form.email" />
-            <PasswordInput :password.sync="form.password" />
-            <PasswordConfirmationInput
+            <name-input :name.sync="form.name" />
+            <email-input :email.sync="form.email" />
+            <password-input :password.sync="form.password" />
+            <password-confirmation-input
               :password-confirmation.sync="form.password_confirmation"
             />
             <v-card-actions>
               <v-row class="pt-4" justify="end">
-                <BaseButton :color="btnColor">会員登録</BaseButton>
+                <base-button :color="btnColor">会員登録</base-button>
               </v-row>
             </v-card-actions>
           </v-form>
@@ -41,7 +41,7 @@ export default {
   },
   data() {
     return {
-      btnColor: 'indigo accent-2',
+      btnColor: 'orange',
       form: {
         name: '',
         email: '',

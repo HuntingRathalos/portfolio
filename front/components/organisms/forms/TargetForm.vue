@@ -1,23 +1,17 @@
 <template>
-  <div class="">
+  <div>
     <alert-dialog @runMethod="deleteTarget">
       <template #btnText
-        >目標と全ての貯金記録を削除しますがよろしいですか?</template
+        >この操作は取り消せません。<br />これまでの貯金記録も削除しますがよろしいですか?</template
       >
     </alert-dialog>
     <v-card max-width="500" class="mx-auto mt-5 full-width" flat outlined>
       <v-card-title class="text-center pa-8">
         <h1 class="text-h5 font-weight-bold full-width">{{ titleText }}</h1>
-        <div v-if="updateFlag && !$guestJudge" class="ml-auto">
-          <v-icon class="ml-auto" @click.prevent="openAlertModal"
-            >mdi-delete</v-icon
-          >
-        </div>
-        <!-- <div v-else class="ml-auto">
-          <v-icon class="ml-auto" @click="$guestAlert">mdi-delete</v-icon>
-        </div> -->
       </v-card-title>
+
       <v-divider> </v-divider>
+
       <div class="px-6 py-8">
         <div style="max-width: 336px" class="mx-auto">
           <v-card-text>
@@ -37,6 +31,21 @@
           </v-card-text>
         </div>
       </div>
+
+      <v-divider> </v-divider>
+
+      <v-card-actions v-if="updateFlag" class="ml-auto">
+        <div class="ml-auto">
+          <v-btn
+            icon
+            text
+            color="grey darken-2"
+            @click.prevent="openAlertModal"
+          >
+            <v-icon> mdi-delete </v-icon>
+          </v-btn>
+        </div>
+      </v-card-actions>
     </v-card>
   </div>
 </template>
@@ -49,7 +58,7 @@ export default {
   components: { TargetNameInput, TargetAmountInput, BaseButton, AlertDialog },
   data() {
     return {
-      btnColor: 'indigo accent-2',
+      btnColor: 'orange',
       form: {
         name: '',
         amount: ''
@@ -59,10 +68,10 @@ export default {
   },
   computed: {
     buttonText() {
-      return this.updateFlag ? '更新する' : '登録する'
+      return this.updateFlag ? '更新する' : '作成する'
     },
     titleText() {
-      return this.updateFlag ? '目標更新' : '目標登録'
+      return this.updateFlag ? '目標更新' : '目標作成'
     }
   },
   created() {
@@ -85,7 +94,6 @@ export default {
           this.$targetApi
             .update(target.id, this.form)
             .then((res) => {
-              console.log(res)
               sessionStorage.setItem('target', JSON.stringify(res.data))
               this.$router.push('/top-page')
               this.$toast.success('目標を更新しました。')
@@ -95,7 +103,6 @@ export default {
           this.$targetApi
             .create(this.form)
             .then((res) => {
-              console.log(res)
               sessionStorage.setItem('target', JSON.stringify(res.data))
               this.updateFlag = true
               this.$router.push('/top-page')
@@ -107,11 +114,15 @@ export default {
     },
     deleteTarget() {
       if (this.$refs.target_form.validate()) {
+        if (this.$guestJudge()) {
+          this.$guestAlert()
+          return
+        }
         this.$store.dispatch('modal/setOpenAlertModal', false)
         const target = JSON.parse(sessionStorage.getItem('target'))
         this.$targetApi
           .delete(target.id)
-          .then((res) => {
+          .then(() => {
             sessionStorage.removeItem('target')
             sessionStorage.removeItem('saves')
             sessionStorage.removeItem('saveAmount')

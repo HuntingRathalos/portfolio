@@ -8,8 +8,18 @@
             :chart-data="chartData"
             :options="options"
           />
-          <div v-else class="text-subtitle-1 font-weight-medium text-center">
-            貯金記録がありません。
+          <div v-else style="max-width: 820px" class="mx-auto">
+            <v-card flat>
+              <v-img
+                class="mx-auto"
+                :src="require('@/assets/No data-rafiki.svg')"
+                max-height="350"
+                max-width="400"
+              >
+              </v-img>
+              <p class="text-center">貯金記録がありません。</p>
+              <p class="text-center">記録を付けてみましょう！</p>
+            </v-card>
           </div>
         </v-card>
       </v-col>
@@ -47,10 +57,10 @@ export default {
               datasets: [
                 {
                   backgroundColor: [
-                    '#f87979',
+                    '#F24141',
                     '#303F9F',
                     '#80DEEA',
-                    '#66BB6A',
+                    '#FA8D2D',
                     '#FFCA28',
                     '#66BB6A',
                     '#B388FF',

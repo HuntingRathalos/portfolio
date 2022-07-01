@@ -1,15 +1,13 @@
 <template>
   <v-list-item @click="followOrUnfollow">
     <v-list-item-avatar>
-      <v-icon class="amber lighten-3">mdi-account</v-icon>
+      <v-icon class="deep-purple lighten-3">mdi-account</v-icon>
     </v-list-item-avatar>
 
     <v-list-item-content>
       <v-list-item-title v-text="user.name"></v-list-item-title>
 
-      <v-list-item-subtitle
-        >{{ user.createdAt }}から利用開始</v-list-item-subtitle
-      >
+      <v-list-item-subtitle>{{ user.createdAt }}から利用</v-list-item-subtitle>
     </v-list-item-content>
 
     <v-list-item-action class="mr-4">

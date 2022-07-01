@@ -6,26 +6,20 @@
         <Nuxt />
       </v-container>
     </v-main>
-    <the-footer />
   </v-app>
 </template>
 
 <script>
-import TheFooter from '../components/singleInstance/TheFooter.vue'
 import TheHeader from '../components/singleInstance/TheHeader.vue'
 export default {
   name: 'DefaultLayout',
-  components: { TheHeader, TheFooter },
+  components: { TheHeader },
   data() {
     return {
       headerItems: [
         {
-          text: 'ユーザーリスト',
-          icon: 'mdi-format-list-bulleted'
-        },
-        {
-          text: 'ログアウト',
-          icon: 'mdi-logout'
+          text: 'トップページ',
+          icon: 'mdi-home-floor-1'
         }
       ]
     }

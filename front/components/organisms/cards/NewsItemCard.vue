@@ -1,6 +1,6 @@
 <template>
-  <v-card height="480px">
-    <div class="">
+  <v-card height="480px" outlined>
+    <div>
       <v-img v-if="news.thumbnail" height="220" :src="news.thumbnail"></v-img>
       <div
         v-else

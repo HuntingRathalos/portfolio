@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <v-app-bar app>
+    <v-app-bar app color="indigo accent-1">
       <router-link to="/">
         <v-img
           :src="require('@/assets/logo.png')"
@@ -20,7 +20,8 @@
         <v-btn
           v-for="headerItem in headerItems"
           :key="headerItem.icon"
-          class="font-weight-medium"
+          class="font-weight-bold"
+          color="white"
           text
           @click="doHeaderText(headerItem.text)"
         >
@@ -76,7 +77,7 @@ export default {
           try {
             await this.$auth.logout()
             this.$router.push('/')
-            this.$toast.success('ログアウト')
+            this.$toast.success('ログアウトに成功しました。')
           } catch {
             this.$toast.error('ログアウトに失敗しました。')
           }
@@ -86,6 +87,12 @@ export default {
           break
         case 'ゲストログイン':
           this.$router.push('/guest')
+          break
+        case 'トップページ':
+          this.$router.push('/')
+          break
+        case 'ユーザーリスト':
+          this.$router.push('/users')
           break
       }
     }

@@ -1,11 +1,12 @@
 <template>
-  <div>
-    <SaveListItem
+  <div class="list overflow-y-auto">
+    <save-list-item
       v-for="save in saves"
       :key="save.id"
       :save="save"
       margin-class="mb-4"
-      @save-id-send="sendSaveId"
+      @save-edit-id-send="sendSaveEditId"
+      @save-delete-id-send="sendSaveDeleteId"
     />
   </div>
 </template>
@@ -21,9 +22,17 @@ export default {
     }
   },
   methods: {
-    sendSaveId(saveId) {
-      this.$emit('save-id-send', saveId)
+    sendSaveEditId(saveId) {
+      this.$emit('save-edit-id-send', saveId)
+    },
+    sendSaveDeleteId(saveId) {
+      this.$emit('save-delete-id-send', saveId)
     }
   }
 }
 </script>
+<style scoped>
+.list {
+  max-height: 400px;
+}
+</style>

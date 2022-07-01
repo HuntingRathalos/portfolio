@@ -8,6 +8,7 @@ export default {
   name: 'GuestLoginPage',
   components: { GuestLoginForm },
   auth: false,
+  layout: 'auth',
   middleware: 'afterLoddedInRedirect'
 }
 </script>

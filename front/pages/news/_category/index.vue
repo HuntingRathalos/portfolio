@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <div class="text-left">
-      <v-btn to="/news" text color="blue" nuxt class="mr-auto mb-2">
+      <v-btn text color="blue" class="mr-auto mb-2" @click="goNews">
         <v-icon> mdi-chevron-left </v-icon>
         カテゴリー選択へ
       </v-btn>
@@ -46,7 +46,10 @@ export default {
   methods: {
     ...mapActions({
       getArticles: 'news/getArticles'
-    })
+    }),
+    goNews() {
+      this.$router.push('/news')
+    }
   }
 }
 </script>

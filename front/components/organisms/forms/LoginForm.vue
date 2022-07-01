@@ -8,11 +8,11 @@
       <div style="max-width: 336px" class="mx-auto">
         <v-card-text>
           <v-form ref="login_form" @submit.prevent="doLogin">
-            <EmailInput :email.sync="form.email" />
-            <PasswordInput :password.sync="form.password" />
+            <email-input :email.sync="form.email" />
+            <password-input :password.sync="form.password" />
             <v-card-actions>
               <v-row justify="end" class="pb-8 pt-4">
-                <BaseButton :color="btnColor">ログイン</BaseButton>
+                <base-button :color="btnColor">ログイン</base-button>
               </v-row>
             </v-card-actions>
           </v-form>
@@ -34,7 +34,7 @@ export default {
   components: { EmailInput, PasswordInput, BaseButton },
   data() {
     return {
-      btnColor: 'indigo accent-2',
+      btnColor: 'orange',
       form: {
         email: '',
         password: ''

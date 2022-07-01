@@ -1,5 +1,5 @@
 <template>
-  <v-card outlined>
+  <v-card outlined height="108">
     <v-card-text class="black--text">
       <div class="text-body-1">
         <slot name="amountName"></slot>
@@ -10,7 +10,7 @@
       </div>
       <div class="text-body-2 text--secondary">
         <!-- 目標まで :20000円 -->
-        <slot name="content"></slot>
+        <slot name="content"> </slot>
       </div>
     </v-card-text>
   </v-card>

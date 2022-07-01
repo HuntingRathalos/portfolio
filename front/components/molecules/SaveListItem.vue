@@ -1,6 +1,16 @@
 <template>
   <v-card max-width="1161" class="mx-auto" :class="marginClass">
-    <v-list-item @click="sendSaveId">
+    <v-toolbar class="deep-purple lighten-3" dense flat>
+      <div class="ml-auto">
+        <v-btn icon text small color="grey darken-2" @click="sendSaveEditId">
+          <v-icon> mdi-pencil-box-multiple </v-icon>
+        </v-btn>
+        <v-btn icon text small color="grey darken-2" @click="sendSaveDeleteId">
+          <v-icon> mdi-delete </v-icon>
+        </v-btn>
+      </div>
+    </v-toolbar>
+    <v-list-item>
       <v-list-item-avatar>
         <v-icon class="grey lighten-1" dark>
           {{ iconName }}
@@ -92,13 +102,13 @@ export default {
       if (this.save !== null) {
         return this.iconNames[this.save.icon_id - 1]
       }
-      return 'mdi-fish'
+      return 'mdi-book-open-variant'
     },
     tagName() {
       if (this.save !== null) {
         return this.tagNames[this.save.tag_id - 1]
       }
-      return 'コンビニ'
+      return '本'
     },
     amount() {
       if (this.save.coin > 0) {
@@ -108,8 +118,11 @@ export default {
     }
   },
   methods: {
-    sendSaveId() {
-      this.$emit('save-id-send', this.save.id)
+    sendSaveEditId() {
+      this.$emit('save-edit-id-send', this.save.id)
+    },
+    sendSaveDeleteId() {
+      this.$emit('save-delete-id-send', this.save.id)
     }
   }
 }

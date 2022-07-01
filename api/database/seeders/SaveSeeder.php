@@ -38,5 +38,10 @@ class SaveSeeder extends Seeder
             'coin' => -8,
             'memo' => '出費がかさんでしまったので気をつけたい'
         ]);
+        Save::factory()->count(5)->create([
+            'user_id' => 2,
+            'coin' => 1,
+            'memo' => '無駄使いを減らしたい!'
+        ]);
     }
 }
