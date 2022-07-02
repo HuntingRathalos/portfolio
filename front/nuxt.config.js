@@ -1,5 +1,8 @@
 import colors from 'vuetify/es5/util/colors'
 
+const deploymentEnv = process.env.NUXT_ENV_DEPLOYMENT || 'development';
+const environment = require(`./.env.${deploymentEnv}.js`);
+
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -90,7 +93,7 @@ export default {
           user: { url: '/api/user', method: 'get', propertyName: false }
         },
         provider: 'laravel/sanctum',
-        url: 'http://localhost:80'
+        url: `${environment.API_URL}`,
       }
     }
   },
@@ -99,13 +102,14 @@ export default {
   },
   proxy: {
     '/api': {
-      target: 'http://localhost:80'
+      target: `${environment.API_URL}`,
     }
   },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    credentials: true
+    credentials: true,
+    baseURL: `${environment.API_URL}`
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
