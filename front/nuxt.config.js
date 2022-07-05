@@ -1,7 +1,8 @@
 import colors from 'vuetify/es5/util/colors'
 
-const deploymentEnv = process.env.NUXT_ENV_DEPLOYMENT || 'development';
-const environment = require(`./.env.${deploymentEnv}.js`);
+const deploymentEnv = process.env.NODE_ENV || 'development'
+const environment = require(`./env.${deploymentEnv}.js`)
+
 
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
@@ -59,12 +60,14 @@ export default {
       poll: true
     }
   },
+  env: environment,
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
-    '@nuxtjs/toast'
+    '@nuxtjs/toast',
+    '@nuxtjs/dotenv'
   ],
   loading: '~/components/singleInstance/TheLoading.vue',
   moment: {
