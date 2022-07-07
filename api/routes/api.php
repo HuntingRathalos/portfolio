@@ -18,6 +18,9 @@ use App\Http\Controllers\Api\PostController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::get('/healthcheck', function () {
+    return response()->json(200);
+});
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
