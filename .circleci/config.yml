@@ -44,9 +44,9 @@ commands:
           working_directory: ~/repo/api
 
       # Database setup
-      - run:
-          command: php artisan migrate --force
-          working_directory: ~/repo/api
+      # - run:
+      #     command: php artisan migrate --force
+      #     working_directory: ~/repo/api
 
       # run tests
       - run:
