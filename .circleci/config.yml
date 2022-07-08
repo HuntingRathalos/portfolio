@@ -1,11 +1,52 @@
 version: 2.1
+
 jobs:
-  build:
+  test_backend:
     docker:
-      - image: alpine:3.15
+      - image: cimg/php:8.1.7
+        # command: [--platform linux/amd64]
+      # - image: circleci/mysql:5.7.30
+      - image: cimg/mysql:8.0
+      #   command: [--platform linux/amd64]
+
+    working_directory: ~/repo
+
     steps:
+      - checkout
+
+      # restore gem from cache
+      - restore_cache:
+          keys:
+            - composer-v1-{{ checksum "~/repo/api/composer.lock" }}
+            - composer-v1-
+          working_directory: ~/repo/api
+
       - run:
-          name: The First Step
-          command: |
-            echo 'Hello World!'
-            echo 'This is the delivery pipeline'
+          command: composer install -n --prefer-dist
+          working_directory: ~/repo/api
+
+      - save_cache:
+          key: composer-v1-{{ checksum "~/repo/api/composer.lock" }}
+          paths:
+            - ~/repo/api/vendor
+          working_directory: ~/repo/api
+
+      # Database setup
+      - run:
+          command: php artisan migrate
+          working_directory: ~/repo/api
+
+      # run tests
+      - run:
+          name: php test
+          command: vendor/bin/phpunit
+          working_directory: ~/repo/api
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test_backend:
+          # filters:
+          #   branches:
+          #     ignore: main
