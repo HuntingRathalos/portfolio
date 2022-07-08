@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  test_backend:
+  build:
     docker:
       - image: cimg/php:8.1.7
         # command: [--platform linux/amd64]
@@ -42,11 +42,11 @@ jobs:
           command: vendor/bin/phpunit
           working_directory: ~/repo/api
 
-workflows:
-  version: 2
-  test:
-    jobs:
-      - test_backend:
+# workflows:
+#   version: 2
+#   test:
+#     jobs:
+#       - test_backend:
           # filters:
           #   branches:
           #     ignore: main
