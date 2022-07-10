@@ -122,9 +122,9 @@ jobs:
           account-url: AWS_ACCOUNT_URL
           repo: "${REPOSITORY_PHP}"
           region: AWS_REGION
-          dockerfile: Dockerfile.prod
+          dockerfile: ./docker/php/Dockerfile.prod
           tag: "${CIRCLE_SHA1}"
-          path: ./docker/php/
+          # path: ./docker/php/
 
 workflows:
   push-branch-workflow:
