@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  aws-ecr: circleci/aws-ecr@8.1.2
+  aws-ecr: circleci/aws-ecr@6.12.2
   # aws-ecs: circleci/aws-ecs@1.3.0
   # aws-s3: circleci/aws-s3@3.0.0
 
@@ -9,6 +9,7 @@ executors:
   backend_test:
     docker:
       - image: cimg/php:8.0.13
+    working_directory: ~/repo
 
   # backend_deploy:
   #   machine:
@@ -23,7 +24,6 @@ executors:
   #     - image: circleci/python:3.6-jessie
 
   #     # jobsに書いてもいいかも
-  #   working_directory: ~/repo
 
 commands:
   backend_test:
@@ -101,9 +101,7 @@ jobs:
   #     - front_deploy
 
   build_and_push_image_backend_nginx:
-    # machine:
-    #   image: ubuntu-2004:202201-02
-    # resource_class: arm.medium
+    working_directory: ~/repo
     machine:
       image: ubuntu-2004:202201-02
     steps:
@@ -113,13 +111,12 @@ jobs:
           command: |
             ls -al
       - aws-ecr/build-and-push-image:
-          # account-url: AWS_ACCOUNT_URL
+          account-url: AWS_ACCOUNT_URL
           repo: "${REPOSITORY_NGINX}"
           region: AWS_REGION
-          # setup-remote-docker: true
           dockerfile: Dockerfile.prod
           tag: "${CIRCLE_SHA1}"
-          path: ./docker/nginx/
+          path: ./repo/docker/nginx/
   # build_and_push_image_backend_php:
   #   # machine:
   #   #   image: ubuntu-2004:202201-02
