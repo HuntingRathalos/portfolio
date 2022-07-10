@@ -105,6 +105,7 @@ jobs:
           account-url: AWS_ACCOUNT_URL
           repo: "${REPOSITORY_NGINX}"
           region: AWS_REGION
+          setup-remote-docker: true
           dockerfile: Dockerfile.prod
           # tag: "${CIRCLE_SHA1}"
           path: ./docker/nginx/
@@ -117,6 +118,7 @@ jobs:
           account-url: AWS_ACCOUNT_URL
           repo: "${REPOSITORY_PHP}"
           region: AWS_REGION
+          setup-remote-docker: true
           dockerfile: Dockerfile.prod
           # tag: "${CIRCLE_SHA1}"
           path: ./docker/php/
@@ -130,7 +132,8 @@ workflows:
     jobs:
       - build_and_push_image_backend_nginx:
           name: "build_and_push_image_backend_nginx"
-      # - build_and_push_image_backend_php:
+      - build_and_push_image_backend_php:
+          name: "build_and_push_image_backend_php"
       # - front_build:
       # - front_deploy:
       # - aws-ecs/deploy-service-update:
