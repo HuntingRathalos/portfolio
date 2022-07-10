@@ -101,7 +101,7 @@ jobs:
   #     - front_deploy
 
   build_and_push_image_backend_nginx:
-    working_directory: ~/repo
+    # working_directory: ~/repo
     machine:
       image: ubuntu-2004:202201-02
     steps:
@@ -110,22 +110,21 @@ jobs:
           account-url: AWS_ACCOUNT_URL
           repo: "${REPOSITORY_NGINX}"
           region: AWS_REGION
+          dockerfile: ./docker/nginx/Dockerfile.prod
+          tag: "${CIRCLE_SHA1}"
+          # path: ./docker/nginx/
+  build_and_push_image_backend_php:
+    machine:
+      image: ubuntu-2004:202201-02
+    steps:
+      - checkout
+      - aws-ecr/build-and-push-image:
+          account-url: AWS_ACCOUNT_URL
+          repo: "${REPOSITORY_PHP}"
+          region: AWS_REGION
           dockerfile: Dockerfile.prod
           tag: "${CIRCLE_SHA1}"
-          path: ./docker/nginx/
-  # build_and_push_image_backend_php:
-  #   # machine:
-  #   #   image: ubuntu-2004:202201-02
-  #   steps:
-  #     - checkout
-  #     - aws-ecr/build-and-push-image:
-  #         account-url: AWS_ACCOUNT_URL
-  #         repo: "${REPOSITORY_PHP}"
-  #         region: AWS_REGION
-  #         # setup-remote-docker: true
-  #         dockerfile: Dockerfile.prod
-  #         tag: "${CIRCLE_SHA1}"
-  #         path: ./docker/php/
+          path: ./docker/php/
 
 workflows:
   push-branch-workflow:
@@ -145,8 +144,8 @@ workflows:
       #     dockerfile: Dockerfile.prod
       #     tag: "${CIRCLE_SHA1}"
       #     path: ./docker/nginx/
-      # - build_and_push_image_backend_php:
-      #     name: "build_and_push_image_backend_php"
+      - build_and_push_image_backend_php:
+          name: "build_and_push_image_backend_php"
       # - front_build:
       # - front_deploy:
       # - aws-ecs/deploy-service-update:
