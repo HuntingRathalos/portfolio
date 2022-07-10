@@ -106,17 +106,13 @@ jobs:
       image: ubuntu-2004:202201-02
     steps:
       - checkout
-      - run:
-          name: The Second Step
-          command: |
-            ls -al
       - aws-ecr/build-and-push-image:
           account-url: AWS_ACCOUNT_URL
           repo: "${REPOSITORY_NGINX}"
           region: AWS_REGION
           dockerfile: Dockerfile.prod
           tag: "${CIRCLE_SHA1}"
-          path: ./repo/docker/nginx/
+          path: ./docker/nginx/
   # build_and_push_image_backend_php:
   #   # machine:
   #   #   image: ubuntu-2004:202201-02
