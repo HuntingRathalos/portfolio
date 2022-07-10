@@ -100,13 +100,13 @@ jobs:
     machine:
       image: ubuntu-2004:202201-02
     steps:
-      - checkout
+      # - checkout
       - aws-ecr/build-and-push-image:
           account-url: AWS_ACCOUNT_URL
-          repo: "portfolio_nginx"
+          repo: REPOSITORY_NGINX
           region: AWS_REGION
           dockerfile: Dockerfile.prod
-          tag: "${CIRCLE_SHA1}"
+          # tag: "${CIRCLE_SHA1}"
           path: ./docker/nginx/
   build_and_push_image_backend_php:
     machine:
@@ -115,10 +115,10 @@ jobs:
       - checkout
       - aws-ecr/build-and-push-image:
           account-url: AWS_ACCOUNT_URL
-          repo: "portfolio_php"
+          repo: REPOSITORY_PHP
           region: AWS_REGION
           dockerfile: Dockerfile.prod
-          tag: "${CIRCLE_SHA1}"
+          # tag: "${CIRCLE_SHA1}"
           path: ./docker/php/
 
 workflows:
