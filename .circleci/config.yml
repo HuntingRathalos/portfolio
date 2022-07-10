@@ -1,24 +1,25 @@
 version: 2.1
 
+orbs:
+  aws-ecr: circleci/aws-ecr@6.12.2
+  # aws-ecs: circleci/aws-ecs@1.3.0
+  # aws-s3: circleci/aws-s3@3.0.0
+
 executors:
-  deploy:
+  backend_test:
     docker:
       - image: cimg/php:8.0.13
-        # environment:
-        #   APP_ENV: testing
-        #   DB_CONNECTION: mysql
-        #   DB_HOST: 127.0.0.1
-        #   DB_DATABASE: testing
-        #   DB_USERNAME: 'root'
-        #   DB_PASSWORD: ''
-      # - image: circleci/mysql:8
-      #   environment:
-      #     MYSQL_DATABASE: testing
-      #     MYSQL_ROOT_HOST: '%'
-      #     MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
-      #     TZ: Asia/Tokyo
 
+      # jobsに書いてもいいかも
     working_directory: ~/repo
+
+  # front_build_and_deploy:
+  #   docker:
+  #     - image: circleci/node:14
+  #     - image: circleci/python:3.6-jessie
+
+  #     # jobsに書いてもいいかも
+  #   working_directory: ~/repo
 
 commands:
   backend_test:
@@ -41,29 +42,122 @@ commands:
             - ~/repo/api/vendor
           working_directory: ~/repo/api
 
-      # Database setup
-      # - run:
-      #     command: php artisan migrate --force
-      #     working_directory: ~/repo/api
-
-      # run tests
       - run:
           name: php test
           command: vendor/bin/phpunit
           working_directory: ~/repo/api
 
+  # front_build:
+  #   steps:
+  #     - checkout
+
+  #     - restore_cache:
+  #         keys:
+  #           - dependencies-v1-{{ checksum "~/repo/front/package.json" }}
+  #           - dependencies-v1-
+  #         working_directory: ~/repo/front
+  #     - run:
+  #         name: install-packages
+  #         command: npm install
+  #         working_directory: ~/repo/front
+  #     - save_cache:
+  #         key: dependencies-v1-{{ checksum "~/repo/front/package.json" }}
+  #         paths:
+  #           - ~/repo/front/node_modules
+  #         working_directory: ~/repo/front
+  #     - run:
+  #         name: Build Step
+  #         command: npm run generate-prod
+  #         working_directory: ~/repo/front
+  #     - persist_to_workspace:
+  #         root: ~/repo/front
+  #         paths:
+  #           - dist
+
+  # front_deploy:
+  #   steps:
+  #     - attach_workspace:
+  #         at: ~/repo/front
+  #     - aws-s3/sync:
+  #         from: ./dist
+  #         to: $BUCKET_URL
+
 jobs:
   backend_test:
-    executor: deploy
+    executor: backend_test
     steps:
-      # - checkout
       - backend_test
+  # front_build:
+  #   executor: front_build_and_deploy
+  #   steps:
+  #     - front_build
+  # front_deploy:
+  #   executor: front_build_and_deploy
+  #   steps:
+  #     - front_deploy
+
+  build_and_push_image_backend_nginx:
+    machine:
+      image: ubuntu-2004:202201-02
+    steps:
+      - checkout
+      - aws-ecr/build-and-push-image:
+          account-url: AWS_ACCOUNT_URL
+          repo: "portfolio_nginx"
+          region: AWS_REGION
+          dockerfile: Dockerfile.prod
+          tag: "${CIRCLE_SHA1}"
+          path: ./docker/nginx/
+  build_and_push_image_backend_php:
+    machine:
+      image: ubuntu-2004:202201-02
+    steps:
+      - checkout
+      - aws-ecr/build-and-push-image:
+          account-url: AWS_ACCOUNT_URL
+          repo: "portfolio_php"
+          region: AWS_REGION
+          dockerfile: Dockerfile.prod
+          tag: "${CIRCLE_SHA1}"
+          path: ./docker/php/
 
 workflows:
   push-branch-workflow:
     jobs:
       - backend_test:
           name: "backend_test"
+  deploy:
+    jobs:
+      - build_and_push_image_backend_nginx:
+          name: "build_and_push_image_backend_nginx"
+      # - build_and_push_image_backend_php:
+      # - front_build:
+      # - front_deploy:
+      # - aws-ecs/deploy-service-update:
+      #     requires:
+      #       - build_and_push_image_backend_nginx
+      #       - build_and_push_image_backend_php
+      #     family: "portfolio_task"
+      #     service-name: "portfolio"
+      #     cluster-name: "portfolio-cluster"
+      #     container-image-name-updates: "container=portfolio_nginx,tag=${CIRCLE_SHA1}"
+      #     filters:
+      #       branches:
+      #         only: main
+      # - aws-ecs/deploy-service-update:
+      #     requires:
+      #       - build_and_push_image_backend_nginx
+      #       - build_and_push_image_backend_php
+      #     family: "portfolio_task"
+      #     service-name: "portfolio"
+      #     cluster-name: "portfolio-cluster"
+      #     container-image-name-updates: "container=portfolio_php,tag=${CIRCLE_SHA1}"
+      #     filters:
+      #       branches:
+      #         only: main
+
+
+
 # workflows:
 #   version: 2
 #   test:

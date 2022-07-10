@@ -1,3 +1,4 @@
+# Orb 'circleci/aws-ecr@6.12.2' resolved to 'circleci/aws-ecr@6.12.2'
 version: 2
 jobs:
   backend_test:
@@ -23,32 +24,227 @@ jobs:
         name: php test
         command: vendor/bin/phpunit
         working_directory: ~/repo/api
+  build_and_push_image_backend_nginx:
+    machine:
+      image: ubuntu-2004:202201-02
+    resource_class: arm.medium
+    steps:
+    - checkout
+    - checkout
+    - run:
+        command: |
+          AWS_VER_REGEXP_2='aws-cli\/2.\d*.\d*'
+          AWS_VER_REGEXP_1='aws-cli\/1.\d*.\d*'
+          # initialize installed version to zero, to signify not installed (Or we want to ignore the installed version and re-install).
+          AWS_CLI_INSTALLED_VERSION="0"
+          AWS_CLI_VERSION_SELECTED="2"
+
+          if [[ $EUID == 0 ]]; then export SUDO=""; else export SUDO="sudo"; fi
+
+          if [ "false" == "false" ]; then
+              if ! command -v aws --version >/dev/null 2>&1  ; then
+                  echo AWS is not installed
+              else
+                  echo AWS is currently installed.
+                  if aws --version 2>&1 | grep -q $AWS_VER_REGEXP_2; then
+                      echo AWS CLI v2 is installed
+                      AWS_CLI_INSTALLED_VERSION="2"
+                  fi
+                  if aws --version 2>&1 | grep -q $AWS_VER_REGEXP_1; then
+                      echo AWS CLI v1 is installed
+                      AWS_CLI_INSTALLED_VERSION="1"
+                  fi
+              fi
+          else
+              echo "Skipping version check. Installing CLI"
+          fi
+
+          AWS_V2_UPDATE_PARAM=""
+          if aws --version 2>&1 | grep -q $AWS_VER_REGEXP_2; then
+              AWS_V2_UPDATE_PARAM="--update"
+          fi
+
+          #If the desired version of the CLI is not installed, install it.
+          if [[ $AWS_CLI_VERSION_SELECTED != $AWS_CLI_INSTALLED_VERSION ]]; then
+
+              #uninstall AWS CLI if it is installed.
+              if which aws; then
+                  echo Uninstalling old CLI
+                  $SUDO rm -rf $(which aws)
+              fi
+              case $AWS_CLI_VERSION_SELECTED in
+                  "1")
+                      if ! command -v python >/dev/null 2>&1 && ! command -v python3 >/dev/null 2>&1 ; then
+                          echo "Your environment does not seem to have Python installed, a requirement of the AWS CLI."
+                          echo "Please either utilize the AWS CLI v2, or select an envionment with Python installed."
+                          echo "Recommended image: cimg:/python:3.8"
+                          exit 1
+                      fi
+                      # install CLI v1
+                      export PIP=$(which pip pip3 | head -1)
+                      if [[ -n $PIP ]]; then
+                          if which sudo > /dev/null; then
+                              sudo $PIP install awscli --upgrade
+                          else
+                              # This installs the AWS CLI to ~/.local/bin. Make sure that ~/.local/bin is in your $PATH.
+                              $PIP install awscli --upgrade --user
+                          fi
+                      elif [[ $(which unzip curl | wc -l) -eq 2 ]]; then
+                          cd
+                          curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+                          unzip awscli-bundle.zip
+                          if which sudo > /dev/null; then
+                              sudo ~/awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+                          else
+                              # This installs the AWS CLI to the default location (~/.local/lib/aws) and create a symbolic link (symlink) at ~/bin/aws. Make sure that ~/bin is in your $PATH.
+                              awscli-bundle/install -b ~/bin/aws
+                          fi
+                          rm -rf awscli-bundle*
+                          cd -
+                      else
+                          echo "Unable to install AWS CLI. Please install pip."
+                          exit 1
+                      fi
+                      # Installation check
+                      if aws --version &> grep -q "aws-cli/1"; then
+                          echo "AWS CLI V1 has been installed successfully"
+                          exit 0
+                      else
+                          echo "There was an issue installing the AWS CLI V1. Exiting."
+                          exit 1
+                      fi
+                  ;;
+                  "2")
+                      # install CLI v2
+
+                      cd /tmp || exit
+
+                      # PLATFORM CHECK: mac vs. alpine vs. other linux
+                      if uname -a | grep Darwin; then
+                          SYS_ENV_PLATFORM=darwin
+                      elif uname -a | grep Linux; then
+                          SYS_ENV_PLATFORM=linux
+                      else
+                          echo "This platform appears to be unsupported."
+                          uname -a
+                          exit 1
+                      fi
+
+                      case $SYS_ENV_PLATFORM in
+                          linux)
+                              curl -sSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+                              unzip awscliv2.zip
+                              $SUDO ./aws/install $AWS_V2_UPDATE_PARAM
+                              rm awscliv2.zip
+                              ;;
+                          darwin)
+                              curl -sSL "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
+                              $SUDO installer -pkg AWSCLIV2.pkg -target /
+                              rm AWSCLIV2.pkg
+                              ;;
+                          *)
+                              echo "This orb does not currently support your platform. If you believe it should, please consider opening an issue on the GitHub repository:"
+                              echo "https://github.com/CircleCI-Public/aws-cli-orb/issues/new"
+                              exit 1
+                          ;;
+                      esac
+                      # Installation check
+                      if aws --version &> grep -q "aws-cli/2"; then
+                          echo "AWS CLI V2 has been installed successfully"
+                          exit 0
+                      else
+                          echo "There was an issue installing the AWS CLI V2. Exiting."
+                          exit 1
+                      fi
+                  ;;
+              esac
+
+          else
+              echo "The v${AWS_CLI_VERSION_SELECTED} AWS CLI is already installed."
+              exit 0
+          fi
+        name: Install AWS CLI v2
+    - run:
+        command: |
+          if [ -z "${AWS_PAGER}" ]; then
+            echo 'export AWS_PAGER=""' >> $BASH_ENV
+            echo "AWS_PAGER is being set to the empty string to disable all output paging for AWS CLI commands."
+            echo "You can set the 'disable-aws-pager' parameter to 'false' to disable this behavior."
+          fi
+        name: Disable AWS pager if not already configured
+    - run:
+        command: |
+          aws configure set aws_access_key_id \
+            $AWS_ACCESS_KEY_ID \
+            --profile default
+        name: Configure AWS Access Key ID
+    - run:
+        command: |
+          aws configure set aws_secret_access_key \
+            $AWS_SECRET_ACCESS_KEY \
+            --profile default
+        name: Configure AWS Secret Access Key
+    - run:
+        command: |
+          aws configure set default.region $AWS_REGION \
+            --profile default
+        name: Configure AWS default region
+    - run:
+        command: |
+          # get-login-password returns a password that we pipe to the docker login command
+          aws ecr get-login-password --region $AWS_REGION --profile default | docker login --username AWS --password-stdin $AWS_ACCOUNT_URL
+        name: Log into Amazon ECR
+    - run:
+        command: |
+          registry_id=$(echo $AWS_ACCOUNT_URL | sed "s;\..*;;g")
+          number_of_tags_in_ecr=0
+
+          docker_tag_args=""
+          IFS="," read -ra DOCKER_TAGS <<< "${CIRCLE_SHA1}"
+          for tag in "${DOCKER_TAGS[@]}"; do
+            if [ "false" = "true" ]; then
+              docker_tag_exists_in_ecr=$(aws ecr describe-images --registry-id $registry_id --repository-name portfolio_nginx --query "contains(imageDetails[].imageTags[], '$tag')")
+              if [ "$docker_tag_exists_in_ecr" = "true" ]; then
+                docker pull $AWS_ACCOUNT_URL/portfolio_nginx:${tag}
+                let "number_of_tags_in_ecr+=1"
+              fi
+            fi
+            docker_tag_args="$docker_tag_args -t $AWS_ACCOUNT_URL/portfolio_nginx:$tag"
+          done
+          if [ "false" = "false" ] || [ "false" = "true" -a $number_of_tags_in_ecr -lt ${#DOCKER_TAGS[@]} ]; then
+            docker build \
+               \
+              -f ./docker/php//Dockerfile.prod \
+              $docker_tag_args \
+              ./docker/php/
+          fi
+        name: Build docker image
+        no_output_timeout: 10m
+    - run:
+        command: |
+          IFS="," read -ra DOCKER_TAGS <<< "${CIRCLE_SHA1}"
+          for tag in "${DOCKER_TAGS[@]}"; do
+            docker push $AWS_ACCOUNT_URL/portfolio_nginx:${tag}
+          done
+        name: Push image to Amazon ECR
 workflows:
   push-branch-workflow:
     jobs:
     - backend_test
+    - build_and_push_image_backend_nginx
   version: 2
 
 # Original config.yml file:
 # version: 2.1
 # 
+# orbs:
+#   aws-ecr: circleci/aws-ecr@6.12.2
+#   # aws-ecs: circleci/aws-ecs@1.3.0
+# 
 # executors:
-#   deploy:
+#   backend_test:
 #     docker:
 #       - image: cimg/php:8.0.13
-#         # environment:
-#         #   APP_ENV: testing
-#         #   DB_CONNECTION: mysql
-#         #   DB_HOST: 127.0.0.1
-#         #   DB_DATABASE: testing
-#         #   DB_USERNAME: 'root'
-#         #   DB_PASSWORD: ''
-#       # - image: circleci/mysql:8
-#       #   environment:
-#       #     MYSQL_DATABASE: testing
-#       #     MYSQL_ROOT_HOST: '%'
-#       #     MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
-#       #     TZ: Asia/Tokyo
 # 
 #     working_directory: ~/repo
 # 
@@ -86,16 +282,31 @@ workflows:
 # 
 # jobs:
 #   backend_test:
-#     executor: deploy
+#     executor: backend_test
 #     steps:
 #       # - checkout
 #       - backend_test
+#   build_and_push_image_backend_nginx:
+#     machine:
+#       image: ubuntu-2004:202201-02
+#     resource_class: arm.medium
+#     steps:
+#       - checkout
+#       - aws-ecr/build-and-push-image:
+#           account-url: AWS_ACCOUNT_URL
+#           repo: \"portfolio_nginx\"
+#           region: AWS_REGION
+#           dockerfile: Dockerfile.prod
+#           tag: \"${CIRCLE_SHA1}\"
+#           path: ./docker/php/
 # 
 # workflows:
 #   push-branch-workflow:
 #     jobs:
 #       - backend_test:
 #           name: \"backend_test\"
+#       - build_and_push_image_backend_nginx:
+#           name: \"build_and_push_image_backend_nginx\"
 # # workflows:
 # #   version: 2
 # #   test:
