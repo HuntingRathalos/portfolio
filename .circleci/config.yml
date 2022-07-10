@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   aws-ecr: circleci/aws-ecr@6.12.2
-  # aws-ecs: circleci/aws-ecs@1.3.0
+  aws-ecs: circleci/aws-ecs@1.3.0
   # aws-s3: circleci/aws-s3@3.0.0
 
 executors:
@@ -10,13 +10,6 @@ executors:
     docker:
       - image: cimg/php:8.0.13
     working_directory: ~/repo
-
-  # backend_deploy:
-  #   machine:
-  #     image: ubuntu-2004:202201-02
-  #   resource_class: medium
-  #   environment:
-  #     DOCKER_BUILDKIT: 1
 
   # front_build_and_deploy:
   #   docker:
@@ -101,7 +94,6 @@ jobs:
   #     - front_deploy
 
   build_and_push_image_backend_nginx:
-    # working_directory: ~/repo
     machine:
       image: ubuntu-2004:202201-02
     steps:
@@ -135,41 +127,32 @@ workflows:
     jobs:
       - build_and_push_image_backend_nginx:
           name: "build_and_push_image_backend_nginx"
-      # - aws-ecr/build-and-push-image:
-      #     executor: backend_deploy
-      #     # account-url: AWS_ACCOUNT_URL
-      #     repo: "${REPOSITORY_NGINX}"
-      #     region: AWS_REGION
-      #     # setup-remote-docker: true
-      #     dockerfile: Dockerfile.prod
-      #     tag: "${CIRCLE_SHA1}"
-      #     path: ./docker/nginx/
       - build_and_push_image_backend_php:
           name: "build_and_push_image_backend_php"
       # - front_build:
       # - front_deploy:
-      # - aws-ecs/deploy-service-update:
-      #     requires:
-      #       - build_and_push_image_backend_nginx
-      #       - build_and_push_image_backend_php
-      #     family: "portfolio_task"
-      #     service-name: "portfolio"
-      #     cluster-name: "portfolio-cluster"
-      #     container-image-name-updates: "container=portfolio_nginx,tag=${CIRCLE_SHA1}"
-      #     filters:
-      #       branches:
-      #         only: main
-      # - aws-ecs/deploy-service-update:
-      #     requires:
-      #       - build_and_push_image_backend_nginx
-      #       - build_and_push_image_backend_php
-      #     family: "portfolio_task"
-      #     service-name: "portfolio"
-      #     cluster-name: "portfolio-cluster"
-      #     container-image-name-updates: "container=portfolio_php,tag=${CIRCLE_SHA1}"
-      #     filters:
-      #       branches:
-      #         only: main
+      - aws-ecs/deploy-service-update:
+          requires:
+            - build_and_push_image_backend_nginx
+            - build_and_push_image_backend_php
+          family: "portfolio_task"
+          service-name: "portfolio"
+          cluster-name: "portfolio-cluster"
+          container-image-name-updates: "container=portfolio_nginx,tag=${CIRCLE_SHA1}"
+          # filters:
+          #   branches:
+          #     only: main
+      - aws-ecs/deploy-service-update:
+          requires:
+            - build_and_push_image_backend_nginx
+            - build_and_push_image_backend_php
+          family: "portfolio_task"
+          service-name: "portfolio"
+          cluster-name: "portfolio-cluster"
+          container-image-name-updates: "container=portfolio_php,tag=${CIRCLE_SHA1}"
+          # filters:
+          #   branches:
+          #     only: main
 
 
 
