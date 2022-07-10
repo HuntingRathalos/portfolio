@@ -126,6 +126,8 @@ workflows:
       - front_build:
           name: "front_build"
       - front_deploy:
+          requires:
+            - front_build
           name: "front_deploy"
   # deploy:
   #   jobs:
