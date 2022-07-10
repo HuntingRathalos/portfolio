@@ -79,10 +79,6 @@ commands:
           to: $BUCKET_URL
 
 jobs:
-  backend_test:
-    executor: backend_test
-    steps:
-      - backend_test
   front_build:
     executor: front_build_and_deploy
     steps:
@@ -91,71 +87,89 @@ jobs:
     executor: front_build_and_deploy
     steps:
       - front_deploy
+  backend_test:
+    executor: backend_test
+    steps:
+      - backend_test
+  build_and_push_image_backend_nginx:
+    machine:
+      image: ubuntu-2004:202201-02
+    steps:
+      - checkout
+      - aws-ecr/build-and-push-image:
+          account-url: AWS_ACCOUNT_URL
+          repo: "${REPOSITORY_NGINX}"
+          region: AWS_REGION
+          dockerfile: ./docker/nginx/Dockerfile.prod
+          tag: "${CIRCLE_SHA1}"
 
-  # build_and_push_image_backend_nginx:
-  #   machine:
-  #     image: ubuntu-2004:202201-02
-  #   steps:
-  #     - checkout
-  #     - aws-ecr/build-and-push-image:
-  #         account-url: AWS_ACCOUNT_URL
-  #         repo: "${REPOSITORY_NGINX}"
-  #         region: AWS_REGION
-  #         dockerfile: ./docker/nginx/Dockerfile.prod
-  #         tag: "${CIRCLE_SHA1}"
-
-  # build_and_push_image_backend_php:
-  #   machine:
-  #     image: ubuntu-2004:202201-02
-  #   steps:
-  #     - checkout
-  #     - aws-ecr/build-and-push-image:
-  #         account-url: AWS_ACCOUNT_URL
-  #         repo: "${REPOSITORY_PHP}"
-  #         region: AWS_REGION
-  #         dockerfile: ./docker/php/Dockerfile.prod
-  #         tag: "${CIRCLE_SHA1}"
+  build_and_push_image_backend_php:
+    machine:
+      image: ubuntu-2004:202201-02
+    steps:
+      - checkout
+      - aws-ecr/build-and-push-image:
+          account-url: AWS_ACCOUNT_URL
+          repo: "${REPOSITORY_PHP}"
+          region: AWS_REGION
+          dockerfile: ./docker/php/Dockerfile.prod
+          tag: "${CIRCLE_SHA1}"
 
 workflows:
-  backend_test:
-    jobs:
-      - backend_test:
-          name: "backend_test"
   front_build_and_deploy:
     jobs:
       - front_build:
           name: "front_build"
+          filters:
+            branches:
+              only: main
       - front_deploy:
           requires:
             - front_build
           name: "front_deploy"
-  # deploy:
-  #   jobs:
-  #     - build_and_push_image_backend_nginx:
-  #         name: "build_and_push_image_backend_nginx"
-  #     - build_and_push_image_backend_php:
-  #         name: "build_and_push_image_backend_php"
-  #     # - front_build:
-  #     # - front_deploy:
-  #     - aws-ecs/deploy-service-update:
-  #         requires:
-  #           - build_and_push_image_backend_nginx
-  #           - build_and_push_image_backend_php
-  #         family: "portfolio_task"
-  #         service-name: "portfolio"
-  #         cluster-name: "portfolio-cluster"
-  #         container-image-name-updates: "container=portfolio_nginx,tag=${CIRCLE_SHA1}"
-  #         # filters:
-  #         #   branches:
-  #         #     only: main
-  #     - aws-ecs/deploy-service-update:
-  #         requires:
-  #           - build_and_push_image_backend_nginx
-  #           - build_and_push_image_backend_php
-  #         family: "portfolio_task"
-  #         service-name: "portfolio"
-  #         cluster-name: "portfolio-cluster"
-  #         container-image-name-updates: "container=portfolio_php,tag=${CIRCLE_SHA1}"
-  #         # filters:
-  #         #   branches:
-  #         #     only: main
+          filters:
+            branches:
+              only: main
+  deploy:
+    jobs:
+      - backend_test:
+          name: "backend_test"
+          filters:
+            branches:
+              only: main
+      - build_and_push_image_backend_nginx:
+          name: "build_and_push_image_backend_nginx"
+          requires:
+            - backend_test
+          filters:
+            branches:
+              only: main
+      - build_and_push_image_backend_php:
+          name: "build_and_push_image_backend_php"
+          requires:
+            - backend_test
+          filters:
+            branches:
+              only: main
+      - aws-ecs/deploy-service-update:
+          requires:
+            - build_and_push_image_backend_nginx
+            - build_and_push_image_backend_php
+          family: "portfolio_task"
+          service-name: "portfolio"
+          cluster-name: "portfolio-cluster"
+          container-image-name-updates: "container=portfolio_nginx,tag=${CIRCLE_SHA1}"
+          filters:
+            branches:
+              only: main
+      - aws-ecs/deploy-service-update:
+          requires:
+            - build_and_push_image_backend_nginx
+            - build_and_push_image_backend_php
+          family: "portfolio_task"
+          service-name: "portfolio"
+          cluster-name: "portfolio-cluster"
+          container-image-name-updates: "container=portfolio_php,tag=${CIRCLE_SHA1}"
+          filters:
+            branches:
+              only: main
