@@ -27,9 +27,7 @@ jobs:
   build_and_push_image_backend_nginx:
     machine:
       image: ubuntu-2004:202201-02
-    resource_class: arm.medium
     steps:
-    - checkout
     - checkout
     - run:
         command: |
@@ -200,37 +198,39 @@ jobs:
           number_of_tags_in_ecr=0
 
           docker_tag_args=""
-          IFS="," read -ra DOCKER_TAGS <<< "${CIRCLE_SHA1}"
+          IFS="," read -ra DOCKER_TAGS <<< "latest"
           for tag in "${DOCKER_TAGS[@]}"; do
             if [ "false" = "true" ]; then
-              docker_tag_exists_in_ecr=$(aws ecr describe-images --registry-id $registry_id --repository-name portfolio_nginx --query "contains(imageDetails[].imageTags[], '$tag')")
+              docker_tag_exists_in_ecr=$(aws ecr describe-images --registry-id $registry_id --repository-name REPOSITORY_NGINX --query "contains(imageDetails[].imageTags[], '$tag')")
               if [ "$docker_tag_exists_in_ecr" = "true" ]; then
-                docker pull $AWS_ACCOUNT_URL/portfolio_nginx:${tag}
+                docker pull $AWS_ACCOUNT_URL/REPOSITORY_NGINX:${tag}
                 let "number_of_tags_in_ecr+=1"
               fi
             fi
-            docker_tag_args="$docker_tag_args -t $AWS_ACCOUNT_URL/portfolio_nginx:$tag"
+            docker_tag_args="$docker_tag_args -t $AWS_ACCOUNT_URL/REPOSITORY_NGINX:$tag"
           done
           if [ "false" = "false" ] || [ "false" = "true" -a $number_of_tags_in_ecr -lt ${#DOCKER_TAGS[@]} ]; then
             docker build \
                \
-              -f ./docker/php//Dockerfile.prod \
+              -f ./docker/nginx//Dockerfile.prod \
               $docker_tag_args \
-              ./docker/php/
+              ./docker/nginx/
           fi
         name: Build docker image
         no_output_timeout: 10m
     - run:
         command: |
-          IFS="," read -ra DOCKER_TAGS <<< "${CIRCLE_SHA1}"
+          IFS="," read -ra DOCKER_TAGS <<< "latest"
           for tag in "${DOCKER_TAGS[@]}"; do
-            docker push $AWS_ACCOUNT_URL/portfolio_nginx:${tag}
+            docker push $AWS_ACCOUNT_URL/REPOSITORY_NGINX:${tag}
           done
         name: Push image to Amazon ECR
 workflows:
   push-branch-workflow:
     jobs:
     - backend_test
+  deploy:
+    jobs:
     - build_and_push_image_backend_nginx
   version: 2
 
@@ -240,13 +240,23 @@ workflows:
 # orbs:
 #   aws-ecr: circleci/aws-ecr@6.12.2
 #   # aws-ecs: circleci/aws-ecs@1.3.0
+#   # aws-s3: circleci/aws-s3@3.0.0
 # 
 # executors:
 #   backend_test:
 #     docker:
 #       - image: cimg/php:8.0.13
 # 
+#       # jobs\u306B\u66F8\u3044\u3066\u3082\u3044\u3044\u304B\u3082
 #     working_directory: ~/repo
+# 
+#   # front_build_and_deploy:
+#   #   docker:
+#   #     - image: circleci/node:14
+#   #     - image: circleci/python:3.6-jessie
+# 
+#   #     # jobs\u306B\u66F8\u3044\u3066\u3082\u3044\u3044\u304B\u3082
+#   #   working_directory: ~/repo
 # 
 # commands:
 #   backend_test:
@@ -269,35 +279,83 @@ workflows:
 #             - ~/repo/api/vendor
 #           working_directory: ~/repo/api
 # 
-#       # Database setup
-#       # - run:
-#       #     command: php artisan migrate --force
-#       #     working_directory: ~/repo/api
-# 
-#       # run tests
 #       - run:
 #           name: php test
 #           command: vendor/bin/phpunit
 #           working_directory: ~/repo/api
 # 
+#   # front_build:
+#   #   steps:
+#   #     - checkout
+# 
+#   #     - restore_cache:
+#   #         keys:
+#   #           - dependencies-v1-{{ checksum \"~/repo/front/package.json\" }}
+#   #           - dependencies-v1-
+#   #         working_directory: ~/repo/front
+#   #     - run:
+#   #         name: install-packages
+#   #         command: npm install
+#   #         working_directory: ~/repo/front
+#   #     - save_cache:
+#   #         key: dependencies-v1-{{ checksum \"~/repo/front/package.json\" }}
+#   #         paths:
+#   #           - ~/repo/front/node_modules
+#   #         working_directory: ~/repo/front
+#   #     - run:
+#   #         name: Build Step
+#   #         command: npm run generate-prod
+#   #         working_directory: ~/repo/front
+#   #     - persist_to_workspace:
+#   #         root: ~/repo/front
+#   #         paths:
+#   #           - dist
+# 
+#   # front_deploy:
+#   #   steps:
+#   #     - attach_workspace:
+#   #         at: ~/repo/front
+#   #     - aws-s3/sync:
+#   #         from: ./dist
+#   #         to: $BUCKET_URL
+# 
 # jobs:
 #   backend_test:
 #     executor: backend_test
 #     steps:
-#       # - checkout
 #       - backend_test
+#   # front_build:
+#   #   executor: front_build_and_deploy
+#   #   steps:
+#   #     - front_build
+#   # front_deploy:
+#   #   executor: front_build_and_deploy
+#   #   steps:
+#   #     - front_deploy
+# 
 #   build_and_push_image_backend_nginx:
 #     machine:
 #       image: ubuntu-2004:202201-02
-#     resource_class: arm.medium
+#     steps:
+#       # - checkout
+#       - aws-ecr/build-and-push-image:
+#           account-url: AWS_ACCOUNT_URL
+#           repo: REPOSITORY_NGINX
+#           region: AWS_REGION
+#           dockerfile: Dockerfile.prod
+#           # tag: \"${CIRCLE_SHA1}\"
+#           path: ./docker/nginx/
+#   build_and_push_image_backend_php:
+#     machine:
+#       image: ubuntu-2004:202201-02
 #     steps:
 #       - checkout
 #       - aws-ecr/build-and-push-image:
 #           account-url: AWS_ACCOUNT_URL
-#           repo: \"portfolio_nginx\"
+#           repo: REPOSITORY_PHP
 #           region: AWS_REGION
 #           dockerfile: Dockerfile.prod
-#           tag: \"${CIRCLE_SHA1}\"
+#           # tag: \"${CIRCLE_SHA1}\"
 #           path: ./docker/php/
 # 
 # workflows:
@@ -305,8 +363,38 @@ workflows:
 #     jobs:
 #       - backend_test:
 #           name: \"backend_test\"
+#   deploy:
+#     jobs:
 #       - build_and_push_image_backend_nginx:
 #           name: \"build_and_push_image_backend_nginx\"
+#       # - build_and_push_image_backend_php:
+#       # - front_build:
+#       # - front_deploy:
+#       # - aws-ecs/deploy-service-update:
+#       #     requires:
+#       #       - build_and_push_image_backend_nginx
+#       #       - build_and_push_image_backend_php
+#       #     family: \"portfolio_task\"
+#       #     service-name: \"portfolio\"
+#       #     cluster-name: \"portfolio-cluster\"
+#       #     container-image-name-updates: \"container=portfolio_nginx,tag=${CIRCLE_SHA1}\"
+#       #     filters:
+#       #       branches:
+#       #         only: main
+#       # - aws-ecs/deploy-service-update:
+#       #     requires:
+#       #       - build_and_push_image_backend_nginx
+#       #       - build_and_push_image_backend_php
+#       #     family: \"portfolio_task\"
+#       #     service-name: \"portfolio\"
+#       #     cluster-name: \"portfolio-cluster\"
+#       #     container-image-name-updates: \"container=portfolio_php,tag=${CIRCLE_SHA1}\"
+#       #     filters:
+#       #       branches:
+#       #         only: main
+# 
+# 
+# 
 # # workflows:
 # #   version: 2
 # #   test:
