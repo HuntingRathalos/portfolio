@@ -36,10 +36,14 @@ export default {
     })
   },
   created() {
-    this.$notificationApi.get()
+    this.$notificationApi.get().then((res) => {
+      console.log(res)
+      this.get(res.data)
+    })
   },
   methods: {
     ...mapActions({
+      get: 'notification/get',
       delete: 'notification/delete',
       setOpenAlertModal: 'modal/setOpenAlertModal'
     }),
@@ -55,7 +59,7 @@ export default {
           this.setOpenAlertModal(false)
           this.$toast.success('通知を削除しました。')
         })
-        .catch(() => this.$toast.error('既読をつけられませんでした。'))
+        .catch(() => this.$toast.error('通知の削除に失敗しました。'))
     }
   }
 }

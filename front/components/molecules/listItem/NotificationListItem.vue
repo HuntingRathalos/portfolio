@@ -41,14 +41,15 @@ export default {
     }
   },
   created() {
+    // まだわかんない
     if (this.notification.readAt) {
       this.isChecked = true
     }
   },
   methods: {
     ...mapActions({
-      check: 'notification/check',
-      uncheck: 'notification/uncheck'
+      check: 'notification/check'
+      // uncheck: 'notification/uncheck'
     }),
     checkOrUncheck() {
       if (this.$guestJudge()) {
