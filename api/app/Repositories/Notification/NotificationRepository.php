@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Repositories\Notification;
+
+class NotificationRepository implements NotificationRepositoryInterface
+{
+  private $model;
+
+  /**
+   * @param Notification $notification
+   */
+  public function __construct(Notification $notification)
+  {
+      $this->model = $notification;
+  }
+
+  /**
+   * 通知の削除
+   *
+   * @param int $notificationId
+   * @return void
+   */
+  public function deleteNotification(int $notificationId): void
+  {
+      $this->model->destroy($notificationId);
+  }
+}
