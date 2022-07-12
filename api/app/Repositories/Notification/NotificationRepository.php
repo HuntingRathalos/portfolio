@@ -15,6 +15,20 @@ class NotificationRepository implements NotificationRepositoryInterface
   }
 
   /**
+   * 通知に既読をつける
+   *
+   * @return int $notificationId
+   */
+  public function readNotification(int $notificationId)
+  {
+      $notification = $this->model->findOrFail($notificationId);
+      $notification->markAsRead();
+      
+      Log::debug($notification);
+      return $notification
+  }
+
+  /**
    * 通知の削除
    *
    * @param int $notificationId
