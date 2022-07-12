@@ -3,7 +3,6 @@ import colors from 'vuetify/es5/util/colors'
 const deploymentEnv = process.env.NODE_ENV || 'development'
 const environment = require(`./env.${deploymentEnv}.js`)
 
-
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -38,6 +37,7 @@ export default {
     '~/plugins/axios/modules/user',
     '~/plugins/axios/modules/news',
     '~/plugins/axios/modules/post',
+    '~/plugins/axios/modules/notification',
     '~/plugins/error-handler',
     '~/plugins/guest-alert',
     '~/plugins/guest-judge',
@@ -96,7 +96,7 @@ export default {
           user: { url: '/api/user', method: 'get', propertyName: false }
         },
         provider: 'laravel/sanctum',
-        url: `${environment.API_URL}`,
+        url: `${environment.API_URL}`
       }
     }
   },
@@ -105,7 +105,7 @@ export default {
   },
   proxy: {
     '/api': {
-      target: `${environment.API_URL}`,
+      target: `${environment.API_URL}`
     }
   },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
