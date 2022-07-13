@@ -17,11 +17,16 @@ export const mutations = {
       (notifications) => notifications.id !== payload
     )
   },
-  check(state) {
-    ++state.unreadNum
+  check(state, payload) {
+    --state.unreadNum
+    const notification = state.notifications.find(
+      (notification) => notification.id === payload.id
+    )
+    Object.assign(notification, payload)
+      // notification.read_at = false
   }
   // uncheck(state) {
-  //   --state.unreadNum
+  //   ++state.unreadNum
   // }
 }
 

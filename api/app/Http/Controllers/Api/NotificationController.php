@@ -59,13 +59,13 @@ class NotificationController extends Controller
     //     return $this->notificationService->unreadNotification();
     // }
 
-    /**
-     *通知を削除する
-     *
-     * @return void
-     */
-    public function delete(int $notificationId)
-    {
-        return $this->notificationService->deleteNotification($notificationId);
-    }
+    // /**
+    //  *通知を削除する
+    //  *
+    //  * @return void
+    //  */
+    // public function delete(int $notificationId)
+    // {
+    //     return $this->notificationService->deleteNotification($notificationId);
+    // }
 }

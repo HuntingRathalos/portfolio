@@ -28,7 +28,8 @@ class NotificationService implements NotificationServiceInterface
      */
     public function getNotifications(): JsonResponse
     {
-      return response()->json(Auth::user()->notifications, Response::HTTP_OK);
+      $notifications = $this->notificationRepository->getNotifications();
+      return response()->json($notifications, Response::HTTP_OK);
     }
 
     /**
@@ -58,15 +59,15 @@ class NotificationService implements NotificationServiceInterface
     //   return response()->json($notification, Response::HTTP_OK);
     // }
 
-    /**
-     * 通知を削除する
-     *
-     * @param integer $notificationId
-     * @return JsonResponse
-     */
-    public function deleteNotification(int $notificationId): JsonResponse
-    {
-      return $this->notificationRepository->deleteNotification();
-      return response()->json(null, Response::HTTP_NO_CONTENT);
-    }
+    // /**
+    //  * 通知を削除する
+    //  *
+    //  * @param integer $notificationId
+    //  * @return JsonResponse
+    //  */
+    // public function deleteNotification(int $notificationId): JsonResponse
+    // {
+    //   return $this->notificationRepository->deleteNotification();
+    //   return response()->json(null, Response::HTTP_NO_CONTENT);
+    // }
 }

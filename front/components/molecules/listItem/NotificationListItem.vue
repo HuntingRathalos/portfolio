@@ -11,7 +11,7 @@
 
     <v-list-item-content>
       <v-list-item-title
-        v-text="notification.data.createdAt"
+        v-text="notification.read_at"
       ></v-list-item-title>
 
       <v-list-item-subtitle>{{
@@ -42,7 +42,7 @@ export default {
   },
   created() {
     // まだわかんない
-    if (this.notification.readAt) {
+    if (this.notification.read_at) {
       this.isChecked = true
     }
   },
@@ -59,8 +59,9 @@ export default {
       if (this.isChecked === false) {
         this.$notificationApi
           .check(this.notification.id)
-          .then(() => {
-            this.check()
+          .then((res) => {
+            console.log(res)
+            this.check(res.data)
             this.$toast.success('既読をつけました。')
           })
           .catch(() => this.$toast.error('既読をつけられませんでした。'))
