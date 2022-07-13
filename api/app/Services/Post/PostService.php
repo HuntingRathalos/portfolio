@@ -7,6 +7,7 @@ use App\Repositories\Post\PostRepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\PostLikedNotification;
 use Illuminate\Support\Facades\Log;
 
 class PostService implements PostServiceInterface
@@ -128,7 +129,13 @@ class PostService implements PostServiceInterface
     {
       $this->postRepository->likePost($postId);
 
-      $post = $this->postRepository->getPostById($postId);
+      // 投稿をお気に入りされたことを通知
+      $post = $this->postRepository->getPostById();
+      $likedUser = $post->user;
+      $likedUser->notify(new PostLikedNotification(Auth::user()));
+
+    //   $post = $this->postRepository->getPostById($postId);
+      Log::debug($post);
       $processPost = $this->processPost($post);
 
       return response()->json($processPost, Response::HTTP_CREATED);

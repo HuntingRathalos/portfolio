@@ -12,8 +12,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
-
+use App\Notifications\FollowedNotification;
+use Database\Factories\FollowFactory;
 
 class UserService implements UserServiceInterface
 {
@@ -114,6 +114,9 @@ class UserService implements UserServiceInterface
 
     // ログインユーザーがあるユーザーを重ねてフォローできないようにするため削除後に登録
     $this->userRepository->follow($followUser);
+
+    // フォローされたことを通知
+    $followUser->notify(new FollowedNotification(Auth::user()));
 
     $target = $this->targetRepository->getTarget();
     $saves = $this->saveRepository->getAllSaves();
