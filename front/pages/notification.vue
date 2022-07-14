@@ -15,17 +15,17 @@
           />
         </div>
         <div v-else style="max-width: 500px" class="mx-auto">
-            <v-card flat>
-              <v-img
-                class="mx-auto"
-                :src="require('@/assets/No data-rafiki.svg')"
-                max-height="350"
-                max-width="400"
-              >
-              </v-img>
-              <p class="text-center">通知はまだありません。</p>
-            </v-card>
-          </div>
+          <v-card flat>
+            <v-img
+              class="mx-auto"
+              :src="require('@/assets/No data-rafiki.svg')"
+              max-height="350"
+              max-width="400"
+            >
+            </v-img>
+            <p class="text-center">通知はまだありません。</p>
+          </v-card>
+        </div>
       </v-list>
     </v-card>
   </v-container>
@@ -35,7 +35,7 @@ import { mapGetters, mapActions } from 'vuex'
 import NotificationListItem from '../components/molecules/listItem/NotificationListItem.vue'
 export default {
   name: 'NotificationPage',
-  components: { NotificationListItem},
+  components: { NotificationListItem },
   data() {
     return {
       notificationDeleteId: null
@@ -53,8 +53,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      get: 'notification/get',
-    }),
+      get: 'notification/get'
+    })
   }
 }
 </script>

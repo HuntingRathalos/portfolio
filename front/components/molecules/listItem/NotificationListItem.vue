@@ -1,7 +1,5 @@
 <template>
-  <v-list-item
-      dense>
-
+  <v-list-item dense>
     <v-list-item-content>
       <v-list-item-subtitle>{{
         notification.data.content
@@ -10,7 +8,7 @@
 
     <v-list-item-action v-if="activeFlag">
       <div class="ml-auto">
-        <v-btn icon text small color="orange" >
+        <v-btn icon text small color="orange">
           <v-icon> mdi-checkbox-marked </v-icon>
         </v-btn>
       </div>
@@ -22,7 +20,6 @@
         </v-btn>
       </div>
     </v-list-item-action>
-
   </v-list-item>
 </template>
 <script>

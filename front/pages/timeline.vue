@@ -54,7 +54,7 @@
               />
             </div>
             <div v-else style="max-width: 820px" class="mx-auto">
-              <v-card flat color="grey lighten-3">
+              <v-card flat>
                 <v-img
                   class="mx-auto"
                   :src="require('@/assets/Writer block-rafiki.svg')"
