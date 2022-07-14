@@ -32,10 +32,10 @@ class NotificationController extends Controller
     /**
      *既読履歴をつける
      *
-     * @param int $notificationId
+     * @param string $notificationId
      * @return void
      */
-    public function read(int $notificationId)
+    public function read(string $notificationId)
     {
         return $this->notificationService->readNotification($notificationId);
     }

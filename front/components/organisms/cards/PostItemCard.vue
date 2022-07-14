@@ -114,6 +114,7 @@ export default {
   created() {
     if (this.likePostsId.length !== 0) {
       const judge = this.likePostsId.indexOf(this.post.id)
+      console.log(judge)
       if (judge !== -1) {
         this.active = true
       }

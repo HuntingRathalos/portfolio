@@ -8,13 +8,27 @@
             あなた宛に届いた通知
           </v-toolbar-title>
         </v-toolbar>
-        <div class="list overflow-y-auto"></div>
-        <notification-list-item
-          v-for="notification in notifications"
-          :key="notification.id"
-          :notification="notification"
-          @deleteNotification="openAlertModal(notification.id)"
-        />
+        <div v-if="notifications.length !== 0">
+          <notification-list-item
+
+            v-for="notification in notifications"
+            :key="notification.id"
+            :notification="notification"
+            @deleteNotification="openAlertModal(notification.id)"
+          />
+        </div>
+        <div v-else style="max-width: 500px" class="mx-auto">
+            <v-card flat>
+              <v-img
+                class="mx-auto"
+                :src="require('@/assets/No data-rafiki.svg')"
+                max-height="350"
+                max-width="400"
+              >
+              </v-img>
+              <p class="text-center">通知はまだありません。</p>
+            </v-card>
+          </div>
       </v-list>
     </v-card>
   </v-container>
@@ -22,9 +36,10 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import NotificationListItem from '../components/molecules/listItem/NotificationListItem.vue'
+import AlertDialog from '../components/organisms/modals/AlertDialog.vue'
 export default {
   name: 'NotificationPage',
-  components: { NotificationListItem },
+  components: { NotificationListItem, AlertDialog },
   data() {
     return {
       notificationDeleteId: null

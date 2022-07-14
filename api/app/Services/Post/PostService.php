@@ -130,7 +130,7 @@ class PostService implements PostServiceInterface
       $this->postRepository->likePost($postId);
 
       // 投稿をお気に入りされたことを通知
-      $post = $this->postRepository->getPostById();
+      $post = $this->postRepository->getPostById($postId);
       $likedUser = $post->user;
       $likedUser->notify(new PostLikedNotification(Auth::user()));
 

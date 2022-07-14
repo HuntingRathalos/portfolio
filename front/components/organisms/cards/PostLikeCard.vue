@@ -13,6 +13,7 @@
           <v-row justify="center">
             <v-rating
               background-color="orange lighten-3"
+              readonly
               color="orange"
               large
               length="5"

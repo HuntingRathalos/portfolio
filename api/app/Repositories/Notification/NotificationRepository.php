@@ -3,36 +3,47 @@
 namespace App\Repositories\Notification;
 
 use Illuminate\Database\Eloquent\Collection;
+// use App\Models\Notification;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+
 
 class NotificationRepository implements NotificationRepositoryInterface
 {
-  private $model;
+  // private $model;
 
-  /**
-   * @param DatabaseNotification $notification
-   */
-  public function __construct(DatabaseNotification $notification)
-  {
-      $this->model = $notification;
-  }
+  // /**
+  //  * @param Notification $notification
+  //  */
+  // public function __construct(Notification $notification)
+  // {
+  //     $this->model = $notification;
+  // }
 
   public function getNotifications(): Collection
   {
-    return Auth::user()->notifications;
+    return Auth::user()->unreadNotifications;
   }
   /**
    * 通知に既読をつける
    *
-   * @param int $notificationId
-   * @return DatabaseNotification $notification
+   * @param string $notificationId
+   * @return void
    */
-  public function readNotification(int $notificationId)
+  public function readNotification(string $notificationId): void
   {
-      $notification = $this->model->findOrFail($notificationId);
-      $notification->markAsRead();
-      return $notification;
+    $unreadNotification = Auth::user()
+                            ->unreadNotifications
+                            ->where('id', $notificationId)
+                            ->first();
+
+    if($unreadNotification) {
+        $unreadNotification->markAsRead();
+    }
+      // $notification = $this->model->findOrFail($notificationId);
+      Log::debug($unreadNotification);
+      // $notification->markAsRead();
   }
 
   // /**

@@ -35,14 +35,14 @@ class NotificationService implements NotificationServiceInterface
     /**
      *通知に既読をつける
      *
-     * @param int $notificationId
+     * @param string $notificationId
      * @return JsonResponse
      */
-    public function readNotification(int $notificationId): JsonResponse
+    public function readNotification(string $notificationId): JsonResponse
     {
-      $notification = $this->notificationRepository->readNotification($notificationId);
+      $this->notificationRepository->readNotification($notificationId);
 
-      return response()->json($notification, Response::HTTP_OK);
+      return response()->json(null, Response::HTTP_OK);
     }
     // /**
     //  *通知に既読をつける
