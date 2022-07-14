@@ -37,9 +37,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions({
-      check: 'notification/check'
-    }),
     checkNotification() {
       if (this.$guestJudge()) {
         this.$guestAlert()
@@ -49,7 +46,6 @@ export default {
         .check(this.notification.id)
         .then(() => {
           this.activeFlag = true
-          this.check()
           this.$toast.success('既読をつけました。')
         })
         .catch(() => this.$toast.error('既読をつけられませんでした。'))

@@ -1,27 +1,19 @@
 export const state = () => ({
-  notifications: [],
-  unreadNum: 0
+  notifications: []
 })
 
 export const getters = {
-  notifications: (state) => state.notifications,
-  unreadNum: (state) => state.unreadNum
+  notifications: (state) => state.notifications
 }
 
 export const mutations = {
   get(state, payload) {
     state.notifications = payload
-  },
-  check(state) {
-    --state.unreadNum
   }
 }
 
 export const actions = {
   get({ commit }, payload) {
     commit('get', payload)
-  },
-  check({ commit }) {
-    commit('check')
   }
 }
