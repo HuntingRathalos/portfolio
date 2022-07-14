@@ -12,16 +12,7 @@ class NotificationApi {
     return await this.axios.get('api/notifications')
   }
 
-  async delete(id) {
-    return await this.axios.delete(`api/notifications/${id}`)
-  }
-
   async check(id) {
     return await this.axios.patch(`api/notifications/${id}`)
   }
-
-  // dbから消すのではなくread_atを変更するだけ
-  // async uncheck(id) {
-  //   return await this.axios.patch(`api/notification/check/${id}`)
-  // }
 }

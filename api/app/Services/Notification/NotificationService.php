@@ -44,30 +44,4 @@ class NotificationService implements NotificationServiceInterface
 
       return response()->json(null, Response::HTTP_OK);
     }
-    // /**
-    //  *通知に既読をつける
-    //  *
-    //  * @param DatabaseNotification $notification
-    //  * @return JsonResponse
-    //  */
-    // public function readNotification(DatabaseNotification $notification): JsonResponse
-    // {
-    //   $notification->markAsRead();
-
-    //   Log::debug($notification);
-
-    //   return response()->json($notification, Response::HTTP_OK);
-    // }
-
-    // /**
-    //  * 通知を削除する
-    //  *
-    //  * @param integer $notificationId
-    //  * @return JsonResponse
-    //  */
-    // public function deleteNotification(int $notificationId): JsonResponse
-    // {
-    //   return $this->notificationRepository->deleteNotification();
-    //   return response()->json(null, Response::HTTP_NO_CONTENT);
-    // }
 }

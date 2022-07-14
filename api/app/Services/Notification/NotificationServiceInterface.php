@@ -9,5 +9,4 @@ interface NotificationServiceInterface
 {
     public function getNotifications(): JsonResponse;
     public function readNotification(string $notificationId): JsonResponse;
-    // public function deleteNotification(int $notificationId): JsonResponse;
 }
