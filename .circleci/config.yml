@@ -21,7 +21,6 @@ commands:
   backend_test:
     steps:
       - checkout
-
       - restore_cache:
           keys:
             - composer-v1-{{ checksum "~/repo/api/composer.lock" }}
