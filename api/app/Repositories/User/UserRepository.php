@@ -37,7 +37,9 @@ class UserRepository implements UserRepositoryInterface
    */
   public function getFollowUsers(): Collection
   {
-    return Auth::user()->followings;
+    // return Auth::user()->followings;
+    $followUsers = Auth::user()->followings;
+    return $followUsers->load(['saves', 'target', 'saves.tag']);
   }
 
   /**
@@ -57,7 +59,7 @@ class UserRepository implements UserRepositoryInterface
    */
   public function getUserById(int $userId): User
   {
-    return $this->model->findOrFail($userId);
+    return $this->model::with(['saves', 'target', 'saves.tag'])->findOrFail($userId);
   }
 
   /**

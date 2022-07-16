@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\TargetController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +46,12 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
         Route::get('/follow', [UserController::class, 'getFollowUsers']);
         Route::patch('/follow/{userId}', [UserController::class, 'follow'])->name('users.follow');
         Route::delete('/follow/{userId}', [UserController::class, 'unfollow'])->name('users.unfollow');
+    });
+
+    Route::prefix('notifications')->group(function () {
+        Route::get('/', [NotificationController::class, 'index']);
+        Route::patch('/{notificationId}', [NotificationController::class, 'read']);
+        Route::delete('/{notificationId}', [NotificationController::class, 'delete']);
     });
   });
 

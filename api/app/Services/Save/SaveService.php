@@ -4,9 +4,7 @@ namespace App\Services\Save;
 
 use App\Models\Save;
 use App\Models\Tag;
-use App\Repositories\Icon\IconRepositoryInterface;
 use App\Repositories\Save\SaveRepositoryInterface;
-use App\Repositories\Tag\TagRepositoryInterface;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\JsonResponse;
@@ -17,23 +15,13 @@ use Illuminate\Support\Facades\Log;
 class SaveService implements SaveServiceInterface
 {
     private $saveRepository;
-    private $tagRepository;
-    private $iconRepository;
 
     /**
      * @param SaveRepositoryInterface $saveRepository
-     * @param TagRepositoryInterface $tagRepository
-     * @param IconRepositoryInterface $iconRepository
      */
-    public function __construct(
-        SaveRepositoryInterface $saveRepository,
-        TagRepositoryInterface $tagRepository,
-        IconRepositoryInterface $iconRepository
-     )
+    public function __construct(SaveRepositoryInterface $saveRepository,)
     {
         $this->saveRepository = $saveRepository;
-        $this->tagRepository = $tagRepository;
-        $this->iconRepository = $iconRepository;
     }
 
     /**
@@ -126,6 +114,7 @@ class SaveService implements SaveServiceInterface
     public function getSavesByTagId(): JsonResponse
     {
         $allSaves = $this->saveRepository->getAllSaves();
+
         if(!$allSaves->isEmpty()) {
             // 貯金した記録を取得するので、coin > 0になるように絞り込む
             $filteredSaves = $allSaves->filter(function ($filteredSave) {
@@ -134,13 +123,15 @@ class SaveService implements SaveServiceInterface
             $processedSaves = collect();
             // 取得した記録をtag_idでグループ化
             $savesGroupByTagId = $filteredSaves->groupBy('tag_id');
+
             $savesGroupByTagId->each(function($saves, $key) use($processedSaves){
                 $pluscoin = 0;
                 foreach($saves as $save) {
                     $pluscoin += $save->coin;
                 }
                 // タグの名前を取得
-                $tag = $this->tagRepository->getTagById($key);
+                $firstSave = $saves->shift();
+                $tag = $firstSave->tag;
 
                 $processedSaves->push([
                     'tag_name' => $tag->name,
@@ -164,6 +155,7 @@ class SaveService implements SaveServiceInterface
     public function getSaveRanking(): JsonResponse
     {
         $allSaves = $this->saveRepository->getAllSaves();
+
         if(!$allSaves->isEmpty()) {
             // 貯金した記録を取得するので、coin > 0になるように絞り込む
             $filteredSaves = $allSaves->filter(function ($filteredSave) {
@@ -175,10 +167,10 @@ class SaveService implements SaveServiceInterface
             $savesGroupByTagId->each(function($saves, $key) use($processedSaves){
                 // tag_idでグループ化したコレクションにおける最初の要素のicon_code取得
                 $save = $saves->first();
-                $icon = $this->iconRepository->getIconById($save->icon_id);
+                $icon = $save->icon;
 
                 // タグの名前を取得
-                $tag = $this->tagRepository->getTagById($key);
+                $tag = $save->tag;
 
                 $processedSaves->push([
                     'tag_name' => $tag->name,
@@ -198,7 +190,6 @@ class SaveService implements SaveServiceInterface
         }else {
             return response()->json('', Response::HTTP_OK);
         }
-        return response()->json($sorted, Response::HTTP_OK);
     }
 
     /**

@@ -13,6 +13,7 @@
           <v-row justify="center">
             <v-rating
               background-color="orange lighten-3"
+              readonly
               color="orange"
               large
               length="5"
@@ -52,13 +53,6 @@
       </v-row>
     </v-card-actions>
 
-    <!-- <v-card-actions class="ml-auto">
-      <div class="ml-auto">
-        <v-btn icon text color="grey darken-2">
-          <v-icon> mdi-heart </v-icon>
-        </v-btn>
-      </div>
-    </v-card-actions> -->
     <v-divider></v-divider>
   </v-card>
 </template>

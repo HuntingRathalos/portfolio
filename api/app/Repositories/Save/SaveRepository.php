@@ -37,7 +37,12 @@ class SaveRepository implements SaveRepositoryInterface
    */
   public function getAllSaves(): Collection
   {
-       return User::find(Auth::id())->saves;
+       $saves = Auth::user()->saves;
+       if(!$saves->isEmpty()) {
+         return $saves->load(['tag', 'icon']);
+       }else {
+         return $saves;
+       }
   }
 
   /**

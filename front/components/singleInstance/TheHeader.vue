@@ -94,6 +94,9 @@ export default {
         case 'ユーザーリスト':
           this.$router.push('/users')
           break
+        case '通知':
+          this.$router.push('/notification')
+          break
       }
     }
   }

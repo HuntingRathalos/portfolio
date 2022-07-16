@@ -4,16 +4,14 @@ namespace App\Services\User;
 
 use App\Models\User;
 use App\Repositories\User\UserRepositoryInterface;
-use App\Repositories\Save\SaveRepositoryInterface;
-use App\Repositories\Target\TargetRepositoryInterface;
-use App\Repositories\Tag\TagRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\Notifications\FollowedNotification;
+use Database\Factories\FollowFactory;
 use Illuminate\Support\Facades\Log;
-
 
 class UserService implements UserServiceInterface
 {
@@ -21,27 +19,13 @@ class UserService implements UserServiceInterface
   private const GUEST_USER_ID = 2;
 
   private $userRepository;
-  private $saveRepository;
-  private $targetRepository;
-  private $tagRepository;
 
   /**
    * @param UserRepositoryInterface $userRepository
-   * @param SaveRepositoryInterface $saveRepository
-   * @param TargetRepositoryInterface $targetRepository
-   * @param TagRepositoryInterface $tagRepository
    */
-  public function __construct(
-    UserRepositoryInterface $userRepository,
-    SaveRepositoryInterface $saveRepository,
-    TargetRepositoryInterface $targetRepository,
-    TagRepositoryInterface $tagRepository,
-    )
+  public function __construct(UserRepositoryInterface $userRepository)
   {
     $this->userRepository = $userRepository;
-    $this->saveRepository = $saveRepository;
-    $this->targetRepository = $targetRepository;
-    $this->tagRepository = $tagRepository;
   }
 
   /**
@@ -71,19 +55,18 @@ class UserService implements UserServiceInterface
    */
   public function getFollowUsers(): JsonResponse
   {
-    $user = Auth::user();
     $followUsers = $this->userRepository->getFollowUsers();
+
     $processedUsers = collect();
 
     if($followUsers->isEmpty()) {
       return response()->json($followUsers, Response::HTTP_OK);
     }
 
-    $followUsers = $followUsers->load(['saves', 'target', 'saves.tag']);
 
     $followUsers->each(function ($followUser) use ($processedUsers) {
-      $target = $this->targetRepository->getTarget();
-      $saves = $this->saveRepository->getAllSaves();
+      $target = $followUser->target;
+      $saves = $followUser->saves;
 
       // フォローしたユーザーの貯金記録、または目標設定がない時は'設定されていません'を詰める
       if(!$target || $saves->isEmpty()) {
@@ -91,7 +74,8 @@ class UserService implements UserServiceInterface
         $processedUsers->push($processedUser);
       } else {
         $firstSave = $saves->shift();
-        $tag = $this->tagRepository->getTagById($firstSave->tag_id);
+        $tag = $firstSave->tag;
+
         $processedUser = $this->processUser($followUser->id, $followUser->name, $target->name, $target->amount, $tag->name);
         $processedUsers->push($processedUser);
       }
@@ -115,8 +99,11 @@ class UserService implements UserServiceInterface
     // ログインユーザーがあるユーザーを重ねてフォローできないようにするため削除後に登録
     $this->userRepository->follow($followUser);
 
-    $target = $this->targetRepository->getTarget();
-    $saves = $this->saveRepository->getAllSaves();
+    // フォローされたことを通知
+    $followUser->notify(new FollowedNotification(Auth::user()));
+
+    $target = $followUser->target;
+    $saves = $followUser->saves;
 
     $processedFollowUser = [];
     // フォローしたユーザーの貯金記録、または目標設定がない時は'設定されていません'を詰める
@@ -125,7 +112,8 @@ class UserService implements UserServiceInterface
 
     } else {
       $firstSave = $saves->shift();
-      $tag = $this->tagRepository->getTagById($firstSave->tag_id);
+      $tag = $firstSave->tag;
+
       $processedFollowUser = $this->processUser($followUser->id, $followUser->name, $target->name, $target->amount, $tag->name);
     }
     return response()->json($processedFollowUser, Response::HTTP_CREATED);

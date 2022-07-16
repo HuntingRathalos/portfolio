@@ -8,17 +8,18 @@ use App\Services\Target\TargetServiceInterface;
 use App\Services\User\UserServiceInterface;
 use App\Services\News\NewsServiceInterface;
 use App\Services\Post\PostServiceInterface;
+use App\Services\Notification\NotificationServiceInterface;
 use App\Services\Save\SaveService;
 use App\Services\Target\TargetService;
 use App\Services\User\UserService;
 use App\Services\News\NewsService;
 use App\Services\Post\PostService;
+use App\Services\Notification\NotificationService;
 use App\Repositories\Save\SaveRepositoryInterface;
-use App\Repositories\Tag\TagRepositoryInterface;
 use App\Repositories\Target\TargetRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
-use App\Repositories\Icon\IconRepositoryInterface;
 use App\Repositories\Post\PostRepositoryInterface;
+use App\Repositories\Notification\NotificationRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -39,8 +40,6 @@ class AppServiceProvider extends ServiceProvider
             function ($app) {
                 return new SaveService(
                     $app->make(SaveRepositoryInterface::class),
-                    $app->make(TagRepositoryInterface::class),
-                    $app->make(IconRepositoryInterface::class)
                 );
             });
 
@@ -57,9 +56,6 @@ class AppServiceProvider extends ServiceProvider
             function ($app) {
                 return new UserService(
                     $app->make(UserRepositoryInterface::class),
-                    $app->make(SaveRepositoryInterface::class),
-                    $app->make(TargetRepositoryInterface::class),
-                    $app->make(TagRepositoryInterface::class),
                 );
             });
 
@@ -68,6 +64,14 @@ class AppServiceProvider extends ServiceProvider
             function ($app) {
                 return new PostService(
                     $app->make(PostRepositoryInterface::class),
+                );
+            });
+
+        $this->app->bind(
+            NotificationServiceInterface::class,
+            function ($app) {
+                return new NotificationService(
+                    $app->make(NotificationRepositoryInterface::class),
                 );
             });
 

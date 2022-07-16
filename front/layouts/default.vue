@@ -20,6 +20,10 @@ export default {
     return {
       headerItems: [
         {
+          text: '通知',
+          icon: 'mdi-bell'
+        },
+        {
           text: 'ユーザーリスト',
           icon: 'mdi-format-list-bulleted'
         },
