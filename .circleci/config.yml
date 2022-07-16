@@ -46,6 +46,11 @@ commands:
   front_build:
     steps:
       - checkout
+      - run:
+          name: base64 decode env file
+          command: |
+            cd front/
+            echo $NUXT_ENV_FILE | base64 -di > env.production.js
 
       - restore_cache:
           keys:
@@ -108,6 +113,11 @@ jobs:
       image: ubuntu-2004:202201-02
     steps:
       - checkout
+      - run:
+          name: base64 decode env file
+          command: |
+            cd api/
+            echo $LARAVEL_ENV_FILE | base64 -di > .env.production
       - aws-ecr/build-and-push-image:
           account-url: AWS_ACCOUNT_URL
           repo: "${REPOSITORY_PHP}"
