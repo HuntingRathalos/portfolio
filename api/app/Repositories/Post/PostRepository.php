@@ -37,8 +37,7 @@ class PostRepository implements PostRepositoryInterface
    */
   public function getAllPosts(): Collection
   {
-      //  return User::find(Auth::id())->posts;
-       return $this->model->get();
+       return $this->model::with('user')->get();
   }
 
   /**
@@ -48,7 +47,11 @@ class PostRepository implements PostRepositoryInterface
    */
   public function getLikePosts(): Collection
   {
-      return User::find(Auth::id())->likes;
+      $likePosts = User::find(Auth::id())->likes;
+      if(!$likePosts->isEmpty()) {
+        return $likePosts->load('user');
+      }
+      return $likePosts;
   }
 
   /**

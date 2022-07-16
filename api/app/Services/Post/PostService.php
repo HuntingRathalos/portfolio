@@ -134,8 +134,6 @@ class PostService implements PostServiceInterface
       $likedUser = $post->user;
       $likedUser->notify(new PostLikedNotification(Auth::user()));
 
-    //   $post = $this->postRepository->getPostById($postId);
-      Log::debug($post);
       $processPost = $this->processPost($post);
 
       return response()->json($processPost, Response::HTTP_CREATED);
