@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Requests;
 
-use Tests\TestCase;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\PasswordResetRequest;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Tests\TestCase;
 
 class PasswordResetRequestTest extends TestCase
 {
@@ -14,6 +14,7 @@ class PasswordResetRequestTest extends TestCase
      * @dataProvider validationProvider
      *
      * テストの期待値
+     *
      * @param bool $expected
      *
      * フォームリクエストのモックデータ
@@ -37,25 +38,25 @@ class PasswordResetRequestTest extends TestCase
                 'expected' => true,
                 'data' => [
                     'email' => 'test@test.com',
-                ]
+                ],
             ],
             'email必須エラー' => [
                 'expected' => false,
                 'data' => [
                     'email' => null,
-                ]
+                ],
             ],
             'email形式エラー' => [
                 'expected' => false,
                 'data' => [
                     'email' => 'test@test.',
-                ]
+                ],
             ],
             'email最大文字数エラー' => [
                 'expected' => false,
                 'data' => [
                     'email' => Str::random(256),
-                ]
+                ],
             ],
         ];
     }

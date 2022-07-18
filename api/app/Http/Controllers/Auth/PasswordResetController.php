@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Requests\PasswordResetRequest;
 use Illuminate\Contracts\Auth\PasswordBroker;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
@@ -11,14 +12,14 @@ use Laravel\Fortify\Contracts\FailedPasswordResetLinkRequestResponse;
 use Laravel\Fortify\Contracts\RequestPasswordResetLinkViewResponse;
 use Laravel\Fortify\Contracts\SuccessfulPasswordResetLinkRequestResponse;
 use Laravel\Fortify\Fortify;
-use App\Http\Requests\PasswordResetRequest;
 
 class PasswordResetController extends Controller
 {
     /**
      * Show the reset password link request view.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Laravel\Fortify\Contracts\RequestPasswordResetLinkViewResponse
      */
     public function create(Request $request): RequestPasswordResetLinkViewResponse
@@ -29,7 +30,8 @@ class PasswordResetController extends Controller
     /**
      * Send a reset link to the given user.
      *
-     * @param  \Illuminate\Http\PasswordResetRequest  $request
+     * @param \Illuminate\Http\PasswordResetRequest $request
+     *
      * @return \Illuminate\Contracts\Support\Responsable
      */
     public function store(PasswordResetRequest $request): Responsable
@@ -59,4 +61,3 @@ class PasswordResetController extends Controller
         return Password::broker(config('fortify.passwords'));
     }
 }
-

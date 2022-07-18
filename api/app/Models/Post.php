@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Carbon\Carbon;
 
 class Post extends Model
 {
@@ -21,11 +21,11 @@ class Post extends Model
         'user_id',
         'good_description',
         'bad_description',
-        'self_evaluation'
+        'self_evaluation',
     ];
 
     /**
-     * リレーション - usersテーブル
+     * リレーション - usersテーブル.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -35,7 +35,7 @@ class Post extends Model
     }
 
     /**
-     * リレーション - likesテーブル(usersテーブルとpostsテーブルの中間テーブル)
+     * リレーション - likesテーブル(usersテーブルとpostsテーブルの中間テーブル).
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */

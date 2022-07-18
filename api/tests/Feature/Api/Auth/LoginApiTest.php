@@ -2,10 +2,9 @@
 
 namespace Tests\Feature\Api\Auth;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class LoginApiTest extends TestCase
 {
@@ -18,6 +17,7 @@ class LoginApiTest extends TestCase
         // テストユーザー作成
         $this->user = User::factory()->create();
     }
+
     /**
      * @test
      */
@@ -33,6 +33,5 @@ class LoginApiTest extends TestCase
 
         // 認証されていることを確認
         $this->assertAuthenticatedAs($this->user);
-
     }
 }

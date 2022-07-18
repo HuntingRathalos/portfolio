@@ -3,13 +3,13 @@
 namespace Tests\Unit\Services;
 
 use App\Models\Target;
-use Tests\TestCase;
-use Mockery;
-use App\Repositories\Target\TargetRepositoryInterface;
 use App\Repositories\Target\TargetRepository;
+use App\Repositories\Target\TargetRepositoryInterface;
 use App\Services\Target\TargetService;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\JsonResponse;
+use Mockery;
+use Tests\TestCase;
 
 class TargetServiceTest extends TestCase
 {
@@ -19,42 +19,41 @@ class TargetServiceTest extends TestCase
 
     public function setUp(): void
     {
-      parent::setUp();
+        parent::setUp();
 
-      // 依存しているリポジトリのモック作成
-      $this->targetRepositoryMock = Mockery::mock(TargetRepository::class);
-      $this->app->instance(TargetRepositoryInterface::class, $this->targetRepositoryMock);
+        // 依存しているリポジトリのモック作成
+        $this->targetRepositoryMock = Mockery::mock(TargetRepository::class);
+        $this->app->instance(TargetRepositoryInterface::class, $this->targetRepositoryMock);
 
-      // レスポンスの構造を確認するための配列
-      $this->targetModelKeys = [
-        'user_id',
-        'name',
-        'amount',
-      ];
+        // レスポンスの構造を確認するための配列
+        $this->targetModelKeys = [
+            'user_id',
+            'name',
+            'amount',
+        ];
     }
 
     /**
-     * TargetServiceのcreateTargetメソッドの戻り値の型、構造が正しいかを確認する
-     *
-     * @return void
+     * TargetServiceのcreateTargetメソッドの戻り値の型、構造が正しいかを確認する.
      */
     public function testCreateTarget()
     {
         // モックの引数作成
         $targetDetails = [
-          'user_id' => 1,
-          'name' => '本を買う',
-          'amount' => 30000,
+            'user_id' => 1,
+            'name' => '本を買う',
+            'amount' => 30000,
         ];
         // TargetRepositoryのcreateTargetをモック
         $this->targetRepositoryMock->shouldReceive('createTarget')
-          ->once()
-          ->with(Mockery::on(function($targetDetailsArray) use ($targetDetails) {
+            ->once()
+            ->with(Mockery::on(function ($targetDetailsArray) use ($targetDetails) {
               $this->assertSame($targetDetailsArray, $targetDetails)
                 && is_array($targetDetailsArray);
+
               return true;
           }))
-          ->andReturn(Target::factory()->make());
+            ->andReturn(Target::factory()->make());
 
         // テスト対象のメソッド呼び出し
         $targetService = $this->app->make(TargetService::class);
@@ -67,33 +66,32 @@ class TargetServiceTest extends TestCase
     }
 
     /**
-     * TargetServiceのupdateTargetメソッドの戻り値の型、構造が正しいかを確認する
-     *
-     * @return void
+     * TargetServiceのupdateTargetメソッドの戻り値の型、構造が正しいかを確認する.
      */
     public function testUpdateTarget()
     {
         // モックの引数作成
         $targetId = 1;
         $targetDetails = [
-          'name' => 'ゲームを買う',
+            'name' => 'ゲームを買う',
         ];
 
         // TargetRepositoryのupdateTargetをモック
         $this->targetRepositoryMock->shouldReceive('updateTarget')
-          ->once()
-          ->with($targetId, Mockery::on(function($targetDetailsArray) use ($targetDetails) {
+            ->once()
+            ->with($targetId, Mockery::on(function ($targetDetailsArray) use ($targetDetails) {
               $this->assertSame($targetDetailsArray, $targetDetails)
                 && is_array($targetDetailsArray);
+
               return true;
           }))
-          ->andReturn(true);
+            ->andReturn(true);
 
         // TargetRepositoryのgetTargetByIdをモック
         $this->targetRepositoryMock->shouldReceive('getTargetById')
-          ->once()
-          ->with($targetId)
-          ->andReturn(Target::factory()->make());
+            ->once()
+            ->with($targetId)
+            ->andReturn(Target::factory()->make());
 
         // テスト対象のメソッド呼び出し
         $targetService = $this->app->make(TargetService::class);
@@ -106,9 +104,7 @@ class TargetServiceTest extends TestCase
     }
 
     /**
-     * TargetServiceのdeleteTargetメソッドの戻り値の型、構造が正しいかを確認する
-     *
-     * @return void
+     * TargetServiceのdeleteTargetメソッドの戻り値の型、構造が正しいかを確認する.
      */
     public function testDeleteTarget()
     {
@@ -117,9 +113,9 @@ class TargetServiceTest extends TestCase
 
         // TargetRepositoryのdeleteTargetをモック
         $this->targetRepositoryMock->shouldReceive('deleteTarget')
-          ->once()
-          ->with($targetId)
-          ->andReturnNull();
+            ->once()
+            ->with($targetId)
+            ->andReturnNull();
 
         // テスト対象のメソッド呼び出し
         $targetService = $this->app->make(TargetService::class);
@@ -130,10 +126,9 @@ class TargetServiceTest extends TestCase
     }
 
     /**
-     * JsonResponseインスタンスを受け取り、配列に変換後、構造を確認する
+     * JsonResponseインスタンスを受け取り、配列に変換後、構造を確認する.
      *
      * @param $response
-     * @return void
      */
     public function convertJsonResponseIntoArray($response): void
     {
@@ -144,5 +139,4 @@ class TargetServiceTest extends TestCase
         // レスポンスの構造が正しいか確認
         $this->assertSame($this->targetModelKeys, array_keys($arrayResponse));
     }
-
 }

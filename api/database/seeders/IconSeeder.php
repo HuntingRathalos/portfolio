@@ -9,8 +9,6 @@ class IconSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
     public function run()
     {
@@ -18,7 +16,7 @@ class IconSeeder extends Seeder
             ['code' => 'mdi-book-open-variant'],
             ['code' => 'mdi-cart-outline'],
             ['code' => 'mdi-tshirt-crew-outline'],
-            ['code' => 'mdi-gift',],
+            ['code' => 'mdi-gift'],
             ['code' => 'mdi-coffee-outline'],
             ['code' => 'mdi-hamburger'],
             ['code' => 'mdi-noodles'],

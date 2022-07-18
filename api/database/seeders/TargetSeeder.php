@@ -9,8 +9,6 @@ class TargetSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
     public function run()
     {
@@ -18,12 +16,12 @@ class TargetSeeder extends Seeder
         Target::factory()->create([
             'user_id' => 1,
             'name' => '旅行に行く!!',
-            'amount' => 70000
+            'amount' => 70000,
         ]);
         Target::factory()->create([
             'user_id' => 2,
             'name' => 'ワンピース全巻購入!!',
-            'amount' => 50000
+            'amount' => 50000,
         ]);
     }
 }

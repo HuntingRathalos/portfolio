@@ -6,5 +6,5 @@ use App\Models\Icon;
 
 interface IconRepositoryInterface
 {
-  public function getIconById(int $iconId): Icon;
+    public function getIconById(int $iconId): Icon;
 }

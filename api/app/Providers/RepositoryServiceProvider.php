@@ -2,28 +2,26 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use App\Repositories\Save\SaveRepositoryInterface;
-use App\Repositories\Tag\TagRepositoryInterface;
-use App\Repositories\Target\TargetRepositoryInterface;
-use App\Repositories\User\UserRepositoryInterface;
-use App\Repositories\Icon\IconRepositoryInterface;
-use App\Repositories\Post\PostRepositoryInterface;
-use App\Repositories\Notification\NotificationRepositoryInterface;
-use App\Repositories\Save\SaveRepository;
-use App\Repositories\Tag\TagRepository;
-use App\Repositories\Target\TargetRepository;
-use App\Repositories\User\UserRepository;
 use App\Repositories\Icon\IconRepository;
-use App\Repositories\Post\PostRepository;
+use App\Repositories\Icon\IconRepositoryInterface;
 use App\Repositories\Notification\NotificationRepository;
+use App\Repositories\Notification\NotificationRepositoryInterface;
+use App\Repositories\Post\PostRepository;
+use App\Repositories\Post\PostRepositoryInterface;
+use App\Repositories\Save\SaveRepository;
+use App\Repositories\Save\SaveRepositoryInterface;
+use App\Repositories\Tag\TagRepository;
+use App\Repositories\Tag\TagRepositoryInterface;
+use App\Repositories\Target\TargetRepository;
+use App\Repositories\Target\TargetRepositoryInterface;
+use App\Repositories\User\UserRepository;
+use App\Repositories\User\UserRepositoryInterface;
+use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
-     *
-     * @return void
      */
     public function register()
     {
@@ -44,11 +42,8 @@ class RepositoryServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap services.
-     *
-     * @return void
      */
     public function boot()
     {
-        //
     }
 }

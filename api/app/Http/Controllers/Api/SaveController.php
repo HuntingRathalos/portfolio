@@ -3,10 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Services\Save\SaveServiceInterface;
-use App\Models\Save;
 use App\Http\Requests\SaveRequest;
+use App\Services\Save\SaveServiceInterface;
 
 class SaveController extends Controller
 {
@@ -32,17 +30,15 @@ class SaveController extends Controller
     }
 
     /**
-     * 合計貯金額を返す
-     *
-     * @return void
+     * 合計貯金額を返す.
      */
-    public function getAllSavesAmount() {
-
+    public function getAllSavesAmount()
+    {
         return $this->saveService->getAllSavesAmount();
     }
 
     /**
-     * 1週間分の貯金記録取得し、グラフ用にデータを整形して返す
+     * 1週間分の貯金記録取得し、グラフ用にデータを整形して返す.
      *
      * @return \Illuminate\Http\Response
      */
@@ -52,7 +48,7 @@ class SaveController extends Controller
     }
 
     /**
-     * 全貯金記録をタグでグループ化し、円グラフ用にデータを整形して返す
+     * 全貯金記録をタグでグループ化し、円グラフ用にデータを整形して返す.
      *
      * @return \Illuminate\Http\Response
      */
@@ -62,19 +58,20 @@ class SaveController extends Controller
     }
 
     /**
-     * ランキング用のデータをtag_idでグループ化して取得
+     * ランキング用のデータをtag_idでグループ化して取得.
      *
      * @return \Illuminate\Http\Response
      */
-    public function getSaveRanking() {
-
+    public function getSaveRanking()
+    {
         return $this->saveService->getSaveRanking();
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\SaveRequest  $request
+     * @param \Illuminate\Http\SaveRequest $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(SaveRequest $request)
@@ -87,8 +84,9 @@ class SaveController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\SaveRequest  $request
-     * @param  int  $saveId
+     * @param \Illuminate\Http\SaveRequest $request
+     * @param int                          $saveId
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(SaveRequest $request, int $saveId)
@@ -101,7 +99,8 @@ class SaveController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $saveId
+     * @param int $saveId
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(int $saveId)

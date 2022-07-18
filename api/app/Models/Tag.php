@@ -20,7 +20,7 @@ class Tag extends Model
     ];
 
     /**
-     * リレーション - savesテーブル
+     * リレーション - savesテーブル.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

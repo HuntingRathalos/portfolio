@@ -3,13 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Services\Target\TargetServiceInterface;
-use App\Services\Save\SaveServiceInterface;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 use App\Http\Requests\TargetRequest;
+use App\Services\Save\SaveServiceInterface;
+use App\Services\Target\TargetServiceInterface;
+use Illuminate\Http\Response;
 
 class TargetController extends Controller
 {
@@ -18,32 +15,32 @@ class TargetController extends Controller
 
     /**
      * @param TargetServiceInterface $targetService
-     * @param SaveServiceInterface $saveService
+     * @param SaveServiceInterface   $saveService
      */
     public function __construct(
         TargetServiceInterface $targetService,
         SaveServiceInterface $saveService,
-        )
-    {
+    ) {
         $this->middleware('verify.notguest')->only('store', 'update', 'destroy');
         $this->targetService = $targetService;
         $this->saveService = $saveService;
     }
 
     /**
-     *ユーザーに紐づく目標、貯金の合計額を取得
+     *ユーザーに紐づく目標、貯金の合計額を取得.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        return  $this->targetService->getTarget();
+        return $this->targetService->getTarget();
     }
 
     /**
-     * 新たな目標を作成する
+     * 新たな目標を作成する.
      *
-     * @param  \Illuminate\Http\TargetRequest  $request
+     * @param \Illuminate\Http\TargetRequest $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(TargetRequest $request)
@@ -54,10 +51,11 @@ class TargetController extends Controller
     }
 
     /**
-     * 目標を更新する
+     * 目標を更新する.
      *
-     * @param  \Illuminate\Http\TargetRequest  $request
-     * @param  int  $targetId
+     * @param \Illuminate\Http\TargetRequest $request
+     * @param int                            $targetId
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(TargetRequest $request, int $targetId)
@@ -68,9 +66,10 @@ class TargetController extends Controller
     }
 
     /**
-     * 目標と貯金記録を全件削除
+     * 目標と貯金記録を全件削除.
      *
-     * @param  int  $targetId
+     * @param int $targetId
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(int $targetId)

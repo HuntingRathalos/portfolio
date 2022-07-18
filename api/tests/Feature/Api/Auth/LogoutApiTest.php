@@ -2,10 +2,9 @@
 
 namespace Tests\Feature\Api\Auth;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class LogoutApiTest extends TestCase
 {
@@ -25,7 +24,7 @@ class LogoutApiTest extends TestCase
     public function 認証済みユーザーをログアウトさせる()
     {
         $response = $this->actingAs($this->user)
-                         ->json('POST', '/api/logout');
+            ->json('POST', '/api/logout');
 
         $response->assertStatus(204);
         $this->assertGuest();

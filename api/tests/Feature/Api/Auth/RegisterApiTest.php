@@ -3,9 +3,7 @@
 namespace Tests\Feature\Api\Auth;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Models\User;
 
 class RegisterApiTest extends TestCase
 {
@@ -14,7 +12,7 @@ class RegisterApiTest extends TestCase
     /**
      * @test
      */
-    public function  会員登録に成功する()
+    public function 会員登録に成功する()
     {
         $data = [
             'name' => 'TestUser',
@@ -29,7 +27,7 @@ class RegisterApiTest extends TestCase
         // DBに保存されていることを確認
         $this->assertDatabaseHas('users', [
             'name' => $data['name'],
-            'email' => $data['email']
+            'email' => $data['email'],
         ]);
 
         $response->assertStatus(201);

@@ -5,9 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Services\User\UserServiceInterface;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -16,20 +13,19 @@ class UserController extends Controller
 
     /**
      * @param UserRepositoryInterface $userRepository
-     * @param UserServiceInterface $userService
+     * @param UserServiceInterface    $userService
      */
     public function __construct(
         UserRepositoryInterface $userRepository,
         UserServiceInterface $userService
-        )
-    {
+    ) {
         $this->middleware('verify.notguest')->only('follow', 'unfollow');
         $this->userRepository = $userRepository;
         $this->userService = $userService;
     }
 
     /**
-     * 自分以外の全ユーザー情報と、最初に貯金したもののタグを取得
+     * 自分以外の全ユーザー情報と、最初に貯金したもののタグを取得.
      *
      * @return \Illuminate\Http\Response
      */
@@ -39,9 +35,7 @@ class UserController extends Controller
     }
 
     /**
-     * ログインユーザーがフォローしている人の情報と、最初に貯金したもののタグを取得
-     *
-     * @return void
+     * ログインユーザーがフォローしている人の情報と、最初に貯金したもののタグを取得.
      */
     public function getFollowUsers()
     {
@@ -59,9 +53,10 @@ class UserController extends Controller
     // }
 
     /**
-     * ユーザーがフォローしたときに、中間テーブルにレコード作成
+     * ユーザーがフォローしたときに、中間テーブルにレコード作成.
      *
-     * @param integer $userId
+     * @param int $userId
+     *
      * @return JsonResponse
      */
     public function follow(int $userId)
@@ -70,9 +65,10 @@ class UserController extends Controller
     }
 
     /**
-     * ユーザーがフォローを外したときに、中間テーブルのレコード削除
+     * ユーザーがフォローを外したときに、中間テーブルのレコード削除.
      *
-     * @param integer $userId
+     * @param int $userId
+     *
      * @return JsonResponse
      */
     public function unfollow(int $userId)

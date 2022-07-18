@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Services\Notification\NotificationServiceInterface;
-
 
 class NotificationController extends Controller
 {
@@ -20,9 +18,7 @@ class NotificationController extends Controller
     }
 
     /**
-     *ユーザーに紐づく通知を取得
-     *
-     * @return void
+     *ユーザーに紐づく通知を取得.
      */
     public function index()
     {
@@ -30,10 +26,9 @@ class NotificationController extends Controller
     }
 
     /**
-     *既読履歴をつける
+     *既読履歴をつける.
      *
      * @param string $notificationId
-     * @return void
      */
     public function read(string $notificationId)
     {
