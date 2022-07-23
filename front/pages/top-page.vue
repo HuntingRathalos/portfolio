@@ -118,13 +118,11 @@ export default {
     },
     getUsers() {
       this.$userApi.getUsersExceptMyself().then((res) => {
-        console.log(res.data)
         sessionStorage.setItem('users', JSON.stringify(res.data))
       })
     },
     getFollowUsers() {
       this.$userApi.getFollowUsers().then((res) => {
-        console.log(res.data)
         sessionStorage.setItem('followUsers', JSON.stringify(res.data))
       })
     },
