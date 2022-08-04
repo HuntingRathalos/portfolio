@@ -128,11 +128,11 @@ class SaveControllerTest extends TestCase
         $this->saveRepositoryMock->shouldReceive('createSave')
             ->once()
             ->with(Mockery::on(function ($saveDetailsArray) use ($saveDetails) {
-          $this->assertSame($saveDetailsArray, $saveDetails)
+                $this->assertSame($saveDetailsArray, $saveDetails)
             && is_array($saveDetailsArray);
 
-          return true;
-      }))
+                return true;
+            }))
             ->andReturn(Save::factory()->make($saveDetails));
 
         // 認証済みユーザーとしてアクセス
@@ -166,11 +166,11 @@ class SaveControllerTest extends TestCase
         $this->saveRepositoryMock->shouldReceive('updateSave')
             ->once()
             ->with($saveId, Mockery::on(function ($saveDetailsArray) use ($saveDetails) {
-          $this->assertSame($saveDetailsArray, $saveDetails)
+                $this->assertSame($saveDetailsArray, $saveDetails)
             && is_array($saveDetailsArray);
 
-          return true;
-      }))
+                return true;
+            }))
             ->andReturn(true);
 
         // SaveRepositoryのgetSaveByIdをモック

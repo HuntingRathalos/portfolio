@@ -202,11 +202,11 @@ class SaveServiceTest extends TestCase
         $this->saveRepositoryMock->shouldReceive('createSave')
             ->once()
             ->with(Mockery::on(function ($saveDetailsArray) use ($saveDetails) {
-              $this->assertSame($saveDetailsArray, $saveDetails)
+                $this->assertSame($saveDetailsArray, $saveDetails)
                 && is_array($saveDetailsArray);
 
-              return true;
-          }))
+                return true;
+            }))
             ->andReturn(Save::factory()->make());
 
         // テスト対象のメソッド呼び出し
@@ -234,11 +234,11 @@ class SaveServiceTest extends TestCase
         $this->saveRepositoryMock->shouldReceive('updateSave')
             ->once()
             ->with($saveId, Mockery::on(function ($saveDetailsArray) use ($saveDetails) {
-              $this->assertSame($saveDetailsArray, $saveDetails)
+                $this->assertSame($saveDetailsArray, $saveDetails)
                 && is_array($saveDetailsArray);
 
-              return true;
-          }))
+                return true;
+            }))
             ->andReturn(true);
 
         // SaveRepositoryのgetSaveByIdをモック

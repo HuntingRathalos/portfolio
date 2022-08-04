@@ -194,6 +194,8 @@ class SaveService implements SaveServiceInterface
         } else {
             return response()->json('', Response::HTTP_OK);
         }
+
+        return response()->json($sorted, Response::HTTP_OK);
     }
 
     /**

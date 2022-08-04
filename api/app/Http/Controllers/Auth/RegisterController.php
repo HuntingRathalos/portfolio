@@ -53,8 +53,7 @@ class RegisterController extends Controller
     public function store(
         RegisterRequest $request,
         CreatesNewUsers $creator
-    ): RegisterResponse
-    {
+    ): RegisterResponse {
         event(new Registered($user = $creator->create($request->all())));
 
         // 会員登録後、自動ログインさせないように変更

@@ -48,11 +48,11 @@ class TargetServiceTest extends TestCase
         $this->targetRepositoryMock->shouldReceive('createTarget')
             ->once()
             ->with(Mockery::on(function ($targetDetailsArray) use ($targetDetails) {
-              $this->assertSame($targetDetailsArray, $targetDetails)
+                $this->assertSame($targetDetailsArray, $targetDetails)
                 && is_array($targetDetailsArray);
 
-              return true;
-          }))
+                return true;
+            }))
             ->andReturn(Target::factory()->make());
 
         // テスト対象のメソッド呼び出し
@@ -80,11 +80,11 @@ class TargetServiceTest extends TestCase
         $this->targetRepositoryMock->shouldReceive('updateTarget')
             ->once()
             ->with($targetId, Mockery::on(function ($targetDetailsArray) use ($targetDetails) {
-              $this->assertSame($targetDetailsArray, $targetDetails)
+                $this->assertSame($targetDetailsArray, $targetDetails)
                 && is_array($targetDetailsArray);
 
-              return true;
-          }))
+                return true;
+            }))
             ->andReturn(true);
 
         // TargetRepositoryのgetTargetByIdをモック

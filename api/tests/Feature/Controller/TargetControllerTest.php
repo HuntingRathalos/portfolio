@@ -66,11 +66,11 @@ class TargetControllerTest extends TestCase
         $this->targetRepositoryMock->shouldReceive('createTarget')
             ->once()
             ->with(Mockery::on(function ($targetDetailsArray) use ($targetDetails) {
-          $this->assertSame($targetDetailsArray, $targetDetails)
+                $this->assertSame($targetDetailsArray, $targetDetails)
             && is_array($targetDetailsArray);
 
-          return true;
-      }))
+                return true;
+            }))
             ->andReturn(Target::factory()->make($targetDetails));
 
         // 認証済みユーザーとしてアクセス
@@ -101,11 +101,11 @@ class TargetControllerTest extends TestCase
         $this->targetRepositoryMock->shouldReceive('updateTarget')
             ->once()
             ->with($targetId, Mockery::on(function ($targetDetailsArray) use ($targetDetails) {
-          $this->assertSame($targetDetailsArray, $targetDetails)
+                $this->assertSame($targetDetailsArray, $targetDetails)
             && is_array($targetDetailsArray);
 
-          return true;
-      }))
+                return true;
+            }))
             ->andReturn(true);
 
         // TargetRepositoryのgetTargetByIdをモック
