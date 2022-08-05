@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Requests;
 
-use Tests\TestCase;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\LoginFormRequest;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Tests\TestCase;
 
 class LoginFormRequestTest extends TestCase
 {
@@ -14,6 +14,7 @@ class LoginFormRequestTest extends TestCase
      * @dataProvider validationProvider
      *
      * テストの期待値
+     *
      * @param bool $expected
      *
      * フォームリクエストのモックデータ
@@ -37,43 +38,43 @@ class LoginFormRequestTest extends TestCase
                 'expected' => true,
                 'data' => [
                     'email' => 'test@test.com',
-                    'password' => 'password'
-                ]
+                    'password' => 'password',
+                ],
             ],
             'email必須エラー' => [
                 'expected' => false,
                 'data' => [
                     'email' => null,
-                    'password' => 'password'
-                ]
+                    'password' => 'password',
+                ],
             ],
             'email形式エラー' => [
                 'expected' => false,
                 'data' => [
                     'email' => 'test@test.',
-                    'password' => 'password'
-                ]
+                    'password' => 'password',
+                ],
             ],
             'email最大文字数エラー' => [
                 'expected' => false,
                 'data' => [
                     'email' => Str::random(256),
-                    'password' => 'password'
-                ]
+                    'password' => 'password',
+                ],
             ],
             'password必須エラー' => [
                 'expected' => false,
                 'data' => [
                     'email' => 'test@test.',
-                    'password' => null
-                ]
+                    'password' => null,
+                ],
             ],
             'password最小文字数エラー' => [
                 'expected' => false,
                 'data' => [
                     'email' => 'test@test.',
-                    'password' => 'pass'
-                ]
+                    'password' => 'pass',
+                ],
             ],
         ];
     }

@@ -2,12 +2,9 @@
 
 namespace App\Services\Notification;
 
-use App\Models\Notification;
 use App\Repositories\Notification\NotificationRepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class NotificationService implements NotificationServiceInterface
 {
@@ -22,26 +19,28 @@ class NotificationService implements NotificationServiceInterface
     }
 
     /**
-     * ユーザーに紐づく通知を取得
+     * ユーザーに紐づく通知を取得.
      *
      * @return JsonResponse
      */
     public function getNotifications(): JsonResponse
     {
-      $notifications = $this->notificationRepository->getNotifications();
-      return response()->json($notifications, Response::HTTP_OK);
+        $notifications = $this->notificationRepository->getNotifications();
+
+        return response()->json($notifications, Response::HTTP_OK);
     }
 
     /**
-     *通知に既読をつける
+     *通知に既読をつける.
      *
      * @param string $notificationId
+     *
      * @return JsonResponse
      */
     public function readNotification(string $notificationId): JsonResponse
     {
-      $this->notificationRepository->readNotification($notificationId);
+        $this->notificationRepository->readNotification($notificationId);
 
-      return response()->json(null, Response::HTTP_OK);
+        return response()->json(null, Response::HTTP_OK);
     }
 }

@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Requests;
 
-use Tests\TestCase;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\RegisterRequest;
-use Illuminate\Support\Str;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Tests\TestCase;
 
 class RegisterRequestTest extends TestCase
 {
@@ -20,14 +20,16 @@ class RegisterRequestTest extends TestCase
 
         // テストユーザー作成
         $this->user = User::factory()->create([
-            'email' => 'aaa@example.com'
+            'email' => 'aaa@example.com',
         ]);
     }
+
     /**
      * @test
      * @dataProvider validationProvider
      *
      * テストの期待値
+     *
      * @param bool $expected
      *
      * フォームリクエストのモックデータ
@@ -53,8 +55,8 @@ class RegisterRequestTest extends TestCase
                     'name' => 'testUser',
                     'email' => 'test@test.com',
                     'password' => 'password',
-                    'password_confirmation' => 'password'
-                ]
+                    'password_confirmation' => 'password',
+                ],
             ],
             '名前必須エラー' => [
                 'expected' => false,
@@ -62,8 +64,8 @@ class RegisterRequestTest extends TestCase
                     'name' => null,
                     'email' => 'test@test.com',
                     'password' => 'password',
-                    'password_confirmation' => 'password'
-                ]
+                    'password_confirmation' => 'password',
+                ],
             ],
             '名前形式エラー' => [
                 'expected' => false,
@@ -71,8 +73,8 @@ class RegisterRequestTest extends TestCase
                     'name' => 123,
                     'email' => 'test@test.com',
                     'password' => 'password',
-                    'password_confirmation' => 'password'
-                ]
+                    'password_confirmation' => 'password',
+                ],
             ],
             '名前形式エラー' => [
                 'expected' => false,
@@ -80,8 +82,8 @@ class RegisterRequestTest extends TestCase
                     'name' => 123,
                     'email' => 'test@test.com',
                     'password' => 'password',
-                    'password_confirmation' => 'password'
-                ]
+                    'password_confirmation' => 'password',
+                ],
             ],
             '名前最大文字数エラー' => [
                 'expected' => false,
@@ -89,8 +91,8 @@ class RegisterRequestTest extends TestCase
                     'name' => Str::random(256),
                     'email' => 'test@test.com',
                     'password' => 'password',
-                    'password_confirmation' => 'password'
-                ]
+                    'password_confirmation' => 'password',
+                ],
             ],
             'OK' => [
                 'expected' => true,
@@ -98,8 +100,8 @@ class RegisterRequestTest extends TestCase
                     'name' => Str::random(255),
                     'email' => 'test@test.com',
                     'password' => 'password',
-                    'password_confirmation' => 'password'
-                ]
+                    'password_confirmation' => 'password',
+                ],
             ],
             'email必須エラー' => [
                 'expected' => false,
@@ -107,8 +109,8 @@ class RegisterRequestTest extends TestCase
                     'name' => 'testUser',
                     'email' => null,
                     'password' => 'password',
-                    'password_confirmation' => 'password'
-                ]
+                    'password_confirmation' => 'password',
+                ],
             ],
             'email形式エラー' => [
                 'expected' => false,
@@ -116,8 +118,8 @@ class RegisterRequestTest extends TestCase
                     'name' => 'testUser',
                     'email' => 'test@test.',
                     'password' => 'password',
-                    'password_confirmation' => 'password'
-                ]
+                    'password_confirmation' => 'password',
+                ],
             ],
             'email最大文字数エラー' => [
                 'expected' => false,
@@ -125,8 +127,8 @@ class RegisterRequestTest extends TestCase
                     'name' => 'testUser',
                     'email' => Str::random(256),
                     'password' => 'password',
-                    'password_confirmation' => 'password'
-                ]
+                    'password_confirmation' => 'password',
+                ],
             ],
             'emailユニークエラー' => [
                 'expected' => false,
@@ -134,8 +136,8 @@ class RegisterRequestTest extends TestCase
                     'name' => 'testUser',
                     'email' => 'aaa@example.com',
                     'password' => 'password',
-                    'password_confirmation' => 'password'
-                ]
+                    'password_confirmation' => 'password',
+                ],
             ],
             'password必須エラー' => [
                 'expected' => false,
@@ -143,8 +145,8 @@ class RegisterRequestTest extends TestCase
                     'name' => 'testUser',
                     'email' => 'test@test.com',
                     'password' => null,
-                    'password_confirmation' => null
-                ]
+                    'password_confirmation' => null,
+                ],
             ],
             'password最小文字数エラー' => [
                 'expected' => false,
@@ -152,8 +154,8 @@ class RegisterRequestTest extends TestCase
                     'name' => 'testUser',
                     'email' => 'test@test.com',
                     'password' => 'pass',
-                    'password_confirmation' => 'pass'
-                ]
+                    'password_confirmation' => 'pass',
+                ],
             ],
             'password一致エラー' => [
                 'expected' => false,
@@ -161,8 +163,8 @@ class RegisterRequestTest extends TestCase
                     'name' => 'testUser',
                     'email' => 'test@test.com',
                     'password' => 'password',
-                    'password_confirmation' => 'password111'
-                ]
+                    'password_confirmation' => 'password111',
+                ],
             ],
             '確認用password必須エラー' => [
                 'expected' => false,
@@ -170,8 +172,8 @@ class RegisterRequestTest extends TestCase
                     'name' => 'testUser',
                     'email' => 'test@test.com',
                     'password' => 'password',
-                    'password_confirmation' => null
-                ]
+                    'password_confirmation' => null,
+                ],
             ],
             '確認用password最小文字数エラー' => [
                 'expected' => false,
@@ -179,8 +181,8 @@ class RegisterRequestTest extends TestCase
                     'name' => 'testUser',
                     'email' => 'test@test.com',
                     'password' => 'password',
-                    'password_confirmation' => 'pass'
-                ]
+                    'password_confirmation' => 'pass',
+                ],
             ],
         ];
     }

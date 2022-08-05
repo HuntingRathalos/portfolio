@@ -9,8 +9,6 @@ class TagSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
     public function run()
     {
@@ -35,7 +33,6 @@ class TagSeeder extends Seeder
             ['name' => '美容'],
             ['name' => '洋服'],
             ['name' => 'その他'],
-
         ]);
     }
 }

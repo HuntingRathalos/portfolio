@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 class PostRequest extends FormRequest
@@ -37,7 +37,7 @@ class PostRequest extends FormRequest
         return [
             'good_description' => '良かったポイント',
             'bad_description' => '悪かったポイント',
-            'self_evaluation' => '自己評価'
+            'self_evaluation' => '自己評価',
         ];
     }
 
@@ -57,8 +57,9 @@ class PostRequest extends FormRequest
     {
         $response = response()->json([
             'status' => 'validation error',
-            'errors' => $validator->errors()
+            'errors' => $validator->errors(),
         ], 400);
+
         throw new HttpResponseException($response);
     }
 }

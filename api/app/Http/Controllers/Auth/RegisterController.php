@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Requests\RegisterRequest;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\Request;
-use App\Http\Requests\RegisterRequest;
 use Illuminate\Routing\Controller;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Fortify\Contracts\RegisterResponse;
@@ -24,7 +24,6 @@ class RegisterController extends Controller
      * Create a new controller instance.
      *
      * @param  \Illuminate\Contracts\Auth\StatefulGuard
-     * @return void
      */
     public function __construct(StatefulGuard $guard)
     {
@@ -34,7 +33,8 @@ class RegisterController extends Controller
     /**
      * Show the registration view.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Laravel\Fortify\Contracts\RegisterViewResponse
      */
     public function create(Request $request): RegisterViewResponse
@@ -45,13 +45,15 @@ class RegisterController extends Controller
     /**
      * Create a new registered user.
      *
-     * @param  \App\Http\Requests\RegisterRequest $request
-     * @param  \Laravel\Fortify\Contracts\CreatesNewUsers  $creator
+     * @param \App\Http\Requests\RegisterRequest         $request
+     * @param \Laravel\Fortify\Contracts\CreatesNewUsers $creator
+     *
      * @return \Laravel\Fortify\Contracts\RegisterResponse
      */
-    public function store(RegisterRequest $request,
-                          CreatesNewUsers $creator): RegisterResponse
-    {
+    public function store(
+        RegisterRequest $request,
+        CreatesNewUsers $creator
+    ): RegisterResponse {
         event(new Registered($user = $creator->create($request->all())));
 
         // 会員登録後、自動ログインさせないように変更
@@ -60,4 +62,3 @@ class RegisterController extends Controller
         return app(RegisterResponse::class);
     }
 }
-

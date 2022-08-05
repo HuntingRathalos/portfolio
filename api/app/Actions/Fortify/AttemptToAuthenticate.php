@@ -7,7 +7,6 @@ use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Fortify;
 use Laravel\Fortify\LoginRateLimiter;
-use Illuminate\Http\Response;
 
 class AttemptToAuthenticate
 {
@@ -28,9 +27,8 @@ class AttemptToAuthenticate
     /**
      * Create a new controller instance.
      *
-     * @param  \Illuminate\Contracts\Auth\StatefulGuard  $guard
-     * @param  \Laravel\Fortify\LoginRateLimiter  $limiter
-     * @return void
+     * @param \Illuminate\Contracts\Auth\StatefulGuard $guard
+     * @param \Laravel\Fortify\LoginRateLimiter        $limiter
      */
     public function __construct(StatefulGuard $guard, LoginRateLimiter $limiter)
     {
@@ -41,8 +39,9 @@ class AttemptToAuthenticate
     /**
      * Handle the incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  callable  $next
+     * @param \Illuminate\Http\Request $request
+     * @param callable                 $next
+     *
      * @return mixed
      */
     public function handle($request, $next)
@@ -53,7 +52,8 @@ class AttemptToAuthenticate
 
         if ($this->guard->attempt(
             $request->only(Fortify::username(), 'password'),
-            $request->boolean('remember'))
+            $request->boolean('remember')
+        )
         ) {
             return $next($request);
         }
@@ -64,15 +64,16 @@ class AttemptToAuthenticate
     /**
      * Attempt to authenticate using a custom callback.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  callable  $next
+     * @param \Illuminate\Http\Request $request
+     * @param callable                 $next
+     *
      * @return mixed
      */
     protected function handleUsingCustomCallback($request, $next)
     {
         $user = call_user_func(Fortify::$authenticateUsingCallback, $request);
 
-        if (! $user) {
+        if (!$user) {
             $this->fireFailedEvent($request);
 
             return $this->throwFailedAuthenticationException($request);
@@ -86,8 +87,7 @@ class AttemptToAuthenticate
     /**
      * Throw a failed authentication validation exception.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return void
+     * @param \Illuminate\Http\Request $request
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
@@ -105,8 +105,7 @@ class AttemptToAuthenticate
     /**
      * Fire the failed authentication attempt event with the given arguments.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return void
+     * @param \Illuminate\Http\Request $request
      */
     protected function fireFailedEvent($request)
     {

@@ -2,18 +2,19 @@
 
 namespace Tests\Unit\Requests;
 
-use Tests\TestCase;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\SaveRequest;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Tests\TestCase;
 
 class SaveRequestTest extends TestCase
 {
-   /**
+    /**
      * @test
      * @dataProvider validationProvider
      *
      * テストの期待値
+     *
      * @param bool $expected
      *
      * フォームリクエストのモックデータ
@@ -41,140 +42,138 @@ class SaveRequestTest extends TestCase
                     'coin' => 5,
                     'memo' => 'メモ',
                     'click_date' => '2022-05-23',
-                ]
+                ],
             ],
             'tag_id必須エラー' => [
                 'expected' => false,
                 'data' => [
-                  'tag_id' => null,
-                  'icon_id' => 1,
-                  'coin' => 5,
-                  'memo' => 'メモ',
-                  'click_date' => '2022-05-23',
-              ]
+                    'tag_id' => null,
+                    'icon_id' => 1,
+                    'coin' => 5,
+                    'memo' => 'メモ',
+                    'click_date' => '2022-05-23',
+                ],
             ],
             'tag_id形式エラー' => [
                 'expected' => false,
                 'data' => [
-                  'tag_id' => 'あああ',
-                  'icon_id' => 1,
-                  'coin' => 5,
-                  'memo' => 'メモ',
-                  'click_date' => '2022-05-23',
-              ]
+                    'tag_id' => 'あああ',
+                    'icon_id' => 1,
+                    'coin' => 5,
+                    'memo' => 'メモ',
+                    'click_date' => '2022-05-23',
+                ],
             ],
             'icon_id必須エラー' => [
                 'expected' => false,
                 'data' => [
-                  'tag_id' => 1,
-                  'icon_id' => null,
-                  'coin' => 5,
-                  'memo' => 'メモ',
-                  'click_date' => '2022-05-23',
-              ]
+                    'tag_id' => 1,
+                    'icon_id' => null,
+                    'coin' => 5,
+                    'memo' => 'メモ',
+                    'click_date' => '2022-05-23',
+                ],
             ],
             'icon_id形式エラー' => [
                 'expected' => false,
                 'data' => [
-                  'tag_id' => 1,
-                  'icon_id' => 'あああ',
-                  'coin' => 5,
-                  'memo' => 'メモ',
-                  'click_date' => '2022-05-23',
-              ]
+                    'tag_id' => 1,
+                    'icon_id' => 'あああ',
+                    'coin' => 5,
+                    'memo' => 'メモ',
+                    'click_date' => '2022-05-23',
+                ],
             ],
             'coin必須エラー' => [
                 'expected' => false,
                 'data' => [
-                  'tag_id' => 1,
-                  'icon_id' => 1,
-                  'coin' => null,
-                  'memo' => 'メモ',
-                  'click_date' => '2022-05-23',
-              ]
+                    'tag_id' => 1,
+                    'icon_id' => 1,
+                    'coin' => null,
+                    'memo' => 'メモ',
+                    'click_date' => '2022-05-23',
+                ],
             ],
             'coin形式エラー' => [
                 'expected' => false,
                 'data' => [
-                  'tag_id' => 1,
-                  'icon_id' => 1,
-                  'coin' => 'あああ',
-                  'memo' => 'メモ',
-                  'click_date' => '2022-05-23',
-              ]
+                    'tag_id' => 1,
+                    'icon_id' => 1,
+                    'coin' => 'あああ',
+                    'memo' => 'メモ',
+                    'click_date' => '2022-05-23',
+                ],
             ],
             'OK' => [
                 'expected' => true,
                 'data' => [
-                  'tag_id' => 1,
-                  'icon_id' => 1,
-                  'coin' => 50,
-                  'memo' => 'メモ',
-                  'click_date' => '2022-05-23',
-              ]
+                    'tag_id' => 1,
+                    'icon_id' => 1,
+                    'coin' => 50,
+                    'memo' => 'メモ',
+                    'click_date' => '2022-05-23',
+                ],
             ],
             'coin枚数範囲外エラー' => [
                 'expected' => false,
                 'data' => [
-                  'tag_id' => 1,
-                  'icon_id' => 1,
-                  'coin' => 51,
-                  'memo' => 'メモ',
-                  'click_date' => '2022-05-23',
-              ]
+                    'tag_id' => 1,
+                    'icon_id' => 1,
+                    'coin' => 51,
+                    'memo' => 'メモ',
+                    'click_date' => '2022-05-23',
+                ],
             ],
             'memo形式エラー' => [
                 'expected' => false,
                 'data' => [
-                  'tag_id' => 1,
-                  'icon_id' => 1,
-                  'coin' => 1,
-                  'memo' => 123,
-                  'click_date' => '2022-05-23',
-              ]
+                    'tag_id' => 1,
+                    'icon_id' => 1,
+                    'coin' => 1,
+                    'memo' => 123,
+                    'click_date' => '2022-05-23',
+                ],
             ],
             'OK' => [
                 'expected' => true,
                 'data' => [
-                  'tag_id' => 1,
-                  'icon_id' => 1,
-                  'coin' => 1,
-                  'memo' => Str::random(30),
-                  'click_date' => '2022-05-23',
-              ]
+                    'tag_id' => 1,
+                    'icon_id' => 1,
+                    'coin' => 1,
+                    'memo' => Str::random(30),
+                    'click_date' => '2022-05-23',
+                ],
             ],
             'memo最大文字数エラー' => [
                 'expected' => false,
                 'data' => [
-                  'tag_id' => 1,
-                  'icon_id' => 1,
-                  'coin' => 1,
-                  'memo' => Str::random(31),
-                  'click_date' => '2022-05-23',
-              ]
+                    'tag_id' => 1,
+                    'icon_id' => 1,
+                    'coin' => 1,
+                    'memo' => Str::random(31),
+                    'click_date' => '2022-05-23',
+                ],
             ],
             'click_date必須エラー' => [
                 'expected' => false,
                 'data' => [
-                  'tag_id' => 1,
-                  'icon_id' => 1,
-                  'coin' => 1,
-                  'memo' => 'メモ',
-                  'click_date' => null,
-              ]
+                    'tag_id' => 1,
+                    'icon_id' => 1,
+                    'coin' => 1,
+                    'memo' => 'メモ',
+                    'click_date' => null,
+                ],
             ],
             'click_date形式エラー' => [
                 'expected' => false,
                 'data' => [
-                  'tag_id' => 1,
-                  'icon_id' => 1,
-                  'coin' => 1,
-                  'memo' => 'メモ',
-                  'click_date' => '日付',
-              ]
+                    'tag_id' => 1,
+                    'icon_id' => 1,
+                    'coin' => 1,
+                    'memo' => 'メモ',
+                    'click_date' => '日付',
+                ],
             ],
-
         ];
     }
-
 }

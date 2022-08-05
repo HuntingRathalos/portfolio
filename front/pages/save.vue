@@ -295,7 +295,6 @@ export default {
         this.$saveApi
           .create(this.save)
           .then((res) => {
-            // console.log(res)
             this.getSavesAmount()
             this.saves.push(res.data)
             sessionStorage.setItem('saves', JSON.stringify(this.saves))

@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Save extends Model
 {
@@ -26,7 +25,7 @@ class Save extends Model
     ];
 
     /**
-     * リレーション - usersテーブル
+     * リレーション - usersテーブル.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -36,7 +35,7 @@ class Save extends Model
     }
 
     /**
-     * リレーション - iconsテーブル
+     * リレーション - iconsテーブル.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -46,7 +45,7 @@ class Save extends Model
     }
 
     /**
-     * リレーション - tagsテーブル
+     * リレーション - tagsテーブル.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

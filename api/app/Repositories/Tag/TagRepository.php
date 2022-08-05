@@ -3,29 +3,28 @@
 namespace App\Repositories\Tag;
 
 use App\Models\Tag;
-use App\Repositories\Tag\TagRepositoryInterface;
-use Illuminate\Database\Eloquent\Collection;
 
 class TagRepository implements TagRepositoryInterface
 {
+    private $model;
 
-  private $model;
+    /**
+     * @param Tag $tag
+     */
+    public function __construct(Tag $tag)
+    {
+        $this->model = $tag;
+    }
 
-  /**
-   * @param Tag $tag
-   */
-  public function __construct(Tag $tag)
-  {
-      $this->model = $tag;
-  }
-  /**
-   * idからタグコードを1件取得
-   *
-   * @param int $tagId
-   * @return Tag
-   */
-  public function getTagById(int $tagId): Tag
-  {
-    return $this->model->findOrFail($tagId);
-  }
+    /**
+     * idからタグコードを1件取得.
+     *
+     * @param int $tagId
+     *
+     * @return Tag
+     */
+    public function getTagById(int $tagId): Tag
+    {
+        return $this->model->findOrFail($tagId);
+    }
 }

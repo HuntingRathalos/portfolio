@@ -2,20 +2,21 @@
 
 namespace Tests\Unit\Requests;
 
-use Tests\TestCase;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\TargetRequest;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Tests\TestCase;
 
 class TargetRequestTest extends TestCase
 {
-  /**
+    /**
      * @test
      * @dataProvider validationProvider
      *
      * テストの期待値
-     * @param bool $expected
-     * フォームリクエストのモックデータ
+     *
+     * @param bool  $expected
+     *                        フォームリクエストのモックデータ
      * @param array $data
      */
     public function バリデーションが通るか(bool $expected, array $data)
@@ -37,28 +38,28 @@ class TargetRequestTest extends TestCase
                 'data' => [
                     'name' => 'お菓子買う',
                     'amount' => 30000,
-                ]
+                ],
             ],
             'name必須エラー' => [
                 'expected' => false,
                 'data' => [
                     'name' => null,
                     'amount' => 30000,
-                ]
+                ],
             ],
             'name最大文字数エラー' => [
                 'expected' => false,
                 'data' => [
                     'name' => Str::random(51),
                     'amount' => 30000,
-                ]
+                ],
             ],
             'amount必須エラー' => [
                 'expected' => false,
                 'data' => [
                     'name' => 'お菓子買う',
                     'amount' => null,
-                ]
+                ],
             ],
         ];
     }

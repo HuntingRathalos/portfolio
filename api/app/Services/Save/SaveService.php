@@ -2,7 +2,6 @@
 
 namespace App\Services\Save;
 
-use App\Models\Save;
 use App\Models\Tag;
 use App\Repositories\Save\SaveRepositoryInterface;
 use Carbon\Carbon;
@@ -10,7 +9,6 @@ use Carbon\CarbonPeriod;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class SaveService implements SaveServiceInterface
 {
@@ -19,40 +17,43 @@ class SaveService implements SaveServiceInterface
     /**
      * @param SaveRepositoryInterface $saveRepository
      */
-    public function __construct(SaveRepositoryInterface $saveRepository,)
+    public function __construct(SaveRepositoryInterface $saveRepository)
     {
         $this->saveRepository = $saveRepository;
     }
 
     /**
-     * 貯金記録を全件取得し、responseをjsonに整形
+     * 貯金記録を全件取得し、responseをjsonに整形.
      *
      * @return JsonResponse
      */
     public function getAllSaves(): JsonResponse
     {
         $allSaves = $this->saveRepository->getAllSaves();
+
         return response()->json($allSaves, Response::HTTP_OK);
     }
 
     /**
-     * 貯金記録から合計額を算出し、responseをjsonに整形
+     * 貯金記録から合計額を算出し、responseをjsonに整形.
      *
      * @return JsonResponse
      */
     public function getAllSavesAmount(): JsonResponse
     {
         $allSaves = $this->saveRepository->getAllSaves();
-        if(!$allSaves->isEmpty()) {
+        if (!$allSaves->isEmpty()) {
             $coins = $allSaves->sum('coin');
             $amount = $coins * 500;
         } else {
             return response()->json('', Response::HTTP_OK);
         }
+
         return response()->json($amount, Response::HTTP_OK);
     }
+
     /**
-     * 今週分の貯金記録を取得し、responseをjsonに整形
+     * 今週分の貯金記録を取得し、responseをjsonに整形.
      *
      * @return JsonResponse
      */
@@ -70,44 +71,45 @@ class SaveService implements SaveServiceInterface
         // $savesOfOneWeekにデータがない日用に配列を作成
         $period = CarbonPeriod::create($dateFrom, 7)->toArray();
         $dates = [];
-        foreach($period as $date) {
+        foreach ($period as $date) {
             $dates[$date->format('Y-m-d')] = [
                 'click_date' => $date->format('Y-m-d'),
                 'pluscoin' => 0,
-                'minuscoin' => 0
+                'minuscoin' => 0,
             ];
         }
         // 日毎にコインの数を合計して配列に格納
-        if(!$savesOfOneWeek->isEmpty()) {
+        if (!$savesOfOneWeek->isEmpty()) {
             $processedSaves = collect();
             $savesGroupByClickDate = $savesOfOneWeek->groupBy('click_date');
-            $savesGroupByClickDate->each(function($saves, $key) use($processedSaves) {
+            $savesGroupByClickDate->each(function ($saves, $key) use ($processedSaves) {
                 $pluscoin = 0;
                 $minuscoin = 0;
-                foreach($saves as $save) {
-                     $save->coin > 0 ? $pluscoin += $save->coin : $minuscoin -= $save->coin;
-                    }
-                    $processedSaves[$key] = [
-                        'click_date' => $key,
-                        'pluscoin' => $pluscoin,
-                        'minuscoin' => $minuscoin
-                    ];
+                foreach ($saves as $save) {
+                    $save->coin > 0 ? $pluscoin += $save->coin : $minuscoin -= $save->coin;
+                }
+                $processedSaves[$key] = [
+                    'click_date' => $key,
+                    'pluscoin' => $pluscoin,
+                    'minuscoin' => $minuscoin,
+                ];
             });
             // データがない日用の配列とコインの数を合計して格納した配列をマージ
             $mergeSaves = array_replace($dates, $processedSaves->toArray());
             // フロントで扱いやすいようにデータを加工
             $result = [];
-            foreach($mergeSaves as $mergeSave) {
+            foreach ($mergeSaves as $mergeSave) {
                 $result[] = $mergeSave;
             }
-        }else {
+        } else {
             return response()->json($dates, Response::HTTP_OK);
         }
+
         return response()->json($result, Response::HTTP_OK);
     }
 
     /**
-     * 円グラフ用データをtag_idでグループ化して取得し、responseをjsonに整形
+     * 円グラフ用データをtag_idでグループ化して取得し、responseをjsonに整形.
      *
      * @return JsonResponse
      */
@@ -115,7 +117,7 @@ class SaveService implements SaveServiceInterface
     {
         $allSaves = $this->saveRepository->getAllSaves();
 
-        if(!$allSaves->isEmpty()) {
+        if (!$allSaves->isEmpty()) {
             // 貯金した記録を取得するので、coin > 0になるように絞り込む
             $filteredSaves = $allSaves->filter(function ($filteredSave) {
                 return $filteredSave->coin > 0;
@@ -124,9 +126,9 @@ class SaveService implements SaveServiceInterface
             // 取得した記録をtag_idでグループ化
             $savesGroupByTagId = $filteredSaves->groupBy('tag_id');
 
-            $savesGroupByTagId->each(function($saves, $key) use($processedSaves){
+            $savesGroupByTagId->each(function ($saves, $key) use ($processedSaves) {
                 $pluscoin = 0;
-                foreach($saves as $save) {
+                foreach ($saves as $save) {
                     $pluscoin += $save->coin;
                 }
                 // タグの名前を取得
@@ -144,11 +146,12 @@ class SaveService implements SaveServiceInterface
         } else {
             return response()->json('', Response::HTTP_OK);
         }
+
         return response()->json($sorted, Response::HTTP_OK);
     }
 
     /**
-     * ランキング用のデータをtag_idでグループ化して取得し、responseをjsonに整形
+     * ランキング用のデータをtag_idでグループ化して取得し、responseをjsonに整形.
      *
      * @return JsonResponse
      */
@@ -156,7 +159,7 @@ class SaveService implements SaveServiceInterface
     {
         $allSaves = $this->saveRepository->getAllSaves();
 
-        if(!$allSaves->isEmpty()) {
+        if (!$allSaves->isEmpty()) {
             // 貯金した記録を取得するので、coin > 0になるように絞り込む
             $filteredSaves = $allSaves->filter(function ($filteredSave) {
                 return $filteredSave->coin > 0;
@@ -164,7 +167,7 @@ class SaveService implements SaveServiceInterface
             $processedSaves = collect();
             // 取得した記録をtag_idでグループ化
             $savesGroupByTagId = $filteredSaves->groupBy('tag_id');
-            $savesGroupByTagId->each(function($saves, $key) use($processedSaves){
+            $savesGroupByTagId->each(function ($saves, $key) use ($processedSaves) {
                 // tag_idでグループ化したコレクションにおける最初の要素のicon_code取得
                 $save = $saves->first();
                 $icon = $save->icon;
@@ -175,7 +178,7 @@ class SaveService implements SaveServiceInterface
                 $processedSaves->push([
                     'tag_name' => $tag->name,
                     'tag_count' => $saves->count(),
-                    'icon_code' => $icon->code
+                    'icon_code' => $icon->code,
                 ]);
             });
             // tag_countが多い順に並び替える
@@ -183,63 +186,73 @@ class SaveService implements SaveServiceInterface
             $sorted = $sortedSaves->values()->all();
 
             // 表示するランキングは3位までなのでそれ以上は切り捨て
-            if(count($sorted) >= 3) {
+            if (count($sorted) >= 3) {
                 $sliced = $slicedSaves = array_slice($sorted, 0, 3);
+
                 return response()->json($sliced, Response::HTTP_OK);
             }
-        }else {
+        } else {
             return response()->json('', Response::HTTP_OK);
         }
+
+        return response()->json($sorted, Response::HTTP_OK);
     }
 
     /**
-     * 新たな貯金記録を作成し、responseをjsonに整形
+     * 新たな貯金記録を作成し、responseをjsonに整形.
      *
      * @param array $saveDetails
+     *
      * @return JsonResponse
      */
     public function createSave(array $saveDetails): JsonResponse
     {
         $save = $this->saveRepository->createSave($saveDetails);
+
         return response()->json($save, Response::HTTP_CREATED);
     }
 
     /**
-     * 貯金記録を更新し、responseをjsonに整形
+     * 貯金記録を更新し、responseをjsonに整形.
      *
-     * @param integer $saveId
+     * @param int   $saveId
      * @param array $saveDetails
+     *
      * @return JsonResponse
      */
     public function updateSave(int $saveId, array $saveDetails): JsonResponse
     {
         $this->saveRepository->updateSave($saveId, $saveDetails);
+
         return response()->json($this->saveRepository->getSaveById($saveId), Response::HTTP_CREATED);
     }
 
     /**
-     * 貯金記録を削除し、responseをjsonに整形
+     * 貯金記録を削除し、responseをjsonに整形.
      *
-     * @param integer $saveId
+     * @param int $saveId
+     *
      * @return JsonResponse
      */
     public function deleteSave(int $saveId): JsonResponse
     {
         $this->saveRepository->deleteSave($saveId);
+
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
-     * ユーザーに紐づく貯金記録を全件削除
+     * ユーザーに紐づく貯金記録を全件削除.
      *
      * @return JsonResponse
      */
     public function deleteAllSaves(): JsonResponse
     {
         $user = Auth::user();
-        $user->saves()->each(function($save) {
+        $user->saves()->each(function ($save) {
             $this->saveRepository->deleteSave($save->id);
         });
+
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 }

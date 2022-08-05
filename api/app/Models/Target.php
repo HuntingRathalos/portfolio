@@ -22,7 +22,7 @@ class Target extends Model
     ];
 
     /**
-     * リレーション - usersテーブル
+     * リレーション - usersテーブル.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

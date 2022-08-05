@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Collection;
 interface NotificationRepositoryInterface
 {
     public function getNotifications(): Collection;
-    public function readNotification(string $notificationId): void;
 
+    public function readNotification(string $notificationId): void;
 }

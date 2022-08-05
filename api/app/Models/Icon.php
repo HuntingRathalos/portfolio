@@ -10,7 +10,7 @@ class Icon extends Model
 {
     use HasFactory;
 
-     /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
@@ -20,7 +20,7 @@ class Icon extends Model
     ];
 
     /**
-     * リレーション - savesテーブル
+     * リレーション - savesテーブル.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

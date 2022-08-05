@@ -25,7 +25,7 @@ class TargetFactory extends Factory
         return [
             'user_id' => User::factory(),
             'name' => $this->faker->text(30),
-            'amount' => $this->faker->randomNumber(5, true)
+            'amount' => $this->faker->randomNumber(5, true),
         ];
     }
 }

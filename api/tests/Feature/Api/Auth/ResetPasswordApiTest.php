@@ -2,13 +2,12 @@
 
 namespace Tests\Feature\Api\Auth;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
-use Illuminate\Auth\Notifications\ResetPassword;
-use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
+use Tests\TestCase;
 
 class ResetPasswordApiTest extends TestCase
 {
@@ -26,7 +25,7 @@ class ResetPasswordApiTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->json('POST', '/api/forgot-password', [
-            'email' => $user->email
+            'email' => $user->email,
         ]);
 
         $response->assertStatus(200);
@@ -39,6 +38,7 @@ class ResetPasswordApiTest extends TestCase
             ResetPassword::class,
             function ($notification) use (&$token) {
                 $token = $notification->token;
+
                 return true;
             }
         );
@@ -59,6 +59,5 @@ class ResetPasswordApiTest extends TestCase
         $freshUser = $user->fresh();
         // 更新後のパスワードが保存されていることを確認
         $this->assertTrue(Hash::check($newPassword, $freshUser->password));
-
     }
 }

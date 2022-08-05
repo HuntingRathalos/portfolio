@@ -6,12 +6,15 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "friendsofphp/php-cs-fixer": "^3.9",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.4",
         "laravel/fortify": "^1.11",
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.14",
-        "laravel/tinker": "^2.5"
+        "laravel/tinker": "^2.5",
+        "s-ichikawa/laravel-sendgrid-driver": "3.0.4",
+        "sendgrid/sendgrid": "^8.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

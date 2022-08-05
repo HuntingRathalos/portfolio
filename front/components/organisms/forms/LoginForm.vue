@@ -17,11 +17,6 @@
             </v-card-actions>
           </v-form>
         </v-card-text>
-        <v-divider></v-divider>
-        <div class="pt-8 pb-4">
-          <span>パスワードをお忘れですか？</span>
-          <nuxt-link to="/forgot-password">パスワードをリセットする</nuxt-link>
-        </div>
       </div>
     </div>
   </v-card>

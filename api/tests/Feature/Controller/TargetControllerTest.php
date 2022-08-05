@@ -2,150 +2,149 @@
 
 namespace Tests\Feature\Controller;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
-use App\Repositories\Target\TargetRepositoryInterface;
-use App\Repositories\Target\TargetRepository;
-use App\Models\User;
-use App\Models\Target;
-use Mockery;
-use WithoutMiddleware;
 use App\Http\Middleware\VerifyNotGuest;
+use App\Models\Target;
+use App\Models\User;
+use App\Repositories\Target\TargetRepository;
+use App\Repositories\Target\TargetRepositoryInterface;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Mockery;
+use Tests\TestCase;
 
 class TargetControllerTest extends TestCase
 {
-  use RefreshDatabase;
+    use RefreshDatabase;
 
-  private $targetRepositoryMock;
+    private $targetRepositoryMock;
 
-  public function setUp(): void
-  {
-      parent::setUp();
+    public function setUp(): void
+    {
+        parent::setUp();
 
-      // ゲストユーザー以外のユーザーでテストする
-      $this->withMiddleware();
-      $this->withoutMiddleware(VerifyNotGuest::class);
+        // ゲストユーザー以外のユーザーでテストする
+        $this->withMiddleware();
+        $this->withoutMiddleware(VerifyNotGuest::class);
 
-      // 依存しているリポジトリのモック作成
-      $this->targetRepositoryMock = Mockery::mock(TargetRepository::class);
-      $this->app->instance(TargetRepositoryInterface::class, $this->targetRepositoryMock);
+        // 依存しているリポジトリのモック作成
+        $this->targetRepositoryMock = Mockery::mock(TargetRepository::class);
+        $this->app->instance(TargetRepositoryInterface::class, $this->targetRepositoryMock);
 
-      // テストユーザー作成
-      $this->user = User::factory()->make([
-        'id' => 1
-      ]);
-  }
+        // テストユーザー作成
+        $this->user = User::factory()->make([
+            'id' => 1,
+        ]);
+    }
 
-  public function testIndex()
-  {
-    // TargetRepositoryのgetTargetをモック
-    $this->targetRepositoryMock->shouldReceive('getTarget')
-    ->once()
-    ->andReturn(Target::factory()->make([
-      'name' => '旅行',
-      'amount' => 30000
-    ]));
-     // 認証済みユーザーとしてアクセス
-     $response = $this->actingAs($this->user)
-      ->json('GET', route('targets.index'));
+    public function testIndex()
+    {
+        // TargetRepositoryのgetTargetをモック
+        $this->targetRepositoryMock->shouldReceive('getTarget')
+            ->once()
+            ->andReturn(Target::factory()->make([
+                'name' => '旅行',
+                'amount' => 30000,
+            ]));
+        // 認証済みユーザーとしてアクセス
+        $response = $this->actingAs($this->user)
+            ->json('GET', route('targets.index'));
 
-    $response->assertStatus(200)
-      ->assertJsonFragment([
-        'name' => '旅行',
-        'amount' => 30000
-      ]);
-  }
+        $response->assertStatus(200)
+            ->assertJsonFragment([
+                'name' => '旅行',
+                'amount' => 30000,
+            ]);
+    }
 
-  public function testStore()
-  {
-    // モックの引数(レコード作成用データ)作成
-    $targetDetails = [
-      'name' => '本を買う',
-      'amount' => 30000,
-    ];
-    // TargetRepositoryのcreateTargetをモック
-    $this->targetRepositoryMock->shouldReceive('createTarget')
-      ->once()
-      ->with(Mockery::on(function($targetDetailsArray) use ($targetDetails) {
-          $this->assertSame($targetDetailsArray, $targetDetails)
+    public function testStore()
+    {
+        // モックの引数(レコード作成用データ)作成
+        $targetDetails = [
+            'name' => '本を買う',
+            'amount' => 30000,
+        ];
+        // TargetRepositoryのcreateTargetをモック
+        $this->targetRepositoryMock->shouldReceive('createTarget')
+            ->once()
+            ->with(Mockery::on(function ($targetDetailsArray) use ($targetDetails) {
+                $this->assertSame($targetDetailsArray, $targetDetails)
             && is_array($targetDetailsArray);
-          return true;
-      }))
-      ->andReturn(Target::factory()->make($targetDetails));
 
-    // 認証済みユーザーとしてアクセス
-    $response = $this->actingAs($this->user)
-      ->json('POST', route('targets.store'), $targetDetails);
+                return true;
+            }))
+            ->andReturn(Target::factory()->make($targetDetails));
 
-    // レスポンスに指定dataが含まれていることを確認
-    $response->assertStatus(201)
-      ->assertJsonFragment($targetDetails);
-  }
+        // 認証済みユーザーとしてアクセス
+        $response = $this->actingAs($this->user)
+            ->json('POST', route('targets.store'), $targetDetails);
 
-  public function testUpdate()
-  {
-    // テスト用レコード作成
-    $target = Target::factory()->make([
-      'id' => 1,
-      'user_id' => $this->user->id
-    ]);
-    // モックの引数作成
-    $targetId = $target->id;
-    // 既存レコードの一部を更新するデータ
-    $targetDetails = [
-      'name' => '旅行',
-      'amount' => $target->amount,
-    ];
+        // レスポンスに指定dataが含まれていることを確認
+        $response->assertStatus(201)
+            ->assertJsonFragment($targetDetails);
+    }
 
-    // TargetRepositoryのupdateTargetをモック
-    $this->targetRepositoryMock->shouldReceive('updateTarget')
-      ->once()
-      ->with($targetId, Mockery::on(function($targetDetailsArray) use ($targetDetails) {
-          $this->assertSame($targetDetailsArray, $targetDetails)
+    public function testUpdate()
+    {
+        // テスト用レコード作成
+        $target = Target::factory()->make([
+            'id' => 1,
+            'user_id' => $this->user->id,
+        ]);
+        // モックの引数作成
+        $targetId = $target->id;
+        // 既存レコードの一部を更新するデータ
+        $targetDetails = [
+            'name' => '旅行',
+            'amount' => $target->amount,
+        ];
+
+        // TargetRepositoryのupdateTargetをモック
+        $this->targetRepositoryMock->shouldReceive('updateTarget')
+            ->once()
+            ->with($targetId, Mockery::on(function ($targetDetailsArray) use ($targetDetails) {
+                $this->assertSame($targetDetailsArray, $targetDetails)
             && is_array($targetDetailsArray);
-          return true;
-      }))
-      ->andReturn(true);
 
-     // TargetRepositoryのgetTargetByIdをモック
-     $this->targetRepositoryMock->shouldReceive('getTargetById')
-       ->once()
-       ->with($targetId)
-       ->andReturn(Target::factory()->make($targetDetails));
+                return true;
+            }))
+            ->andReturn(true);
 
+        // TargetRepositoryのgetTargetByIdをモック
+        $this->targetRepositoryMock->shouldReceive('getTargetById')
+            ->once()
+            ->with($targetId)
+            ->andReturn(Target::factory()->make($targetDetails));
 
-    // 認証済みユーザーとしてアクセス
-    $response = $this->actingAs($this->user)
-      ->json('PATCH', route('targets.update', ['target' => $targetId]), $targetDetails);
+        // 認証済みユーザーとしてアクセス
+        $response = $this->actingAs($this->user)
+            ->json('PATCH', route('targets.update', ['target' => $targetId]), $targetDetails);
 
-    // レスポンスに指定dataが含まれていることを確認
-    $response->assertStatus(201)
-      ->assertJsonFragment($targetDetails);
-  }
+        // レスポンスに指定dataが含まれていることを確認
+        $response->assertStatus(201)
+            ->assertJsonFragment($targetDetails);
+    }
 
-  public function testDestroy()
-  {
-    // テスト用レコード作成
-    $target = Target::factory()->make([
-      'id' => 1,
-      'user_id' => $this->user->id
-    ]);
-    // モックの引数作成
-    $targetId = $target->id;
+    public function testDestroy()
+    {
+        // テスト用レコード作成
+        $target = Target::factory()->make([
+            'id' => 1,
+            'user_id' => $this->user->id,
+        ]);
+        // モックの引数作成
+        $targetId = $target->id;
 
-    // TargetRepositoryのdeleteTargetをモック
-    $this->targetRepositoryMock->shouldReceive('deleteTarget')
-      ->once()
-      ->with($targetId)
-      ->andReturnNull();
+        // TargetRepositoryのdeleteTargetをモック
+        $this->targetRepositoryMock->shouldReceive('deleteTarget')
+            ->once()
+            ->with($targetId)
+            ->andReturnNull();
 
-    // 認証済みユーザーとしてアクセス
-    $response = $this->actingAs($this->user)
-      ->json('delete', route('targets.destroy', ['target' => $targetId], [
-        'id' => $targetId
-      ]));
+        // 認証済みユーザーとしてアクセス
+        $response = $this->actingAs($this->user)
+            ->json('delete', route('targets.destroy', ['target' => $targetId], [
+                'id' => $targetId,
+            ]));
 
-    $response->assertStatus(204);
-  }
+        $response->assertStatus(204);
+    }
 }
