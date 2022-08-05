@@ -3,9 +3,8 @@
     <v-app-bar app color="indigo accent-1">
       <router-link to="/">
         <v-img
-          :src="require('@/assets/logo.png')"
-          max-height="56"
-          max-width="120"
+          :src="require('@/assets/save for happiness - MarkMaker Logo.svg')"
+          max-width="110"
         >
         </v-img>
       </router-link>

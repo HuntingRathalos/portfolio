@@ -54,9 +54,4 @@
 ![ER図](https://user-images.githubusercontent.com/92079024/183026155-1ffc4ec6-e852-4e9f-8a0e-9579031b39e2.png)
 #### インフラ構成図
 ![AWS構成図](https://user-images.githubusercontent.com/92079024/183026416-ef9c5292-14dc-44a5-b626-41e02c6c73eb.png)
-### 非機能要件
 
-大まかな機能概要、特徴
-使い方
-オリジナリティー、工夫した点
-大変だった点、その対策
