@@ -252,6 +252,8 @@ export default {
       this.$saveApi.getSavesAmount().then((res) => {
         if (res.data !== '') {
           sessionStorage.setItem('saveAmount', JSON.stringify(res.data))
+        } else {
+          sessionStorage.setItem('saveAmount', 0)
         }
       })
     },
@@ -262,10 +264,10 @@ export default {
           return
         }
         if (this.updateFlag === true) {
-          this.getSavesAmount()
           this.$saveApi
             .update(this.saveId, this.save)
             .then((res) => {
+              this.getSavesAmount()
               const beforeSave = this.saves.find(
                 (save) => save.id === res.data.id
               )
@@ -339,7 +341,8 @@ export default {
       this.setOpenAlertModal(false)
       this.closeSaveModal()
     },
-    openAlertModal() {
+    openAlertModal(saveId) {
+      this.saveId = saveId
       this.$store.dispatch('modal/setOpenAlertModal', true)
     },
     getSavesOneMonth() {
