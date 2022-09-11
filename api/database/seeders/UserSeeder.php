@@ -21,6 +21,14 @@ class UserSeeder extends Seeder
             'name' => '山田太郎',
             'email' => 'taro@example.com',
         ]);
+        User::factory()->create([
+            'name' => 'ぷー',
+            'email' => 'poo@example.com',
+        ]);
+        User::factory()->create([
+            'name' => 'トラ男',
+            'email' => 'torao@example.com',
+        ]);
         // User::factory()->count(5)->create();
     }
 }

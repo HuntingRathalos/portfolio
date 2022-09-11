@@ -16,12 +16,22 @@ class TargetSeeder extends Seeder
         Target::factory()->create([
             'user_id' => 1,
             'name' => '旅行に行く!!',
-            'amount' => 70000,
+            'amount' => 200000,
         ]);
         Target::factory()->create([
             'user_id' => 2,
             'name' => 'ワンピース全巻購入!!',
-            'amount' => 50000,
+            'amount' => 150000,
+        ]);
+        Target::factory()->create([
+            'user_id' => 3,
+            'name' => 'ジムに通う!!',
+            'amount' => 80000,
+        ]);
+        Target::factory()->create([
+            'user_id' => 4,
+            'name' => 'イヤホンを買う!!',
+            'amount' => 100000,
         ]);
     }
 }
