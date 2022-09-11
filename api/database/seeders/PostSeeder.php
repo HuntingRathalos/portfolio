@@ -20,7 +20,7 @@ class PostSeeder extends Seeder
                 'self_evaluation' => '3',
             ],
             [
-                'user_id' => 1,
+                'user_id' => 2,
                 'good_description' => '特になし',
                 'bad_description' => 'コンビニに寄ってしまった。',
                 'self_evaluation' => '1',
