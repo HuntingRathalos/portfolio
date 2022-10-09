@@ -92,7 +92,7 @@ class PostRepositoryTest extends TestCase
     {
         // IDを指定したレコードをあらかじめ作成
         $postId = 200;
-        Post::factory([
+        Post::factory()->create([
             'id' => $postId,
         ]);
         $this->repo->deletePost($postId);
@@ -100,6 +100,48 @@ class PostRepositoryTest extends TestCase
         // 指定したIDのレコードがDBに存在しないことを確認
         $this->assertDatabaseMissing('posts', [
             'id' => $postId,
+        ]);
+    }
+
+    public function testLikePost()
+    {
+        // ログインユーザー作成
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        // IDを指定したレコードをあらかじめ作成
+        $postId = 300;
+        Post::factory()->create([
+            'id' => $postId,
+        ]);
+
+        $this->repo->likePost($postId);
+
+        // DBに保存されていることを確認
+        $this->assertDatabaseHas('likes', [
+            'user_id' => $user->id,
+            'post_id' => $postId,
+        ]);
+    }
+
+    public function testUnlikePost()
+    {
+        // ログインユーザー作成
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        // IDを指定したレコードをあらかじめ作成
+        $postId = 400;
+        Post::factory()->create([
+            'id' => $postId,
+        ]);
+
+        $this->repo->unlikePost($postId);
+
+        // 指定したIDのレコードがDBに存在しないことを確認
+        $this->assertDatabaseMissing('likes', [
+            'user_id' => $user->id,
+            'post_id' => $postId,
         ]);
     }
 }
