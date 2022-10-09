@@ -5,8 +5,8 @@ namespace Tests\Unit\Repositories;
 use App\Models\Post;
 use App\Models\User;
 use App\Repositories\Post\PostRepository;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class PostRepositoryTest extends TestCase
@@ -60,7 +60,7 @@ class PostRepositoryTest extends TestCase
             'user_id' => $user->id,
             'good_description' => '良かった点',
             'bad_description' => '悪かった点',
-            'self_evaluation' => 3
+            'self_evaluation' => 3,
         ];
         $createdPost = $this->repo->createPost($postDetails);
 

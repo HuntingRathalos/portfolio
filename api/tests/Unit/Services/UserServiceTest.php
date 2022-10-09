@@ -2,16 +2,7 @@
 
 namespace Tests\Unit\Services;
 
-use App\Models\Save;
-use App\Models\Tag;
-use App\Models\Target;
 use App\Models\User;
-use App\Repositories\Save\SaveRepository;
-use App\Repositories\Save\SaveRepositoryInterface;
-use App\Repositories\Tag\TagRepository;
-use App\Repositories\Tag\TagRepositoryInterface;
-use App\Repositories\Target\TargetRepository;
-use App\Repositories\Target\TargetRepositoryInterface;
 use App\Repositories\User\UserRepository;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Services\User\UserService;
