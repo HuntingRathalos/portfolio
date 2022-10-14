@@ -32,6 +32,9 @@
 #### バックエンド
 
 - Laravel 8.83.4
+  - Laravel Sanctum
+  - Laravel Fortify
+  - Laravel Telescope
 - Mysql 8.0
 - PHP CS Fixer（コード解析ツール）
 - PHPUnit

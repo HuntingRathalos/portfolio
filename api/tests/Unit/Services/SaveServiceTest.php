@@ -3,20 +3,14 @@
 namespace Tests\Unit\Services;
 
 use App\Models\Save;
-use App\Models\Tag;
 use App\Repositories\Save\SaveRepository;
 use App\Repositories\Save\SaveRepositoryInterface;
-use App\Repositories\Tag\TagRepository;
-use App\Repositories\Tag\TagRepositoryInterface;
 use App\Services\Save\SaveService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\JsonResponse;
 use Mockery;
-
-use function Psy\debug;
-
 use Tests\TestCase;
 
 class SaveServiceTest extends TestCase
@@ -33,9 +27,6 @@ class SaveServiceTest extends TestCase
         // 依存しているリポジトリのモック作成
         $this->saveRepositoryMock = Mockery::mock(SaveRepository::class);
         $this->app->instance(SaveRepositoryInterface::class, $this->saveRepositoryMock);
-
-        // $this->tagRepositoryMock = Mockery::mock(TagRepository::class);
-        // $this->app->instance(TagRepositoryInterface::class, $this->tagRepositoryMock);
 
         // レスポンスの構造を確認するための配列
         $this->saveModelKeys = [
@@ -142,47 +133,6 @@ class SaveServiceTest extends TestCase
         // レスポンスに含まれる配列の数が7個であることを確認
         $this->assertCount(7, $arrayResponse);
     }
-
-    // /**
-    //  * SaveServiceのgetSaveRankingメソッドの戻り値の型、構造が正しいかを確認する
-    //  *
-    //  * @return void
-    //  */
-    // public function testGetSaveRanking()
-    // {
-    //   // getAllSavesメソッドのモック用戻り値作成
-    //   $data = new Collection(Save::factory()->count(5)->make([
-    //     'tag_id' => 3
-    //   ]));
-
-    //   // SaveRepositoryのgetAllSavesをモック
-    //   $this->saveRepositoryMock->shouldReceive('getAllSaves')
-    //   ->once()
-    //   ->andReturn($data);
-
-    //   // TagRepositoryのgetTagByIdをモック
-    //   $this->saveRepositoryMock->shouldReceive('getTagById')
-    //   ->once()
-    //   ->with(3)
-    //   ->andReturn([
-    //     'id' => 3,
-    //     'name' => '食品'
-    //   ]);
-
-    //   // テスト対象のメソッド呼び出し
-    //   $saveService = $this->app->make(SaveService::class);
-    //   $response = $saveService->getSaveRanking();
-
-    //   // レスポンスがJsonResponseであることを確認
-    //   $this->assertInstanceOf(JsonResponse::class, $response);
-    //   // JsonResponseインスタンスからjsonデータのみを抽出
-    //   $json = $response->content();
-    //   // jsonから配列に変換
-    //   $arrayResponse = json_decode($json, true);
-    //   // レスポンスに含まれる配列の数が7個であることを確認
-    //   \Log::debug($arrayResponse);
-    //   $this->assertCount(1, $arrayResponse);
-    // }
 
     /**
      * SaveServiceのcreateSaveメソッドの戻り値の型、構造が正しいかを確認する.
