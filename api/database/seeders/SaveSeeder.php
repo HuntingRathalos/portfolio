@@ -112,9 +112,25 @@ class SaveSeeder extends Seeder
             'user_id' => 1,
             'tag_id' => 14,
             'icon_id' => 1,
+            'coin' => 1,
+            'memo' => '欲しかった漫画を我慢した！',
+            'click_date' => '2022-1-01',
+        ]);
+        Save::factory()->count(1)->create([
+            'user_id' => 1,
+            'tag_id' => 14,
+            'icon_id' => 1,
             'coin' => 2,
             'memo' => '欲しかった漫画を我慢した！',
-            'click_date' => '2022-10-03',
+            'click_date' => '2022-1-02',
+        ]);
+        Save::factory()->count(1)->create([
+            'user_id' => 1,
+            'tag_id' => 14,
+            'icon_id' => 1,
+            'coin' => -2,
+            'memo' => '欲しかった漫画を我慢した！',
+            'click_date' => '2022-1-04',
         ]);
         Save::factory()->count(1)->create([
             'user_id' => 1,
@@ -122,7 +138,15 @@ class SaveSeeder extends Seeder
             'icon_id' => 1,
             'coin' => 3,
             'memo' => '欲しかった漫画を我慢した！',
-            'click_date' => '2022-10-12',
+            'click_date' => '2022-1-05',
+        ]);
+        Save::factory()->count(1)->create([
+            'user_id' => 1,
+            'tag_id' => 14,
+            'icon_id' => 1,
+            'coin' => 2,
+            'memo' => '欲しかった漫画を我慢した！',
+            'click_date' => '2022-1-06',
         ]);
         Save::factory()->count(1)->create([
             'user_id' => 1,
@@ -130,7 +154,7 @@ class SaveSeeder extends Seeder
             'icon_id' => 1,
             'coin' => 1,
             'memo' => '欲しかった漫画を我慢した！',
-            'click_date' => '2022-10-14',
+            'click_date' => '2022-1-07',
         ]);
         Save::factory()->count(1)->create([
             'user_id' => 1,
@@ -138,31 +162,39 @@ class SaveSeeder extends Seeder
             'icon_id' => 1,
             'coin' => 3,
             'memo' => '欲しかった漫画を我慢した！',
-            'click_date' => '2022-10-17',
+            'click_date' => '2022-1-09',
         ]);
         Save::factory()->count(1)->create([
             'user_id' => 1,
             'tag_id' => 14,
             'icon_id' => 1,
-            'coin' => 1,
+            'coin' => -1,
             'memo' => '欲しかった漫画を我慢した！',
-            'click_date' => '2022-10-20',
+            'click_date' => '2022-1-10',
         ]);
         Save::factory()->count(1)->create([
             'user_id' => 1,
             'tag_id' => 14,
             'icon_id' => 1,
-            'coin' => 4,
+            'coin' => 2,
             'memo' => '欲しかった漫画を我慢した！',
-            'click_date' => '2022-10-22',
+            'click_date' => '2022-1-12',
         ]);
         Save::factory()->count(1)->create([
             'user_id' => 1,
             'tag_id' => 14,
             'icon_id' => 1,
-            'coin' => 1,
+            'coin' => 3,
             'memo' => '欲しかった漫画を我慢した！',
-            'click_date' => '2022-10-25',
+            'click_date' => '2022-1-14',
+        ]);
+        Save::factory()->count(1)->create([
+            'user_id' => 1,
+            'tag_id' => 14,
+            'icon_id' => 1,
+            'coin' => 2,
+            'memo' => '欲しかった漫画を我慢した！',
+            'click_date' => '2022-1-19',
         ]);
         Save::factory()->count(1)->create([
             'user_id' => 1,
@@ -170,8 +202,72 @@ class SaveSeeder extends Seeder
             'icon_id' => 1,
             'coin' => 5,
             'memo' => '欲しかった漫画を我慢した！',
-            'click_date' => '2022-10-28',
+            'click_date' => '2022-1-22',
         ]);
+        // Save::factory()->count(1)->create([
+        //     'user_id' => 1,
+        //     'tag_id' => 14,
+        //     'icon_id' => 1,
+        //     'coin' => 2,
+        //     'memo' => '欲しかった漫画を我慢した！',
+        //     'click_date' => '2022-10-03',
+        // ]);
+        // Save::factory()->count(1)->create([
+        //     'user_id' => 1,
+        //     'tag_id' => 14,
+        //     'icon_id' => 1,
+        //     'coin' => 3,
+        //     'memo' => '欲しかった漫画を我慢した！',
+        //     'click_date' => '2022-10-12',
+        // ]);
+        // Save::factory()->count(1)->create([
+        //     'user_id' => 1,
+        //     'tag_id' => 14,
+        //     'icon_id' => 1,
+        //     'coin' => 1,
+        //     'memo' => '欲しかった漫画を我慢した！',
+        //     'click_date' => '2022-10-14',
+        // ]);
+        // Save::factory()->count(1)->create([
+        //     'user_id' => 1,
+        //     'tag_id' => 14,
+        //     'icon_id' => 1,
+        //     'coin' => 3,
+        //     'memo' => '欲しかった漫画を我慢した！',
+        //     'click_date' => '2022-10-17',
+        // ]);
+        // Save::factory()->count(1)->create([
+        //     'user_id' => 1,
+        //     'tag_id' => 14,
+        //     'icon_id' => 1,
+        //     'coin' => 1,
+        //     'memo' => '欲しかった漫画を我慢した！',
+        //     'click_date' => '2022-10-20',
+        // ]);
+        // Save::factory()->count(1)->create([
+        //     'user_id' => 1,
+        //     'tag_id' => 14,
+        //     'icon_id' => 1,
+        //     'coin' => 4,
+        //     'memo' => '欲しかった漫画を我慢した！',
+        //     'click_date' => '2022-10-22',
+        // ]);
+        // Save::factory()->count(1)->create([
+        //     'user_id' => 1,
+        //     'tag_id' => 14,
+        //     'icon_id' => 1,
+        //     'coin' => 1,
+        //     'memo' => '欲しかった漫画を我慢した！',
+        //     'click_date' => '2022-10-25',
+        // ]);
+        // Save::factory()->count(1)->create([
+        //     'user_id' => 1,
+        //     'tag_id' => 14,
+        //     'icon_id' => 1,
+        //     'coin' => 5,
+        //     'memo' => '欲しかった漫画を我慢した！',
+        //     'click_date' => '2022-10-28',
+        // ]);
         Save::factory()->count(1)->create([
             'user_id' => 1,
             'tag_id' => 14,
@@ -238,6 +334,70 @@ class SaveSeeder extends Seeder
         ]);
         Save::factory()->count(1)->create([
             'user_id' => 1,
+            'tag_id' => 14,
+            'icon_id' => 1,
+            'coin' => 2,
+            'memo' => '欲しかった漫画を我慢した！',
+            'click_date' => '2022-2-03',
+        ]);
+        Save::factory()->count(1)->create([
+            'user_id' => 1,
+            'tag_id' => 14,
+            'icon_id' => 1,
+            'coin' => 3,
+            'memo' => '欲しかった漫画を我慢した！',
+            'click_date' => '2022-2-12',
+        ]);
+        Save::factory()->count(1)->create([
+            'user_id' => 1,
+            'tag_id' => 14,
+            'icon_id' => 1,
+            'coin' => 1,
+            'memo' => '欲しかった漫画を我慢した！',
+            'click_date' => '2022-2-14',
+        ]);
+        Save::factory()->count(1)->create([
+            'user_id' => 1,
+            'tag_id' => 14,
+            'icon_id' => 1,
+            'coin' => 3,
+            'memo' => '欲しかった漫画を我慢した！',
+            'click_date' => '2022-2-17',
+        ]);
+        Save::factory()->count(1)->create([
+            'user_id' => 1,
+            'tag_id' => 14,
+            'icon_id' => 1,
+            'coin' => 1,
+            'memo' => '欲しかった漫画を我慢した！',
+            'click_date' => '2022-2-20',
+        ]);
+        Save::factory()->count(1)->create([
+            'user_id' => 1,
+            'tag_id' => 14,
+            'icon_id' => 1,
+            'coin' => 4,
+            'memo' => '欲しかった漫画を我慢した！',
+            'click_date' => '2022-2-22',
+        ]);
+        Save::factory()->count(1)->create([
+            'user_id' => 1,
+            'tag_id' => 14,
+            'icon_id' => 1,
+            'coin' => 1,
+            'memo' => '欲しかった漫画を我慢した！',
+            'click_date' => '2022-2-25',
+        ]);
+        Save::factory()->count(1)->create([
+            'user_id' => 1,
+            'tag_id' => 14,
+            'icon_id' => 1,
+            'coin' => 5,
+            'memo' => '欲しかった漫画を我慢した！',
+            'click_date' => '2022-2-28',
+        ]);
+        Save::factory()->count(1)->create([
+            'user_id' => 1,
             'tag_id' => 3,
             'icon_id' => 10,
             'coin' => 1,
@@ -274,31 +434,7 @@ class SaveSeeder extends Seeder
             'icon_id' => 10,
             'coin' => 1,
             'memo' => 'お菓子を我慢できた!',
-            'click_date' => '2022-10-01',
-        ]);
-        Save::factory()->count(1)->create([
-            'user_id' => 1,
-            'tag_id' => 3,
-            'icon_id' => 10,
-            'coin' => 1,
-            'memo' => 'お菓子を我慢できた!',
-            'click_date' => '2022-10-02',
-        ]);
-        Save::factory()->count(1)->create([
-            'user_id' => 1,
-            'tag_id' => 3,
-            'icon_id' => 10,
-            'coin' => 2,
-            'memo' => 'お菓子を我慢できた!',
-            'click_date' => '2022-10-06',
-        ]);
-        Save::factory()->count(1)->create([
-            'user_id' => 1,
-            'tag_id' => 3,
-            'icon_id' => 10,
-            'coin' => 1,
-            'memo' => 'お菓子を我慢できた!',
-            'click_date' => '2022-10-07',
+            'click_date' => '2022-1-16',
         ]);
         Save::factory()->count(1)->create([
             'user_id' => 1,
@@ -306,7 +442,7 @@ class SaveSeeder extends Seeder
             'icon_id' => 10,
             'coin' => 3,
             'memo' => 'お菓子を我慢できた!',
-            'click_date' => '2022-10-18',
+            'click_date' => '2022-1-17',
         ]);
         Save::factory()->count(1)->create([
             'user_id' => 1,
@@ -314,8 +450,64 @@ class SaveSeeder extends Seeder
             'icon_id' => 10,
             'coin' => 1,
             'memo' => 'お菓子を我慢できた!',
-            'click_date' => '2022-10-29',
+            'click_date' => '2022-1-25',
         ]);
+        Save::factory()->count(1)->create([
+            'user_id' => 1,
+            'tag_id' => 3,
+            'icon_id' => 10,
+            'coin' => 2,
+            'memo' => 'お菓子を我慢できた!',
+            'click_date' => '2022-1-28',
+        ]);
+        // Save::factory()->count(1)->create([
+        //     'user_id' => 1,
+        //     'tag_id' => 3,
+        //     'icon_id' => 10,
+        //     'coin' => 1,
+        //     'memo' => 'お菓子を我慢できた!',
+        //     'click_date' => '2022-10-01',
+        // ]);
+        // Save::factory()->count(1)->create([
+        //     'user_id' => 1,
+        //     'tag_id' => 3,
+        //     'icon_id' => 10,
+        //     'coin' => 1,
+        //     'memo' => 'お菓子を我慢できた!',
+        //     'click_date' => '2022-10-02',
+        // ]);
+        // Save::factory()->count(1)->create([
+        //     'user_id' => 1,
+        //     'tag_id' => 3,
+        //     'icon_id' => 10,
+        //     'coin' => 2,
+        //     'memo' => 'お菓子を我慢できた!',
+        //     'click_date' => '2022-10-06',
+        // ]);
+        // Save::factory()->count(1)->create([
+        //     'user_id' => 1,
+        //     'tag_id' => 3,
+        //     'icon_id' => 10,
+        //     'coin' => 1,
+        //     'memo' => 'お菓子を我慢できた!',
+        //     'click_date' => '2022-10-07',
+        // ]);
+        // Save::factory()->count(1)->create([
+        //     'user_id' => 1,
+        //     'tag_id' => 3,
+        //     'icon_id' => 10,
+        //     'coin' => 3,
+        //     'memo' => 'お菓子を我慢できた!',
+        //     'click_date' => '2022-10-18',
+        // ]);
+        // Save::factory()->count(1)->create([
+        //     'user_id' => 1,
+        //     'tag_id' => 3,
+        //     'icon_id' => 10,
+        //     'coin' => 1,
+        //     'memo' => 'お菓子を我慢できた!',
+        //     'click_date' => '2022-10-29',
+        // ]);
         Save::factory()->count(1)->create([
             'user_id' => 1,
             'tag_id' => 3,
@@ -366,6 +558,54 @@ class SaveSeeder extends Seeder
         ]);
         Save::factory()->count(1)->create([
             'user_id' => 1,
+            'tag_id' => 3,
+            'icon_id' => 10,
+            'coin' => 1,
+            'memo' => 'お菓子を我慢できた!',
+            'click_date' => '2022-2-01',
+        ]);
+        Save::factory()->count(1)->create([
+            'user_id' => 1,
+            'tag_id' => 3,
+            'icon_id' => 10,
+            'coin' => 1,
+            'memo' => 'お菓子を我慢できた!',
+            'click_date' => '2022-2-02',
+        ]);
+        Save::factory()->count(1)->create([
+            'user_id' => 1,
+            'tag_id' => 3,
+            'icon_id' => 10,
+            'coin' => 2,
+            'memo' => 'お菓子を我慢できた!',
+            'click_date' => '2022-2-06',
+        ]);
+        Save::factory()->count(1)->create([
+            'user_id' => 1,
+            'tag_id' => 3,
+            'icon_id' => 10,
+            'coin' => 1,
+            'memo' => 'お菓子を我慢できた!',
+            'click_date' => '2022-2-07',
+        ]);
+        Save::factory()->count(1)->create([
+            'user_id' => 1,
+            'tag_id' => 3,
+            'icon_id' => 10,
+            'coin' => 3,
+            'memo' => 'お菓子を我慢できた!',
+            'click_date' => '2022-2-18',
+        ]);
+        Save::factory()->count(1)->create([
+            'user_id' => 1,
+            'tag_id' => 3,
+            'icon_id' => 10,
+            'coin' => 1,
+            'memo' => 'お菓子を我慢できた!',
+            'click_date' => '2022-2-29',
+        ]);
+        Save::factory()->count(1)->create([
+            'user_id' => 1,
             'tag_id' => 19,
             'icon_id' => 3,
             'coin' => 5,
@@ -384,34 +624,50 @@ class SaveSeeder extends Seeder
             'user_id' => 1,
             'tag_id' => 19,
             'icon_id' => 3,
-            'coin' => 3,
-            'memo' => '洋服を我慢した!',
-            'click_date' => '2022-10-10',
-        ]);
-        Save::factory()->count(1)->create([
-            'user_id' => 1,
-            'tag_id' => 19,
-            'icon_id' => 3,
             'coin' => 5,
             'memo' => '洋服を我慢した!',
-            'click_date' => '2022-10-16',
+            'click_date' => '2022-1-18',
         ]);
         Save::factory()->count(1)->create([
             'user_id' => 1,
             'tag_id' => 19,
             'icon_id' => 3,
-            'coin' => 6,
+            'coin' => 3,
             'memo' => '洋服を我慢した!',
-            'click_date' => '2022-10-26',
+            'click_date' => '2022-1-21',
         ]);
-        Save::factory()->count(1)->create([
-            'user_id' => 1,
-            'tag_id' => 19,
-            'icon_id' => 3,
-            'coin' => 6,
-            'memo' => '洋服を我慢した!',
-            'click_date' => '2022-10-31',
-        ]);
+        // Save::factory()->count(1)->create([
+        //     'user_id' => 1,
+        //     'tag_id' => 19,
+        //     'icon_id' => 3,
+        //     'coin' => 3,
+        //     'memo' => '洋服を我慢した!',
+        //     'click_date' => '2022-10-10',
+        // ]);
+        // Save::factory()->count(1)->create([
+        //     'user_id' => 1,
+        //     'tag_id' => 19,
+        //     'icon_id' => 3,
+        //     'coin' => 5,
+        //     'memo' => '洋服を我慢した!',
+        //     'click_date' => '2022-10-16',
+        // ]);
+        // Save::factory()->count(1)->create([
+        //     'user_id' => 1,
+        //     'tag_id' => 19,
+        //     'icon_id' => 3,
+        //     'coin' => 6,
+        //     'memo' => '洋服を我慢した!',
+        //     'click_date' => '2022-10-26',
+        // ]);
+        // Save::factory()->count(1)->create([
+        //     'user_id' => 1,
+        //     'tag_id' => 19,
+        //     'icon_id' => 3,
+        //     'coin' => 6,
+        //     'memo' => '洋服を我慢した!',
+        //     'click_date' => '2022-10-31',
+        // ]);
         Save::factory()->count(1)->create([
             'user_id' => 1,
             'tag_id' => 19,
@@ -446,6 +702,30 @@ class SaveSeeder extends Seeder
         ]);
         Save::factory()->count(1)->create([
             'user_id' => 1,
+            'tag_id' => 19,
+            'icon_id' => 3,
+            'coin' => 3,
+            'memo' => '洋服を我慢した!',
+            'click_date' => '2022-2-10',
+        ]);
+        Save::factory()->count(1)->create([
+            'user_id' => 1,
+            'tag_id' => 19,
+            'icon_id' => 3,
+            'coin' => 5,
+            'memo' => '洋服を我慢した!',
+            'click_date' => '2022-2-16',
+        ]);
+        Save::factory()->count(1)->create([
+            'user_id' => 1,
+            'tag_id' => 19,
+            'icon_id' => 3,
+            'coin' => 6,
+            'memo' => '洋服を我慢した!',
+            'click_date' => '2022-2-26',
+        ]);
+        Save::factory()->count(1)->create([
+            'user_id' => 1,
             'tag_id' => 14,
             'icon_id' => 1,
             'coin' => -2,
@@ -464,34 +744,50 @@ class SaveSeeder extends Seeder
             'user_id' => 1,
             'tag_id' => 14,
             'icon_id' => 1,
-            'coin' => -3,
+            'coin' => -2,
             'memo' => '出費がかさんでしまったので気をつけたい',
-            'click_date' => '2022-10-04',
+            'click_date' => '2022-1-13',
         ]);
         Save::factory()->count(1)->create([
             'user_id' => 1,
             'tag_id' => 14,
             'icon_id' => 1,
-            'coin' => -3,
+            'coin' => -5,
             'memo' => '出費がかさんでしまったので気をつけたい',
-            'click_date' => '2022-10-11',
+            'click_date' => '2022-1-24',
         ]);
-        Save::factory()->count(1)->create([
-            'user_id' => 1,
-            'tag_id' => 14,
-            'icon_id' => 1,
-            'coin' => -3,
-            'memo' => '出費がかさんでしまったので気をつけたい',
-            'click_date' => '2022-10-19',
-        ]);
-        Save::factory()->count(1)->create([
-            'user_id' => 1,
-            'tag_id' => 14,
-            'icon_id' => 1,
-            'coin' => -3,
-            'memo' => '出費がかさんでしまったので気をつけたい',
-            'click_date' => '2022-10-24',
-        ]);
+        // Save::factory()->count(1)->create([
+        //     'user_id' => 1,
+        //     'tag_id' => 14,
+        //     'icon_id' => 1,
+        //     'coin' => -3,
+        //     'memo' => '出費がかさんでしまったので気をつけたい',
+        //     'click_date' => '2022-10-04',
+        // ]);
+        // Save::factory()->count(1)->create([
+        //     'user_id' => 1,
+        //     'tag_id' => 14,
+        //     'icon_id' => 1,
+        //     'coin' => -3,
+        //     'memo' => '出費がかさんでしまったので気をつけたい',
+        //     'click_date' => '2022-10-11',
+        // ]);
+        // Save::factory()->count(1)->create([
+        //     'user_id' => 1,
+        //     'tag_id' => 14,
+        //     'icon_id' => 1,
+        //     'coin' => -3,
+        //     'memo' => '出費がかさんでしまったので気をつけたい',
+        //     'click_date' => '2022-10-19',
+        // ]);
+        // Save::factory()->count(1)->create([
+        //     'user_id' => 1,
+        //     'tag_id' => 14,
+        //     'icon_id' => 1,
+        //     'coin' => -3,
+        //     'memo' => '出費がかさんでしまったので気をつけたい',
+        //     'click_date' => '2022-10-24',
+        // ]);
         Save::factory()->count(1)->create([
             'user_id' => 1,
             'tag_id' => 14,
@@ -526,6 +822,38 @@ class SaveSeeder extends Seeder
         ]);
         Save::factory()->count(1)->create([
             'user_id' => 1,
+            'tag_id' => 14,
+            'icon_id' => 1,
+            'coin' => -3,
+            'memo' => '出費がかさんでしまったので気をつけたい',
+            'click_date' => '2022-2-04',
+        ]);
+        Save::factory()->count(1)->create([
+            'user_id' => 1,
+            'tag_id' => 14,
+            'icon_id' => 1,
+            'coin' => -3,
+            'memo' => '出費がかさんでしまったので気をつけたい',
+            'click_date' => '2022-2-11',
+        ]);
+        Save::factory()->count(1)->create([
+            'user_id' => 1,
+            'tag_id' => 14,
+            'icon_id' => 1,
+            'coin' => -3,
+            'memo' => '出費がかさんでしまったので気をつけたい',
+            'click_date' => '2022-2-19',
+        ]);
+        Save::factory()->count(1)->create([
+            'user_id' => 1,
+            'tag_id' => 14,
+            'icon_id' => 1,
+            'coin' => -3,
+            'memo' => '出費がかさんでしまったので気をつけたい',
+            'click_date' => '2022-2-24',
+        ]);
+        Save::factory()->count(1)->create([
+            'user_id' => 1,
             'tag_id' => 19,
             'icon_id' => 3,
             'coin' => -5,
@@ -539,6 +867,22 @@ class SaveSeeder extends Seeder
             'coin' => 3,
             'memo' => '',
             'click_date' => '2022-11-27',
+        ]);
+        Save::factory()->count(1)->create([
+            'user_id' => 1,
+            'tag_id' => 19,
+            'icon_id' => 3,
+            'coin' => -5,
+            'memo' => '出費がかさんでしまったので気をつけたい',
+            'click_date' => '2022-1-30',
+        ]);
+        Save::factory()->count(1)->create([
+            'user_id' => 4,
+            'tag_id' => 19,
+            'icon_id' => 3,
+            'coin' => 3,
+            'memo' => '',
+            'click_date' => '2022-1-27',
         ]);
     }
 }
