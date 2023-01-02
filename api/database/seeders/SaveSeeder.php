@@ -596,14 +596,14 @@ class SaveSeeder extends Seeder
             'memo' => 'お菓子を我慢できた!',
             'click_date' => '2022-2-18',
         ]);
-        Save::factory()->count(1)->create([
-            'user_id' => 1,
-            'tag_id' => 3,
-            'icon_id' => 10,
-            'coin' => 1,
-            'memo' => 'お菓子を我慢できた!',
-            'click_date' => '2022-2-29',
-        ]);
+        // Save::factory()->count(1)->create([
+        //     'user_id' => 1,
+        //     'tag_id' => 3,
+        //     'icon_id' => 10,
+        //     'coin' => 1,
+        //     'memo' => 'お菓子を我慢できた!',
+        //     'click_date' => '2022-2-29',
+        // ]);
         Save::factory()->count(1)->create([
             'user_id' => 1,
             'tag_id' => 19,
